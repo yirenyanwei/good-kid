@@ -12,8 +12,9 @@ const SERVICE = 'tts'
 const REGION = 'ap-guangzhou'
 
 const SPEED_MAP = { slow: 0.6, normal: 0.8, fast: 1.0 }
-// 基础语音合成支持的音色：101（智瑜，情感女声）发音清晰适合报词
-const VOICE = 101
+// 基础语音合成支持的音色：101001（智语，基础女声）发音清晰适合报词
+// 注意：101 是老版编号已不被 2019-08-23 版 TextToVoice 接受
+const VOICE = 101001
 
 function sha256Hex(msg) {
   return crypto.createHash('sha256').update(msg).digest('hex')
