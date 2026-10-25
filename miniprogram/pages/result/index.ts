@@ -66,7 +66,7 @@ Page({
   onShareAppMessage(): WechatMiniprogram.Page.ICustomShareContent {
     const { correct, total, styleName } = this.data
     return {
-      title: `好孩子 · ${styleName} ${correct}/${total}，连续练习 ${this.data.flameDays} 天`,
+      title: `好学天天练 · ${styleName} ${correct}/${total}，连续练习 ${this.data.flameDays} 天`,
       path: '/pages/home/index',
     }
   },

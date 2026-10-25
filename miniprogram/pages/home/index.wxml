@@ -1,7 +1,7 @@
 <!-- 首页：主 CTA「继续昨天」+ 三科卡 + 周报摘要条 -->
 <view class="page">
   <view class="nav">
-    <text class="title">好孩子</text>
+    <text class="title">好学天天练</text>
     <view class="chip" bindtap="openGradeSheet">{{grade}}年级 · {{volume}} ⌄</view>
   </view>
 
