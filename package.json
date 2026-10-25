@@ -1,0 +1,13 @@
+{
+  "name": "good-kid",
+  "version": "1.0.0",
+  "private": true,
+  "description": "好孩子小程序 —— 语文先行版",
+  "scripts": {
+    "test": "echo \"no tests yet\" && exit 0"
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^3.12.0",
+    "typescript": "^5.4.0"
+  }
+}

@@ -1,0 +1,55 @@
+<view class="page">
+  <view class="nav">
+    <text class="back" bindtap="goBack">‹</text>
+    <view class="nav-center">
+      <view class="subj-ico">语</view>
+      <text class="title">语文</text>
+    </view>
+    <view class="chip">三年级上 ⌄</view>
+  </view>
+
+  <view class="tb-row">
+    <text class="tb-label">教材</text>
+    <text class="tb-value">统编版（全国统一）</text>
+  </view>
+
+  <text class="label">字词练习</text>
+  <view
+    wx:for="{{styles}}"
+    wx:key="key"
+    class="style-card {{item.key === 'hanzi-dictate' ? 'hero' : ''}}"
+    bindtap="onStyle"
+    data-style="{{item.key}}"
+  >
+    <view class="style-left">
+      <text class="style-name">{{item.name}}<text wx:if="{{item.isNew}}" class="new-tag">新</text></text>
+      <text class="style-desc">{{item.desc}}</text>
+    </view>
+    <view class="style-btn {{item.key === 'hanzi-dictate' ? 'primary' : ''}}">开始</view>
+  </view>
+
+  <view class="card">
+    <view class="range-row">
+      <text class="range-label">出题范围</text>
+      <text class="range-value" bindtap="pickMode">{{mode === 'random' ? '随机混抽（含错题）' : '按单元'}}</text>
+    </view>
+    <view class="unit-chips">
+      <view class="u-chip {{mode === 'random' ? 'on' : ''}}" bindtap="pickMode">随机混抽</view>
+      <view
+        wx:for="{{units}}"
+        wx:key="*this"
+        class="u-chip {{mode === 'unit' && unit === item ? 'on' : ''}}"
+        bindtap="pickUnit"
+        data-u="{{item}}"
+      >第 {{item}} 单元</view>
+    </view>
+  </view>
+
+  <view class="card wrong-card" wx:if="{{wrongTotal > 0}}">
+    <text class="wrong-title">今日错题 · {{wrongToday}} 个待消灭</text>
+    <view class="wrong-progress">
+      <view class="bar"><view class="bar-fill" style="width: {{wrongToday / wrongTotal * 100}}%"></view></view>
+      <text class="wrong-total">共 {{wrongTotal}} 个</text>
+    </view>
+  </view>
+</view>

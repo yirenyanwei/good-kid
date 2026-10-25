@@ -1,0 +1,9 @@
+{
+  "name": "submitResult",
+  "version": "1.0.0",
+  "description": "判题入库（错题本 + 练习日志）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

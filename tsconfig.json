@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": ["ES2020"],
+    "types": ["miniprogram-api-typings"],
+    "outDir": "dist",
+    "rootDir": "miniprogram"
+  },
+  "include": ["miniprogram/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

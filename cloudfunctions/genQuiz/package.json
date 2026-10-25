@@ -1,0 +1,9 @@
+{
+  "name": "genQuiz",
+  "version": "1.0.0",
+  "description": "出题统一入口（语文先行）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

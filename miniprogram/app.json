@@ -1,0 +1,47 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/wrong-book/index",
+    "pages/mine/index",
+    "pages/result/index"
+  ],
+  "subPackages": [
+    {
+      "root": "packages/subject-zh",
+      "name": "subject-zh",
+      "pages": [
+        "pages/zh-home/index",
+        "pages/param/index",
+        "pages/dictate/index",
+        "pages/choice/index"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/home/index": {
+      "network": "all",
+      "packages": ["subject-zh"]
+    }
+  },
+  "window": {
+    "navigationBarTitleText": "好孩子",
+    "navigationBarBackgroundColor": "#F5F5F7",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F5F7",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#9E9EA3",
+    "selectedColor": "#534AB7",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/home/index", "text": "练习" },
+      { "pagePath": "pages/wrong-book/index", "text": "错题本" },
+      { "pagePath": "pages/mine/index", "text": "我的" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

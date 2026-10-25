@@ -1,0 +1,9 @@
+{
+  "name": "userConfig",
+  "version": "1.0.0",
+  "description": "用户配置读写",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

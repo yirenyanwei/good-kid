@@ -1,0 +1,227 @@
+/* 默写页 */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 28rpx 16rpx;
+}
+.exit {
+  font-size: 26rpx;
+  color: var(--faint);
+}
+.progress {
+  font-size: 24rpx;
+  color: var(--sub);
+}
+.replay {
+  font-size: 26rpx;
+  color: var(--purple);
+}
+
+.pbar {
+  height: 8rpx;
+  background: rgba(0, 0, 0, 0.06);
+  margin: 0 28rpx;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+.pbar-fill {
+  height: 100%;
+  background: var(--purple);
+  transition: width 0.3s;
+}
+
+/* 报词阶段 */
+.dictate-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 80rpx;
+}
+.speaker {
+  margin-bottom: 40rpx;
+}
+.speaker-outer {
+  width: 176rpx;
+  height: 176rpx;
+  border-radius: 50%;
+  background: var(--purple-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.speaker-inner {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.speaker.paused .speaker-inner {
+  background: var(--purple-mid);
+}
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 28rpx solid var(--purple-light);
+  border-top: 18rpx solid transparent;
+  border-bottom: 18rpx solid transparent;
+  margin-left: 12rpx;
+}
+.word-idx {
+  font-size: 44rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+.pass-label {
+  font-size: 24rpx;
+  color: var(--faint);
+  margin-bottom: 10rpx;
+}
+.pass-note {
+  font-size: 24rpx;
+  color: var(--faint);
+  margin-bottom: 44rpx;
+}
+.controls {
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 24rpx 56rpx;
+  display: flex;
+  gap: 56rpx;
+}
+.ctrl {
+  font-size: 24rpx;
+  color: var(--sub);
+}
+.ctrl.primary {
+  color: var(--purple);
+  font-weight: 600;
+}
+
+/* 听写结束 */
+.done-title {
+  font-size: 44rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+.done-sub {
+  font-size: 24rpx;
+  color: var(--sub);
+}
+
+/* 对答案 */
+.check-body {
+  padding: 24rpx 28rpx 60rpx;
+}
+.check-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.check-title {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+.check-countdown {
+  font-size: 22rpx;
+  color: var(--sub);
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.skip {
+  color: var(--purple);
+  font-weight: 600;
+}
+
+.all-correct {
+  background: var(--purple-light);
+  border-radius: 24rpx;
+  padding: 20rpx;
+  text-align: center;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--purple);
+  margin-bottom: 20rpx;
+}
+.all-correct.dim {
+  opacity: 0.35;
+}
+.all-correct:active {
+  opacity: 0.8;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+.grid-word {
+  grid-template-columns: repeat(2, 1fr);
+}
+.q-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 16rpx 8rpx;
+  text-align: center;
+  border: 3rpx solid transparent;
+}
+.q-word {
+  padding: 20rpx 12rpx;
+}
+.q-main {
+  font-size: 32rpx;
+  font-weight: 600;
+  display: block;
+}
+.q-word .q-main {
+  font-size: 28rpx;
+  letter-spacing: 2rpx;
+}
+.q-sub {
+  font-size: 20rpx;
+  color: var(--faint);
+  display: block;
+  margin-top: 4rpx;
+}
+.q-card.wrong {
+  border-color: var(--bad);
+}
+.q-card.wrong .q-main,
+.q-card.wrong .q-sub {
+  color: var(--bad);
+}
+.q-card:active {
+  opacity: 0.8;
+}
+
+.btn-main {
+  background: var(--purple);
+  color: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: center;
+}
+.btn-main.dim {
+  opacity: 0.35;
+}
+.hint {
+  font-size: 20rpx;
+  color: var(--faint);
+  text-align: center;
+  margin-top: 16rpx;
+}

@@ -1,0 +1,21 @@
+<view class="page">
+  <view class="head">
+    <text class="sub">{{styleName}} · 三年级上册</text>
+    <text class="score">{{correct}} 对 {{total - correct}}</text>
+    <view class="stars">
+      <text wx:for="{{[0,1,2]}}" wx:key="*this" class="star {{stars > item ? 'on' : ''}}">★</text>
+    </view>
+    <text class="flame" wx:if="{{flameDays >= 2}}">连续 {{flameDays}} 天火焰 · 断签不清零</text>
+  </view>
+
+  <view class="card" wx:if="{{graduated > 0}}">
+    <text class="grad">🎓 {{graduated}} 个错题连续答对，毕业离场</text>
+  </view>
+  <view class="card" wx:if="{{newWrong > 0}}">
+    <text class="wrong-in">{{newWrong}} 个错题已入库 · 明天重现</text>
+  </view>
+
+  <view class="btn-main" bindtap="again">再练一轮</view>
+  <view class="btn-sub" bindtap="goHome">回首页</view>
+  <button class="share-btn" open-type="share">生成分享卡片</button>
+</view>

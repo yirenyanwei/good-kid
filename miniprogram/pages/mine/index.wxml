@@ -1,0 +1,49 @@
+<view class="page">
+  <view class="report-card" bindtap="goReport">
+    <view>
+      <text class="report-label">本周成绩</text>
+      <text class="report-val">{{weekSummary}}</text>
+    </view>
+    <text class="report-arrow">查看 ›</text>
+  </view>
+
+  <text class="label">学习设置</text>
+  <view class="card">
+    <view class="row">
+      <text class="row-label">学习教材（各科）</text>
+      <text class="row-val">语文: 统编版</text>
+    </view>
+    <view class="divider"></view>
+    <view class="row">
+      <text class="row-label">学习年级</text>
+      <text class="row-val">{{grade}}年级 · {{volume}}册</text>
+    </view>
+    <view class="divider"></view>
+    <view class="row">
+      <text class="row-label">报词语速</text>
+      <view class="speeds">
+        <view
+          wx:for="{{speeds}}"
+          wx:key="key"
+          class="s-chip {{speed === item.key ? 'on' : ''}}"
+          bindtap="setSpeed"
+          data-s="{{item.key}}"
+        >{{item.name}}</view>
+      </view>
+    </view>
+    <view class="divider"></view>
+    <view class="row" bindtap="toggleWeighted">
+      <text class="row-label">错题加权（错题 ×3 出现）</text>
+      <text class="row-val {{weighted ? 'ok' : ''}}">{{weighted ? '开' : '关'}}</text>
+    </view>
+  </view>
+
+  <text class="label">关于</text>
+  <view class="card">
+    <text class="row-label plain">用户协议 ›</text>
+    <view class="divider"></view>
+    <text class="row-label plain">隐私政策 ›</text>
+    <view class="divider"></view>
+    <text class="ver">版本 1.0.0 · 语文先行版</text>
+  </view>
+</view>

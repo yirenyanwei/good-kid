@@ -1,0 +1,86 @@
+/* app.wxss —— 设计系统全局变量（与 docs/ui-mockups/index.html 同源） */
+page {
+  --purple: #534AB7;
+  --purple-light: #EEEDFE;
+  --purple-mid: #7F77DD;
+  --purple-pale: #AFA9EC;
+  --zh: #185FA5;
+  --zh-bg: #E6F1FB;
+  --math: #854F0B;
+  --math-bg: #FAEEDA;
+  --en: #3B6D11;
+  --en-bg: #EAF3DE;
+  --ok: #3B6D11;
+  --ok-bg: #EAF3DE;
+  --bad: #A32D2D;
+  --bad-bg: #FCEBEB;
+  --star: #FAC775;
+  --flame: #854F0B;
+  --ink: #1D1D1F;
+  --sub: #6E6E73;
+  --faint: #9E9EA3;
+  --card: #FFFFFF;
+  --bg: #F5F5F7;
+  --border: rgba(0, 0, 0, 0.08);
+  --border2: rgba(0, 0, 0, 0.14);
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+/* 通用卡片 */
+.gk-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24rpx 28rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 通用按钮 */
+.gk-btn-main {
+  background: var(--purple);
+  color: #fff;
+  border-radius: 24rpx;
+  padding: 22rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: center;
+}
+.gk-btn-main.dim {
+  opacity: 0.4;
+}
+.gk-btn-sub {
+  border: 1px solid var(--border2);
+  color: var(--sub);
+  border-radius: 24rpx;
+  padding: 20rpx;
+  font-size: 26rpx;
+  text-align: center;
+}
+.gk-btn-main:active,
+.gk-btn-sub:active {
+  opacity: 0.75;
+}
+
+/* 通用 chip */
+.gk-chip {
+  border-radius: 16rpx;
+  padding: 6rpx 20rpx;
+  font-size: 22rpx;
+  border: 1px solid var(--border2);
+  color: var(--sub);
+  background: #fff;
+}
+.gk-chip.on {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+  font-weight: 600;
+}
+
+/* 顶部安全区 */
+.gk-safe-top {
+  padding-top: env(safe-area-inset-top);
+}

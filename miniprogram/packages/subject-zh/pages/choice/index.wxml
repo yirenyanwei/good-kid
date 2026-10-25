@@ -1,0 +1,30 @@
+<view class="page">
+  <view class="nav">
+    <text class="exit" bindtap="onExit">‹ 退出</text>
+    <text class="progress">{{index + 1}} / {{total}}</text>
+    <text class="streak" wx:if="{{streak >= 2}}">★ {{streak}} 连对</text>
+    <text class="nav-ghost" wx:else> </text>
+  </view>
+  <view class="pbar">
+    <view class="pbar-fill" style="width: {{(index + 1) / total * 100}}%"></view>
+  </view>
+
+  <view class="body">
+    <text class="pinyin">{{pinyin}}</text>
+    <text class="tip">听发音选字 · 四选一</text>
+
+    <view class="opts">
+      <view
+        wx:for="{{options}}"
+        wx:key="*this"
+        class="opt {{picked === item ? (item === answer ? 'right' : 'wrong') : ''}} {{picked && item === answer ? 'reveal' : ''}}"
+        bindtap="pick"
+        data-opt="{{item}}"
+      >{{item}}</view>
+    </view>
+
+    <text class="feedback {{lastCorrect ? 'ok' : 'bad'}}" wx:if="{{phase === 'feedback'}}">
+      {{lastCorrect ? '选对了' : '正确答案：' + answer}}
+    </text>
+  </view>
+</view>

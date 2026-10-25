@@ -1,0 +1,87 @@
+.page {
+  padding: 80rpx 28rpx 60rpx;
+}
+.head {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+.head .sub {
+  font-size: 24rpx;
+  color: var(--faint);
+  display: block;
+  margin-bottom: 8rpx;
+}
+.score {
+  font-size: 68rpx;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 20rpx;
+}
+.stars {
+  display: flex;
+  justify-content: center;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+.star {
+  font-size: 36rpx;
+  color: rgba(0, 0, 0, 0.12);
+}
+.star.on {
+  color: var(--star);
+}
+.flame {
+  font-size: 22rpx;
+  color: var(--ok);
+}
+
+.card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+.grad {
+  font-size: 26rpx;
+  color: var(--ok);
+}
+.wrong-in {
+  font-size: 26rpx;
+  color: var(--sub);
+}
+
+.btn-main {
+  background: var(--purple);
+  color: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 16rpx;
+}
+.btn-main:active {
+  opacity: 0.85;
+}
+.btn-sub {
+  border: 2rpx solid var(--border2);
+  color: var(--sub);
+  border-radius: 24rpx;
+  padding: 22rpx;
+  font-size: 26rpx;
+  text-align: center;
+  margin-bottom: 16rpx;
+}
+.share-btn {
+  background: transparent;
+  border: 2rpx solid var(--purple-light);
+  color: var(--purple);
+  border-radius: 24rpx;
+  padding: 22rpx;
+  font-size: 26rpx;
+  line-height: 1.5;
+}
+.share-btn::after {
+  border: none;
+}

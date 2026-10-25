@@ -1,0 +1,43 @@
+<view class="page">
+  <view class="nav">
+    <text class="back" bindtap="goBack">‹</text>
+    <text class="title">{{title}} · 参数</text>
+    <text class="placeholder"></text>
+  </view>
+
+  <view class="card row-card">
+    <text class="row-label">范围</text>
+    <text class="row-value">{{range}}</text>
+  </view>
+
+  <view class="card row-card">
+    <text class="row-label">题量</text>
+    <view class="stepper">
+      <view class="step-btn" bindtap="decCount">−</view>
+      <text class="step-num">{{count}}</text>
+      <view class="step-btn" bindtap="incCount">＋</view>
+    </view>
+  </view>
+
+  <view class="card" bindtap="toggleAdvanced">
+    <text class="adv-toggle">▸ 高级选项（默认收起）</text>
+    <view wx:if="{{advancedOpen}}" class="adv-body">
+      <view class="adv-row">
+        <text class="adv-label">报词语速</text>
+        <view class="speed-chips">
+          <view
+            wx:for="{{speeds}}"
+            wx:key="key"
+            class="s-chip {{speed === item.key ? 'on' : ''}}"
+            bindtap="pickSpeed"
+            data-s="{{item.key}}"
+          >{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <text class="estimate">本次 {{count}} {{unitLabel}} · 约 {{count * 20}} 秒</text>
+
+  <view class="btn-main" bindtap="start">开始练习</view>
+</view>

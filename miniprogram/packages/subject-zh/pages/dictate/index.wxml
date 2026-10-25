@@ -1,0 +1,81 @@
+<!-- 默写页：报词 → 听写结束 → 对答案三阶段 -->
+<view class="page">
+  <view class="nav">
+    <text class="exit" bindtap="onExit">‹ 退出</text>
+    <text class="progress">{{phase === 'checking' ? total : index + 1}} / {{total}}</text>
+    <text class="replay" bindtap="replayCurrent">重听</text>
+  </view>
+  <view class="pbar">
+    <view
+      class="pbar-fill"
+      style="width: {{phase === 'checking' ? 100 : (index + 1) / total * 100}}%"
+    ></view>
+  </view>
+
+  <!-- 阶段一：报词 -->
+  <view wx:if="{{phase === 'dictating'}}" class="dictate-body">
+    <view class="speaker {{paused ? 'paused' : ''}}">
+      <view class="speaker-outer">
+        <view class="speaker-inner">
+          <view class="triangle"></view>
+        </view>
+      </view>
+    </view>
+    <text class="word-idx">第 {{index + 1}} 个{{isWordMode ? '词' : '字'}}</text>
+    <text class="pass-label">{{paused ? '已暂停' : passLabel}}</text>
+    <text class="pass-note">每{{isWordMode ? '词' : '字'}}报 2 遍 · {{paused ? '点击继续' : '写在本子上'}}</text>
+
+    <view class="controls">
+      <text class="ctrl" bindtap="replayPrev">上一{{isWordMode ? '词' : '字'}}</text>
+      <text class="ctrl primary" bindtap="togglePause">{{paused ? '继续' : '暂停'}}</text>
+      <text class="ctrl" bindtap="replayCurrent">重听</text>
+    </view>
+  </view>
+
+  <!-- 阶段二：听写结束 + 30 秒补写 -->
+  <view wx:elif="{{phase === 'finished-reading'}}" class="dictate-body">
+    <text class="done-title">听写结束</text>
+    <text class="done-sub">请检查、补写</text>
+  </view>
+
+  <!-- 阶段三：对答案（一次性全网格） -->
+  <view wx:elif="{{phase === 'checking'}}" class="check-body">
+    <view class="check-head">
+      <text class="check-title">刚才听写的 {{total}} 个{{isWordMode ? '词语' : '字'}} · 勾出错的</text>
+      <view class="check-countdown" wx:if="{{checkCountdown > 0}}">
+        <text>补写 {{checkCountdown}}s</text>
+        <text class="skip" bindtap="skipCountdown">跳过</text>
+      </view>
+    </view>
+
+    <view
+      class="all-correct {{wrongMarked > 0 ? 'dim' : ''}}"
+      bindtap="{{wrongMarked > 0 ? '' : 'markAllCorrect'}}"
+    >
+      ✓ {{total}} 个全对，直接入库
+    </view>
+
+    <view class="grid {{isWordMode ? 'grid-word' : ''}}">
+      <view
+        wx:for="{{questions}}"
+        wx:key="qid"
+        class="q-card {{marked[index] ? 'wrong' : ''}} {{isWordMode ? 'q-word' : ''}}"
+        bindtap="toggleMark"
+        data-i="{{index}}"
+      >
+        <text class="q-main">{{item.answer}}</text>
+        <text class="q-sub">{{marked[index] ? '勾错' : item.extra.pinyin}}</text>
+      </view>
+    </view>
+
+    <view class="btn-main {{wrongMarked === 0 ? 'dim' : ''}}" bindtap="{{wrongMarked > 0 ? 'submit' : ''}}">
+      完成 · {{wrongMarked}} 个错{{isWordMode ? '词' : '题'}}入库
+    </view>
+    <view class="hint">顺序 = 报词顺序 · 点卡勾错可切换 · 全对点上方紫色按钮</view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:else class="dictate-body">
+    <text class="pass-label">正在出题…</text>
+  </view>
+</view>

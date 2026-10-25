@@ -1,0 +1,58 @@
+<!-- 首页：主 CTA「继续昨天」+ 三科卡 + 周报摘要条 -->
+<view class="page">
+  <view class="nav">
+    <text class="title">好孩子</text>
+    <view class="chip" bindtap="openGradeSheet">{{grade}}年级 · {{volume}} ⌄</view>
+  </view>
+
+  <view class="cta {{zhReady ? '' : 'dim'}}" bindtap="onMainCta">
+    <view class="cta-left">
+      <text class="cta-title">{{hasHistory ? '继续昨天的练习' : '开始第一次练习'}}</text>
+      <text class="cta-sub">{{hasHistory ? lastSummary : '3 分钟 · 零配置 · 打开即练'}}</text>
+    </view>
+    <view class="cta-btn">开始</view>
+  </view>
+
+  <text class="label">换一科练</text>
+  <view class="subjects">
+    <view class="subj" bindtap="onSubject" data-s="zh">
+      <view class="subj-ico zh">语</view>
+      <text class="subj-name">语文</text>
+      <text class="subj-sub">{{zhReady ? '默写 · 词语 · 拼音' : '三年级可用'}}</text>
+    </view>
+    <view class="subj {{mathReady ? '' : 'off'}}" bindtap="onSubject" data-s="math">
+      <view class="subj-ico math">数</view>
+      <text class="subj-name">数学</text>
+      <text class="subj-sub">口算 · 挑战</text>
+    </view>
+    <view class="subj off" bindtap="onSubject" data-s="en">
+      <view class="subj-ico en">英</view>
+      <text class="subj-name">英语</text>
+      <text class="subj-sub">三年级起开设</text>
+    </view>
+  </view>
+
+  <view class="card week">
+    <text class="week-text">{{weekSummary}}</text>
+  </view>
+</view>
+
+<!-- 年级选择半屏弹层 -->
+<view class="mask" wx:if="{{showGradeSheet}}" bindtap="closeGradeSheet">
+  <view class="sheet" catchtap="noop">
+    <text class="sheet-title">选择年级</text>
+    <view class="grade-grid">
+      <view
+        wx:for="{{gradeOptions}}"
+        wx:key="*this"
+        class="grade-item {{item === grade ? 'on' : ''}} {{item !== 3 ? 'lock' : ''}}"
+        bindtap="pickGrade"
+        data-g="{{item}}"
+      >
+        {{item}}年级
+        <text wx:if="{{item !== 3}}" class="grade-lock">词库整理中</text>
+      </view>
+    </view>
+    <text class="sheet-note">V1 词库：三年级上册（统编版）</text>
+  </view>
+</view>

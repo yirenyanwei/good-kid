@@ -1,0 +1,118 @@
+.page {
+  padding: 0 28rpx 60rpx;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 8rpx 24rpx;
+}
+.back {
+  font-size: 44rpx;
+  color: var(--sub);
+  width: 60rpx;
+}
+.title {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+.placeholder {
+  width: 60rpx;
+}
+
+.card {
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 26rpx 28rpx;
+  margin-bottom: 20rpx;
+}
+.row-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.row-label {
+  font-size: 26rpx;
+  color: var(--sub);
+}
+.row-value {
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+.step-btn {
+  border: 2rpx solid var(--border2);
+  color: var(--sub);
+  border-radius: 12rpx;
+  padding: 8rpx 24rpx;
+  font-size: 26rpx;
+}
+.step-btn:active {
+  opacity: 0.6;
+}
+.step-num {
+  font-size: 30rpx;
+  font-weight: 600;
+  min-width: 60rpx;
+  text-align: center;
+}
+
+.adv-toggle {
+  font-size: 26rpx;
+  color: var(--sub);
+}
+.adv-body {
+  margin-top: 24rpx;
+}
+.adv-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.adv-label {
+  font-size: 26rpx;
+  color: var(--sub);
+}
+.speed-chips {
+  display: flex;
+  gap: 12rpx;
+}
+.s-chip {
+  border-radius: 16rpx;
+  padding: 8rpx 28rpx;
+  font-size: 22rpx;
+  border: 2rpx solid var(--border2);
+  color: var(--sub);
+}
+.s-chip.on {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+  font-weight: 600;
+}
+
+.estimate {
+  display: block;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--faint);
+  margin: 24rpx 0 32rpx;
+}
+
+.btn-main {
+  background: var(--purple);
+  color: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: center;
+}
+.btn-main:active {
+  opacity: 0.85;
+}

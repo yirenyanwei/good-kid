@@ -1,0 +1,92 @@
+.page {
+  padding: 24rpx 28rpx 60rpx;
+}
+
+.report-card {
+  background: var(--purple-light);
+  border-radius: 24rpx;
+  padding: 26rpx 28rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+.report-label {
+  font-size: 22rpx;
+  color: var(--sub);
+  display: block;
+  margin-bottom: 4rpx;
+}
+.report-val {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+.report-arrow {
+  font-size: 24rpx;
+  color: var(--purple);
+  font-weight: 600;
+}
+
+.label {
+  font-size: 22rpx;
+  color: var(--faint);
+  display: block;
+  margin: 0 0 12rpx 4rpx;
+}
+
+.card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 8rpx 28rpx;
+  margin-bottom: 28rpx;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22rpx 0;
+}
+.row-label {
+  font-size: 26rpx;
+}
+.row-label.plain {
+  display: block;
+  padding: 22rpx 0;
+}
+.row-val {
+  font-size: 24rpx;
+  color: var(--sub);
+}
+.row-val.ok {
+  color: var(--ok);
+  font-weight: 600;
+}
+.divider {
+  height: 2rpx;
+  background: var(--border);
+}
+
+.speeds {
+  display: flex;
+  gap: 12rpx;
+}
+.s-chip {
+  border-radius: 14rpx;
+  padding: 6rpx 24rpx;
+  font-size: 20rpx;
+  border: 2rpx solid var(--border2);
+  color: var(--sub);
+}
+.s-chip.on {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+  font-weight: 600;
+}
+
+.ver {
+  font-size: 22rpx;
+  color: var(--faint);
+  display: block;
+  padding: 22rpx 0;
+}
