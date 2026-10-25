@@ -6,15 +6,18 @@ App({
     envId: '',
   },
   onLaunch() {
-    if (this.globalData.cloudEnabled && this.globalData.envId) {
-      if (!wx.cloud) {
-        console.error('基础库过低，无法使用云能力')
-      } else {
-        wx.cloud.init({
-          env: this.globalData.envId,
-          traceUser: true,
-        })
-      }
+    if (!wx.cloud) {
+      console.error('基础库过低，无法使用云能力')
+      return
+    }
+    // 只要有云能力就先 init（未配 envId 时用默认环境）；callFunction 失败由各调用方自行降级
+    if (this.globalData.envId) {
+      wx.cloud.init({
+        env: this.globalData.envId,
+        traceUser: true,
+      })
+    } else {
+      wx.cloud.init({ traceUser: true })
     }
   },
 })
