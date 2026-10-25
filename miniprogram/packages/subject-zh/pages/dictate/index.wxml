@@ -14,10 +14,15 @@
 
   <!-- 阶段一：报词 -->
   <view wx:if="{{phase === 'dictating'}}" class="dictate-body">
-    <view class="speaker {{paused ? 'paused' : ''}}">
+    <view class="speaker {{paused ? 'paused' : ''}}" bindtap="togglePause">
       <view class="speaker-outer">
         <view class="speaker-inner">
-          <view class="triangle"></view>
+          <!-- 播放态：三角；暂停态：两竖线 -->
+          <view wx:if="{{!paused}}" class="triangle"></view>
+          <view wx:else class="pause-bars">
+            <view class="bar"></view>
+            <view class="bar"></view>
+          </view>
         </view>
       </view>
     </view>

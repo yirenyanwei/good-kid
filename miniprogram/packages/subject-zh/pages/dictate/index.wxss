@@ -77,6 +77,18 @@
   border-bottom: 18rpx solid transparent;
   margin-left: 12rpx;
 }
+/* 暂停态：两条竖线（play 切 pause 图标） */
+.pause-bars {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.pause-bars .bar {
+  width: 16rpx;
+  height: 44rpx;
+  border-radius: 6rpx;
+  background: var(--purple-light);
+}
 .word-idx {
   font-size: 44rpx;
   font-weight: 600;
