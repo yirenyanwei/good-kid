@@ -20,7 +20,11 @@ export interface HanziItem {
   pinyin: string
   /** 一类字（会写）或二类字（认读）；二类字默认不进默写卷 */
   klass?: 1 | 2
-  /** 多音字播报串，如 "长——长短的长" */
+  /** 词条来源：课文 lesson / 语文园地 garden */
+  source?: 'lesson' | 'garden'
+  /** 组词表（报词随机选一个，加深组词记忆）；每词必须包含目标字 */
+  words?: string[]
+  /** 兼容旧字段：多音字播报串（有 words 时优先 words） */
   speakText?: string
 }
 

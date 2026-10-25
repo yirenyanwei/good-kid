@@ -91,6 +91,15 @@ function shuffle<T>(arr: T[]): T[] {
 
 let quizSeq = 0
 
+/** 报词文本：从 words 随机选一个组词（X——XX的X）；无 words 时兜底单字/旧 speakText */
+function pickSpeakText(x: HanziItem): string {
+  if (x.words && x.words.length > 0) {
+    const w = x.words[Math.floor(Math.random() * x.words.length)]
+    return `${x.hanzi}——${w}的${x.hanzi}`
+  }
+  return x.speakText || x.hanzi
+}
+
 /** 生字默写卷 */
 function genHanziDictate(p: GenQuizParams, wrongMap: Map<string, any>): Question[] {
   const pool = HANZI_LIST.filter((x) => filterBy(p, x.unit))
@@ -103,7 +112,7 @@ function genHanziDictate(p: GenQuizParams, wrongMap: Map<string, any>): Question
     answer: x.hanzi,
     extra: {
       itemRef: x.id,
-      speakText: x.speakText || x.hanzi,
+      speakText: pickSpeakText(x),
       pinyin: x.pinyin,
       fromWrong: wrongMap.has(x.id),
     },

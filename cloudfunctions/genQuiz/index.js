@@ -66,6 +66,15 @@ function buildOptions(correct, pool) {
   return shuffle([correct.hanzi, ...picks])
 }
 
+/** 报词文本：从 words 随机选一个组词（X——XX的X）；无 words 时兜底单字/旧 speakText */
+function pickSpeakText(x) {
+  if (x.words && x.words.length > 0) {
+    const w = x.words[Math.floor(Math.random() * x.words.length)]
+    return x.hanzi + '——' + w + '的' + x.hanzi
+  }
+  return x.speakText || x.hanzi
+}
+
 exports.main = async (event) => {
   const { subject = 'zh', style = 'hanzi-dictate', grade = 3, volume = '上', mode = 'random', unit, count = 10 } = event
   if (subject !== 'zh') {
@@ -160,7 +169,7 @@ exports.main = async (event) => {
       answer: x.hanzi,
       extra: {
         itemRef: x.id,
-        speakText: x.speakText || x.hanzi,
+        speakText: pickSpeakText(x),
         pinyin: x.pinyin,
       },
     }))
