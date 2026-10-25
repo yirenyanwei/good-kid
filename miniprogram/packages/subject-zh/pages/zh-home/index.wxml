@@ -17,15 +17,17 @@
   <view
     wx:for="{{styles}}"
     wx:key="key"
-    class="style-card {{item.key === 'hanzi-dictate' ? 'hero' : ''}}"
+    class="style-card"
     bindtap="onStyle"
     data-style="{{item.key}}"
+    hover-class="card-hover"
+    hover-stay-time="80"
   >
     <view class="style-left">
       <text class="style-name">{{item.name}}<text wx:if="{{item.isNew}}" class="new-tag">新</text></text>
       <text class="style-desc">{{item.desc}}</text>
     </view>
-    <view class="style-btn {{item.key === 'hanzi-dictate' ? 'primary' : ''}}">开始</view>
+    <view class="style-btn">开始</view>
   </view>
 
   <view class="card">
@@ -34,7 +36,6 @@
       <text class="range-value" bindtap="pickMode">{{mode === 'random' ? '随机混抽（含错题）' : '按单元'}}</text>
     </view>
     <view class="unit-chips">
-      <view class="u-chip {{mode === 'random' ? 'on' : ''}}" bindtap="pickMode">随机混抽</view>
       <view
         wx:for="{{units}}"
         wx:key="*this"
@@ -42,6 +43,7 @@
         bindtap="pickUnit"
         data-u="{{item}}"
       >第 {{item}} 单元</view>
+      <view class="u-chip u-chip-last {{mode === 'random' ? 'on' : ''}}" bindtap="pickRandom">随机混抽</view>
     </view>
   </view>
 

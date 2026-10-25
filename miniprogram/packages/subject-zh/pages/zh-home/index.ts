@@ -14,9 +14,9 @@ Page({
     styles: STYLES,
     grade: 3,
     volume: '上' as '上' | '下',
-    // 出题范围
-    mode: 'random' as 'random' | 'unit',
-    unit: 0,
+    // 出题范围：默认第 1 单元（随机混抽放最后，突出教材顺序）
+    mode: 'unit' as 'random' | 'unit',
+    unit: 1,
     units: [1, 2, 3, 4, 5, 6, 7, 8],
     // 错题摘要
     wrongTotal: 0,
@@ -43,11 +43,13 @@ Page({
   },
 
   pickMode() {
+    // 点击「出题范围」行文案切换：单元 <-> 随机混抽
     const next = this.data.mode === 'random' ? 'unit' : 'random'
     this.setData({ mode: next })
-    if (next === 'unit') {
-      wx.showToast({ title: '选择下方单元', icon: 'none' })
-    }
+  },
+
+  pickRandom() {
+    this.setData({ mode: 'random' })
   },
 
   pickUnit(e: WechatMiniprogram.TouchEvent) {

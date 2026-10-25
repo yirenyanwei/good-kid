@@ -79,6 +79,11 @@ export function speak(text: string, speed: Speed = 'normal'): Promise<number> {
               try { fs.unlink({ filePath: path }) } catch (e) { /* 忽略 */ }
               resolve(inner.duration * 1000)
             })
+            inner.onStop(() => {
+              // 被暂停/停止（stopAll）：立即 resolve，避免播放队列卡死
+              try { fs.unlink({ filePath: path }) } catch (e) { /* 忽略 */ }
+              resolve(0)
+            })
             inner.onError((e) => {
               console.warn('[tts] 播放失败，降级', e)
               try { fs.unlink({ filePath: path }) } catch (err) { /* 忽略 */ }
@@ -108,16 +113,17 @@ export function wait(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-/** 停止当前播报（页面 onHide / 退出时调用） */
+/** 停止当前播报（页面暂停/退出时调用）。onStop 回调会 resolve 播放队列，不卡死 */
 export function stopAll(): void {
   if (currentAudio) {
+    const a = currentAudio
+    currentAudio = null
     try {
-      currentAudio.stop()
-      currentAudio.destroy()
+      a.stop()
+      a.destroy()
     } catch (e) {
       // 忽略
     }
-    currentAudio = null
   }
 }
 

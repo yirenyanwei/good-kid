@@ -7,7 +7,7 @@
 //   5. 「n 个全对，直接入库」快捷键（勾了错题即淡出）
 //   6. 提交 → 结果页
 import { api } from '../../../../utils/cloud-api'
-import { speak, wait, Speed } from '../../../../utils/tts'
+import { speak, wait, stopAll, Speed } from '../../../../utils/tts'
 import { setDictateDraft, clearWrongDraft } from '../../../../utils/storage'
 import { GenQuizParams, Quiz, Question, ZhStyle } from '../../../../utils/types'
 
@@ -183,8 +183,14 @@ Page({
   },
 
   togglePause() {
-    this.setData({ paused: !this.data.paused })
-    if (!this.data.paused && this.data.phase === 'dictating') {
+    if (this.data.phase !== 'dictating') return
+    const next = !this.data.paused
+    this.setData({ paused: next })
+    if (next) {
+      // 暂停：立即停掉正在播的音频（onStop 会 resolve 队列，卡不住），
+      // 进行中的 readNext 循环检测 paused 后自动停在当前词
+      stopAll()
+    } else {
       // 恢复：从当前词重新报起
       this.readNext(this.data.index)
     }

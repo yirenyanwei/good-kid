@@ -65,7 +65,7 @@
   margin: 0 0 12rpx 4rpx;
 }
 
-/* 样式卡 */
+/* 样式卡：无常驻选中态，只有点击瞬态高亮（hover-class） */
 .style-card {
   background: #fff;
   border: 2rpx solid var(--border2);
@@ -76,8 +76,9 @@
   align-items: center;
   margin-bottom: 20rpx;
 }
-.style-card.hero {
-  border: 3rpx solid var(--purple-light);
+.card-hover {
+  border-color: var(--purple);
+  background: var(--purple-light);
 }
 .style-name {
   font-size: 28rpx;
@@ -107,13 +108,10 @@
   font-size: 20rpx;
   font-weight: 600;
 }
-.style-btn.primary {
+.card-hover .style-btn {
   background: var(--purple);
   color: #fff;
   border-color: var(--purple);
-}
-.style-card:active {
-  opacity: 0.85;
 }
 
 /* 出题范围 */
@@ -155,6 +153,10 @@
   color: #fff;
   border-color: var(--purple);
   font-weight: 600;
+}
+/* 随机混抽：排最后，与单元 chips 拉开间距 */
+.u-chip-last {
+  margin-left: auto;
 }
 
 /* 错题卡 */
