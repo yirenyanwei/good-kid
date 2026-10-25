@@ -4,6 +4,7 @@ import { zhDataStats } from '../../utils/zh-data'
 
 Page({
   data: {
+    statusBarHeight: 20,
     grade: 3,
     volume: '上' as '上' | '下',
     gradeOptions: [1, 2, 3, 4, 5, 6],
@@ -20,6 +21,9 @@ Page({
   },
 
   onLoad() {
+    // 自定义导航：取系统状态栏高度留出安全区
+    const sys = wx.getWindowInfo()
+    this.setData({ statusBarHeight: sys.statusBarHeight || 20 })
     const cfg = getUserConfig()
     this.setData({
       grade: cfg.grades.zh,

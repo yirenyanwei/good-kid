@@ -3,11 +3,20 @@
   padding: 0 28rpx 40rpx;
 }
 
+/* 顶部状态栏安全区（自定义导航用） */
+.status-bar {
+  width: 100%;
+}
+
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20rpx 8rpx 24rpx;
+  /* 右侧留出胶囊按钮宽度，避免与"年级"chip 重叠 */
+}
+.nav .chip {
+  margin-right: 180rpx;
 }
 .nav .title {
   font-size: 34rpx;
