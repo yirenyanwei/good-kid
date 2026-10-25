@@ -24,8 +24,47 @@ function shuffle(arr) {
 }
 
 // 内置词库（与 miniprogram/utils/zh-data.ts 同源；切云库后改查 db_hanzi/db_word_zh）
-const HANZI = require('./data/hanzi.json')
-const WORDS = require('./data/word-zh.json')
+const HANZI = require('./data/hanzi.js')
+const WORDS = require('./data/word-zh.js')
+
+/** 拼音四选一干扰项：相近字优先（与端上 quiz-engine.ts buildOptions 一致）
+ *  分级：同音同调 > 同音异调+同单元 > 同音异调 > 声韵同 > 韵母同 > 声母同 > 同单元 > 随机 */
+function buildOptions(correct, pool) {
+  const picks = []
+  const used = new Set([correct.hanzi])
+  const push = (h) => {
+    if (!h || used.has(h) || picks.length >= 3) return
+    used.add(h)
+    picks.push(h)
+  }
+  const p = correct.pinyin
+  const base = p.slice(0, -1)
+  const initial = base.match(/^(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])/)?.[0] || ''
+  const final = base.slice(initial.length)
+  const others = pool.filter((x) => x.hanzi !== correct.hanzi)
+  const rank = (x) => {
+    const xp = x.pinyin
+    const xBase = xp.slice(0, -1)
+    const xInit = xBase.match(/^(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])/)?.[0] || ''
+    const xFinal = xBase.slice(xInit.length)
+    if (xp === p) return 0
+    if (xBase === base && x.unit === correct.unit) return 1
+    if (xBase === base) return 2
+    if (xInit === initial && xFinal === final) return 3
+    if (xFinal === final) return 4
+    if (xInit === initial) return 5
+    if (x.unit === correct.unit) return 6
+    return 9
+  }
+  const ranked = others
+    .map((x) => ({ x, r: rank(x), k: Math.random() }))
+    .sort((a, b) => a.r - b.r || a.k - b.k)
+  for (const { x } of ranked) {
+    push(x.hanzi)
+    if (picks.length >= 3) break
+  }
+  return shuffle([correct.hanzi, ...picks])
+}
 
 exports.main = async (event) => {
   const { subject = 'zh', style = 'hanzi-dictate', grade = 3, volume = '上', mode = 'random', unit, count = 10 } = event
@@ -81,10 +120,9 @@ exports.main = async (event) => {
   const quizId = `quiz-${Date.now()}-${Math.floor(Math.random() * 1e4)}`
   let questions
   if (style === 'pinyin-choice') {
-    // 四选一：干扰项从全库同年级字中取
+    // 四选一：干扰项从全库同年级字中取，相近字优先（buildOptions）
     const all = HANZI.filter((x) => x.grade === grade && x.volume === volume)
     questions = picked.map((x, i) => {
-      const distractors = shuffle(all.filter((y) => y.pinyin !== x.pinyin)).slice(0, 3)
       return {
         qid: `${quizId}-q${i}`,
         subject: 'zh',
@@ -95,7 +133,7 @@ exports.main = async (event) => {
           itemRef: x.id,
           speakText: x.speakText || x.hanzi,
           pinyin: x.pinyin,
-          options: shuffle([x.hanzi, ...distractors.map((d) => d.hanzi)]),
+          options: buildOptions(x, all),
         },
       }
     })

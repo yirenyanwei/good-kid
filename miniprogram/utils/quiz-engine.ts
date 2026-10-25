@@ -51,14 +51,14 @@ function buildOptions(correct: HanziItem, sameQuiz: HanziItem[]): string[] {
 
   const p = correct.pinyin
   const base = p.slice(0, -1) // 去声调的主体（如 chén -> chen）
-  const initial = base.match(/^[zhcsr]h|[bpmfdtnlgkhjqxzcsyw]/)?.[0] || ''
+  const initial = base.match(/^(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])/)?.[0] || ''
   const final = base.slice(initial.length)
 
   const others = HANZI_LIST.filter((x) => x.hanzi !== correct.hanzi)
   const rank = (x: HanziItem): number => {
     const xp = x.pinyin
     const xBase = xp.slice(0, -1)
-    const xInit = xBase.match(/^[zhcsr]h|[bpmfdtnlgkhjqxzcsyw]/)?.[0] || ''
+    const xInit = xBase.match(/^(zh|ch|sh|[bpmfdtnlgkhjqxrzcsyw])/)?.[0] || ''
     const xFinal = xBase.slice(xInit.length)
     if (xp === p) return 0 // 同音同调（最佳干扰）
     if (xBase === base && x.unit === correct.unit) return 1 // 同音异调 + 同单元
