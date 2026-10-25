@@ -66,9 +66,6 @@
   align-items: center;
   justify-content: center;
 }
-.speaker.paused .speaker-inner {
-  background: var(--purple-mid);
-}
 .triangle {
   width: 0;
   height: 0;

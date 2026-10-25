@@ -38,6 +38,8 @@ function base64ToArrayBuffer(b64: string): ArrayBuffer {
 }
 
 let currentAudio: InnerAudio | null = null
+/** 当前在播音频的确定性放行函数：stopAll 直接调用，不依赖 onStop 回调是否触发 */
+let currentSettle: (() => void) | null = null
 
 // 顺序化：同一时刻只播一条，避免报词/结束语音重叠
 let playQueue: Promise<unknown> = Promise.resolve()
@@ -74,14 +76,16 @@ export function speak(text: string, speed: Speed = 'normal'): Promise<number> {
             inner.src = path
             // 语速由云函数按腾讯云语义合成（slow=-1/normal=0/fast=1），端上不再叠加变速：
             // 变速播放会劣化音质，唇齿音 f/p 等摩擦音最易糊（教育报词场景咬字清晰优先）
-            // settled 防重复 resolve + 看门狗：部分机型 onEnded/onStop 都不触发，队列会永久卡死
+            // settled 防重复 resolve；stopAll 持有 settle 引用可确定性放行（不依赖 onStop）
             let settled = false
             const done = (ms: number) => {
               if (settled) return
               settled = true
+              currentSettle = null
               clearTimeout(watchdog)
               resolve(ms)
             }
+            currentSettle = () => done(0)
             const watchdog = setTimeout(() => {
               console.warn('[tts] 看门狗超时（onEnded/onStop 均未触发），强制放行')
               try { fs.unlink({ filePath: path }) } catch (e) { /* 忽略 */ }
@@ -126,17 +130,27 @@ export function wait(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-/** 停止当前播报（页面暂停/退出时调用）。onStop 回调会 resolve 播放队列，不卡死 */
+/** 停止当前播报（页面暂停/退出时调用）。
+ *  持有 currentSettle 引用可确定性放行播放队列——部分机型 stop()/destroy()
+ *  后 onStop 回调不触发（先 stop 后立即 destroy 会销毁回调注册），必须直调 settle */
 export function stopAll(): void {
   if (currentAudio) {
     const a = currentAudio
     currentAudio = null
     try {
       a.stop()
-      a.destroy()
     } catch (e) {
       // 忽略
     }
+    // destroy 延迟到下一轮：确保 stop 触发的 onStop 有机会执行
+    setTimeout(() => {
+      try { a.destroy() } catch (e) { /* 忽略 */ }
+    }, 0)
+  }
+  if (currentSettle) {
+    const settle = currentSettle
+    currentSettle = null
+    settle()
   }
 }
 
