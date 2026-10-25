@@ -8,9 +8,6 @@
 
 export type Speed = 'slow' | 'normal' | 'fast'
 
-// 云函数侧已做 0.6/0.8/1.0 映射；端上 playbackRate 作为兜底微调（云失败时无音频可播，不生效）
-const SPEED_YRATE: Record<Speed, number> = { slow: 0.6, normal: 0.8, fast: 1.0 }
-
 interface TtsResult {
   code: number
   audio?: string
@@ -75,7 +72,8 @@ export function speak(text: string, speed: Speed = 'normal'): Promise<number> {
             const inner = wx.createInnerAudioContext()
             currentAudio = inner
             inner.src = path
-            inner.playbackRate = SPEED_YRATE[speed]
+            // 语速由云函数按腾讯云语义合成（slow=-1/normal=0/fast=1），端上不再叠加变速：
+            // 变速播放会劣化音质，唇齿音 f/p 等摩擦音最易糊（教育报词场景咬字清晰优先）
             inner.onEnded(() => {
               // 播完清临时文件，避免用户目录膨胀
               try { fs.unlink({ filePath: path }) } catch (e) { /* 忽略 */ }

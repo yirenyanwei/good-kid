@@ -13,9 +13,9 @@ const ENDPOINT = 'tts.tencentcloudapi.com'
 const SERVICE = 'tts'
 const REGION = 'ap-guangzhou'
 
-// 基础语音合成支持的音色：101001（智语，基础女声）发音清晰适合报词
-// 注意：101 是老版编号已不被 2019-08-23 版 TextToVoice 接受
-const VOICE = 101001
+// 基础语音合成音色：101002（智聆，通用女声·精品）——客服播报类标准清晰音色
+// 咬字比情感音色硬朗，报词场景声母清晰度优先（101001 智瑜是情感女声，f/b 等唇齿音偏柔易混）
+const VOICE = 101002
 
 function sha256Hex(msg) {
   return crypto.createHash('sha256').update(msg).digest('hex')
