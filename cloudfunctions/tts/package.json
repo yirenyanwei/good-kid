@@ -1,0 +1,9 @@
+{
+  "name": "tts",
+  "version": "1.0.0",
+  "description": "腾讯云语音合成（基础语音合成）云函数：文本 -> base64 mp3",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

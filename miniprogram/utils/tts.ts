@@ -1,74 +1,108 @@
-// tts.ts —— 微信同声传译插件封装（报词 / 语速 / 间隔 / 重听）
-// 插件：wx-plugin 同声传译（"wx069ba97219f66d99"），textToSpeech
-// 容错：插件不可用（未安装/审核中）时静默降级，由页面用文字提示兜底
-
-interface PluginTextToSpeech {
-  textToSpeech(options: {
-    lang: string
-    tts: boolean
-    content: string
-    success: (res: { retcode: number; filename: string }) => void
-    fail: (err: unknown) => void
-  }): void
-}
-
-let plugin: { textToSpeech: PluginTextToSpeech } | null = null
-let pluginTried = false
-
-function loadPlugin(): boolean {
-  if (pluginTried) return !!plugin
-  pluginTried = true
-  try {
-    const p = requirePlugin('WechatSI')
-    if (p && p.textToSpeech) {
-      plugin = p as { textToSpeech: PluginTextToSpeech }
-    }
-  } catch (e) {
-    console.warn('[tts] 同声传译插件不可用，将使用静默兜底', e)
-  }
-  return !!plugin
-}
+// tts.ts —— 语音报词（腾讯云语音合成 + 云函数方案）
+// 路线：speak() -> wx.cloud.callFunction('tts') -> base64 mp3 -> 本地临时文件 -> InnerAudioContext 播放
+// 背景：微信同声传译插件属 IT 科技类目，个人主体小程序无法添加，故改走云函数。
+// 密钥配置在云函数环境变量（TENCENT_SECRET_ID / TENCENT_SECRET_KEY），端上零密钥。
+// 容错：云函数不可用（未部署/未配密钥/未开通云环境）时静默降级，由页面用文字提示兜底。
+//
+// 导出接口与旧插件版完全一致：speak / wait / stopAll / ttsAvailable，页面零改动。
 
 export type Speed = 'slow' | 'normal' | 'fast'
 
+// 云函数侧已做 0.6/0.8/1.0 映射；端上 playbackRate 作为兜底微调（云失败时无音频可播，不生效）
 const SPEED_YRATE: Record<Speed, number> = { slow: 0.6, normal: 0.8, fast: 1.0 }
 
-/** 合成并播放一段文本；resolve 在播放完成后触发（含 duration） */
+interface TtsResult {
+  code: number
+  audio?: string
+  message?: string
+}
+
+/** 播放器实例类型（miniprogram-api-typings 提供的命名空间） */
+type InnerAudio = WechatMiniprogram.InnerAudioContext
+
+// base64 -> ArrayBuffer（小程序 ArrayBuffer 写文件用）
+function base64ToArrayBuffer(b64: string): ArrayBuffer {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+  const clean = b64.replace(/[^A-Za-z0-9+/]/g, '')
+  const len = Math.floor(clean.length / 4) * 4 // 去掉 padding
+  const bytes = new Uint8Array(len / 4 * 3)
+  let p = 0
+  for (let i = 0; i < len; i += 4) {
+    const n =
+      (chars.indexOf(clean[i]) << 18) |
+      (chars.indexOf(clean[i + 1]) << 12) |
+      (chars.indexOf(clean[i + 2]) << 6) |
+      chars.indexOf(clean[i + 3])
+    bytes[p++] = (n >> 16) & 0xff
+    bytes[p++] = (n >> 8) & 0xff
+    bytes[p++] = n & 0xff
+  }
+  return bytes.buffer
+}
+
+let currentAudio: InnerAudio | null = null
+
+// 顺序化：同一时刻只播一条，避免报词/结束语音重叠
+let playQueue: Promise<unknown> = Promise.resolve()
+
+/** 合成并播放一段文本；resolve 在播放完成后触发（含时长 ms） */
 export function speak(text: string, speed: Speed = 'normal'): Promise<number> {
-  return new Promise((resolve, reject) => {
+  const run = () => new Promise<number>((resolve, reject) => {
     if (!text) {
       reject(new Error('empty text'))
       return
     }
-    if (!loadPlugin()) {
-      // 插件缺失：直接 resolve 0，让流程继续（页面已展示文字）
-      resolve(0)
-      return
-    }
-    wx.showLoading({ title: '加载语音', mask: false })
-    plugin!.textToSpeech.textToSpeech({
-      lang: 'zh_CN',
-      tts: true,
-      content: text,
+    wx.cloud.callFunction({
+      name: 'tts',
+      data: { text, speed },
       success: (res) => {
-        wx.hideLoading()
-        if (res.retcode !== 0) {
-          reject(new Error('tts retcode ' + res.retcode))
+        const r = res.result as TtsResult
+        if (!r || r.code !== 0 || !r.audio) {
+          // code 2=未配密钥 3/4=合成失败：静默降级 resolve 0，流程继续（页面已展示文字）
+          console.warn('[tts] 云函数返回不可播，降级', r && r.message)
+          resolve(0)
           return
         }
-        const inner = wx.createInnerAudioContext()
-        inner.src = res.filename
-        inner.playbackRate = SPEED_YRATE[speed] // 0.5–2.0
-        inner.onEnded(() => resolve(inner.duration * 1000))
-        inner.onError((e) => reject(e))
-        inner.play()
+        // base64 写临时文件再播（避免超长 dataURL 限流）
+        const buf = base64ToArrayBuffer(r.audio)
+        const path = `${wx.env.USER_DATA_PATH}/tts-${Date.now()}.mp3`
+        const fs = wx.getFileSystemManager()
+        fs.writeFile({
+          filePath: path,
+          data: buf,
+          success: () => {
+            stopAll()
+            const inner = wx.createInnerAudioContext()
+            currentAudio = inner
+            inner.src = path
+            inner.playbackRate = SPEED_YRATE[speed]
+            inner.onEnded(() => {
+              // 播完清临时文件，避免用户目录膨胀
+              try { fs.unlink({ filePath: path }) } catch (e) { /* 忽略 */ }
+              resolve(inner.duration * 1000)
+            })
+            inner.onError((e) => {
+              console.warn('[tts] 播放失败，降级', e)
+              try { fs.unlink({ filePath: path }) } catch (err) { /* 忽略 */ }
+              resolve(0)
+            })
+            inner.play()
+          },
+          fail: (e) => {
+            console.warn('[tts] 写文件失败，降级', e)
+            resolve(0)
+          },
+        })
       },
       fail: (err) => {
-        wx.hideLoading()
-        reject(err)
+        // 云函数未部署/云环境未开通：静默降级
+        console.warn('[tts] callFunction 失败，降级', err)
+        resolve(0)
       },
     })
   })
+  playQueue = playQueue.then(run, run)
+  return playQueue as Promise<number>
 }
 
 /** 播放完等待 ms（词间 8 秒倒计时的锚点） */
@@ -78,10 +112,19 @@ export function wait(ms: number): Promise<void> {
 
 /** 停止当前播报（页面 onHide / 退出时调用） */
 export function stopAll(): void {
-  // innerAudioContext 由调用方持有；这里清空插件引用状态
-  pluginTried = false
+  if (currentAudio) {
+    try {
+      currentAudio.stop()
+      currentAudio.destroy()
+    } catch (e) {
+      // 忽略
+    }
+    currentAudio = null
+  }
 }
 
+/** TTS 是否可用：需已开通云环境（cloudEnabled）且 tts 云函数已部署 */
 export function ttsAvailable(): boolean {
-  return loadPlugin()
+  const g = getApp<{ globalData: { cloudEnabled: boolean } }>()
+  return !!(g && g.globalData.cloudEnabled)
 }
