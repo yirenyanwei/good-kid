@@ -74,20 +74,33 @@ export function speak(text: string, speed: Speed = 'normal'): Promise<number> {
             inner.src = path
             // 语速由云函数按腾讯云语义合成（slow=-1/normal=0/fast=1），端上不再叠加变速：
             // 变速播放会劣化音质，唇齿音 f/p 等摩擦音最易糊（教育报词场景咬字清晰优先）
+            // settled 防重复 resolve + 看门狗：部分机型 onEnded/onStop 都不触发，队列会永久卡死
+            let settled = false
+            const done = (ms: number) => {
+              if (settled) return
+              settled = true
+              clearTimeout(watchdog)
+              resolve(ms)
+            }
+            const watchdog = setTimeout(() => {
+              console.warn('[tts] 看门狗超时（onEnded/onStop 均未触发），强制放行')
+              try { fs.unlink({ filePath: path }) } catch (e) { /* 忽略 */ }
+              done(0)
+            }, Math.max(10000, text.length * 400))
             inner.onEnded(() => {
               // 播完清临时文件，避免用户目录膨胀
               try { fs.unlink({ filePath: path }) } catch (e) { /* 忽略 */ }
-              resolve(inner.duration * 1000)
+              done(inner.duration * 1000 || 0)
             })
             inner.onStop(() => {
               // 被暂停/停止（stopAll）：立即 resolve，避免播放队列卡死
               try { fs.unlink({ filePath: path }) } catch (e) { /* 忽略 */ }
-              resolve(0)
+              done(0)
             })
             inner.onError((e) => {
               console.warn('[tts] 播放失败，降级', e)
               try { fs.unlink({ filePath: path }) } catch (err) { /* 忽略 */ }
-              resolve(0)
+              done(0)
             })
             inner.play()
           },

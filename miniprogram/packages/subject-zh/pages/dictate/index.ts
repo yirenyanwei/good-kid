@@ -75,6 +75,8 @@ Page({
   timer: null as ReturnType<typeof setInterval> | null,
   countdownTimer: null as ReturnType<typeof setInterval> | null,
   cancelled: false,
+  /** 报词代际：每次开始新报词链（恢复/上一词）+1，旧链检测到代际不符即自杀，防双链竞态 */
+  readGen: 0,
 
   onLoad(query: Record<string, string | undefined>) {
     const style = (query.style || 'hanzi-dictate') as ZhStyle
@@ -118,16 +120,14 @@ Page({
     }
   },
 
-  /** 递归：播报第 idx 个词（报两遍） */
-  async readNext(idx: number) {
+  /** 递归：播报第 idx 个词（报两遍）。gen = 本次链的代际号 */
+  async readNext(idx: number, gen?: number) {
+    const g = gen ?? ++this.readGen
     if (this.cancelled || this.data.paused) return
     if (idx >= this.data.total) {
       this.finishReading()
       return
     }
-    // 报词时同步显示所读内容（家长可视）：
-    // 汉字模式：显示组词文本，目标字红色（如「直线」，线字标红）——不单放大字答案
-    // 词语模式：显示拼音（整词显示会变成照抄）
     const q = this.data.questions[idx]
     const text = q.extra.speakText || q.answer
     this.setData({
@@ -139,21 +139,25 @@ Page({
     try {
       // 第 1 遍：正常语速
       await speak(text, this.data.speed)
+      if (g !== this.readGen) return // 旧链自杀
       await wait(GAP_FIRST_TO_SECOND)
+      if (g !== this.readGen) return
       if (this.cancelled || this.data.paused) return
       // 第 2 遍：同样正常语速（慢速实测更听不清，已弃用）
       this.setData({ passLabel: '第 2 遍' })
       await speak(text, this.data.speed)
+      if (g !== this.readGen) return
     } catch (e) {
       console.warn('[dictate] 播报失败，跳过语音等待', e)
     }
-    // 8 秒词间倒计时（暂停可中断）
+    // 8 秒词间倒计时（暂停冻结）
     let waited = 0
     while (waited < GAP_BETWEEN_WORDS && !this.cancelled) {
       await wait(500)
+      if (g !== this.readGen) return // 旧链自杀
       if (!this.data.paused) waited += 500
     }
-    this.readNext(idx + 1)
+    this.readNext(idx + 1, g)
   },
 
   /** 全部报完：TTS「听写结束」+ 30 秒补写倒计时 */
@@ -187,11 +191,11 @@ Page({
     const next = !this.data.paused
     this.setData({ paused: next })
     if (next) {
-      // 暂停：立即停掉正在播的音频（onStop 会 resolve 队列，卡不住），
+      // 暂停：立即停掉正在播的音频（onStop/看门狗会 resolve 队列，卡不住）；
       // 进行中的 readNext 循环检测 paused 后自动停在当前词
       stopAll()
     } else {
-      // 恢复：从当前词重新报起
+      // 恢复：新代际链从当前词重新报起（旧链因代际不符自杀，不会双链并行）
       this.readNext(this.data.index)
     }
   },
@@ -209,7 +213,6 @@ Page({
     }
     this.readNext(this.data.index - 1)
   },
-
   // ---- 对答案：点卡勾错（可反复切换） ----
   toggleMark(e: WechatMiniprogram.TouchEvent) {
     const i = e.currentTarget.dataset.i as number
@@ -304,14 +307,12 @@ Page({
 
   onUnload() {
     this.cancelled = true
+    this.readGen++ // 杀掉所有报词链
     this.clearTimers()
     clearWrongDraft()
   },
 
-  onHide() {
-    // 报词中切后台：自动暂停
-    if (this.data.phase === 'dictating') {
-      this.setData({ paused: true })
-    }
-  },
+  // 注意：不实现 onHide 自动暂停——实测部分场景（音频会话被系统抢占、
+  // 下拉通知栏、控制中心）会误触发 onHide，用户没碰手机却被暂停。
+  // 真切后台时音频播完自然结束，词间倒计时继续走，体验可接受。
 })
