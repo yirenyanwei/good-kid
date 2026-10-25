@@ -24,14 +24,14 @@ interface DisplaySeg {
 }
 
 /**
- * 从 speakText「线——直线的线」提取组词并标注目标字：
- * 返回「直线」分段，其中「线」hit=true（渲染标红）。
- * 无 speakText 或提取失败时回退：汉字模式只显示纯字（不标红），词语模式显示拼音。
+ * 报词可视文本（用户决策 2026-10-25：词语/成语也直接显示汉字，家长会管住孩子不看手机）：
+ * - 汉字模式：显示组词并标红目标字（如「直线」，线字红）
+ * - 词语模式：直接显示词语本身（拼音作为小字注音展示）
  */
 function buildDisplay(q: Question, isWordMode: boolean): DisplaySeg[] {
   if (isWordMode) {
-    // 词语听写：显示拼音防照抄
-    return [{ t: q.extra.pinyin || '', hit: false }]
+    // 词语听写：整词显示（家长可视，孩子不看手机）
+    return [{ t: q.answer || q.extra.word || '', hit: false }]
   }
   const st = q.extra.speakText || ''
   // 提取「——」后的组词部分（如「直线的线」），再去掉尾部的「的字」
@@ -61,6 +61,8 @@ Page({
     paused: false,
     // 报词同步显示（家长可视）
     display: [] as DisplaySeg[],
+    // 词语模式：拼音注音小字
+    displayPinyin: '',
     // 补写倒计时
     checkCountdown: CHECK_COUNTDOWN,
     // 对答案
@@ -128,7 +130,12 @@ Page({
     // 词语模式：显示拼音（整词显示会变成照抄）
     const q = this.data.questions[idx]
     const text = q.extra.speakText || q.answer
-    this.setData({ index: idx, passLabel: '第 1 遍', display: buildDisplay(q, this.data.isWordMode) })
+    this.setData({
+      index: idx,
+      passLabel: '第 1 遍',
+      display: buildDisplay(q, this.data.isWordMode),
+      displayPinyin: this.data.isWordMode ? (q.extra.pinyin || '') : '',
+    })
     try {
       // 第 1 遍：正常语速
       await speak(text, this.data.speed)
