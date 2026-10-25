@@ -17,6 +17,37 @@ const CHECK_COUNTDOWN = 30 // 补写倒计时 30 秒
 
 type Phase = 'loading' | 'dictating' | 'finished-reading' | 'checking'
 
+/** 报词可视文本的分段：{ t: 文本片段, hit: 是否目标字 } */
+interface DisplaySeg {
+  t: string
+  hit: boolean
+}
+
+/**
+ * 从 speakText「线——直线的线」提取组词并标注目标字：
+ * 返回「直线」分段，其中「线」hit=true（渲染标红）。
+ * 无 speakText 或提取失败时回退：汉字模式只显示纯字（不标红），词语模式显示拼音。
+ */
+function buildDisplay(q: Question, isWordMode: boolean): DisplaySeg[] {
+  if (isWordMode) {
+    // 词语听写：显示拼音防照抄
+    return [{ t: q.extra.pinyin || '', hit: false }]
+  }
+  const st = q.extra.speakText || ''
+  // 提取「——」后的组词部分（如「直线的线」），再去掉尾部的「的字」
+  const m = st.split('——')[1] || ''
+  const phrase = m.replace(/的.$/, '')
+  if (phrase && phrase.includes(q.answer)) {
+    const segs: DisplaySeg[] = []
+    for (const c of phrase) {
+      segs.push({ t: c, hit: c === q.answer })
+    }
+    return segs
+  }
+  // 兜底：组词缺失/不含目标字
+  return [{ t: q.extra.pinyin || '', hit: false }]
+}
+
 Page({
   data: {
     phase: 'loading' as Phase,
@@ -28,6 +59,8 @@ Page({
     total: 0,
     passLabel: '第 1 遍',
     paused: false,
+    // 报词同步显示（家长可视）
+    display: [] as DisplaySeg[],
     // 补写倒计时
     checkCountdown: CHECK_COUNTDOWN,
     // 对答案
@@ -90,9 +123,12 @@ Page({
       this.finishReading()
       return
     }
-    this.setData({ index: idx, passLabel: '第 1 遍' })
+    // 报词时同步显示所读内容（家长可视）：
+    // 汉字模式：显示组词文本，目标字红色（如「直线」，线字标红）——不单放大字答案
+    // 词语模式：显示拼音（整词显示会变成照抄）
     const q = this.data.questions[idx]
     const text = q.extra.speakText || q.answer
+    this.setData({ index: idx, passLabel: '第 1 遍', display: buildDisplay(q, this.data.isWordMode) })
     try {
       // 第 1 遍：正常语速
       await speak(text, this.data.speed)

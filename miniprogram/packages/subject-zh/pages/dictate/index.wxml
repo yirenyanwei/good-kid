@@ -27,6 +27,10 @@
       </view>
     </view>
     <text class="word-idx">第 {{index + 1}} 个{{isWordMode ? '词' : '字'}}</text>
+    <!-- 报词同步可视：汉字=组词+目标字标红；词语=拼音 -->
+    <view class="display-text" wx:if="{{display.length > 0}}">
+      <text wx:for="{{display}}" wx:key="index" class="{{item.hit ? 'hit' : ''}}">{{item.t}}</text>
+    </view>
     <text class="pass-label">{{paused ? '已暂停' : passLabel}}</text>
     <text class="pass-note">每{{isWordMode ? '词' : '字'}}报 2 遍 · {{paused ? '点击继续' : '写在本子上'}}</text>
 
