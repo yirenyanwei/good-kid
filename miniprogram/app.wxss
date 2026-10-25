@@ -1,9 +1,9 @@
-/* app.wxss —— 设计系统全局变量（与 docs/ui-mockups/index.html 同源） */
+/* app.wxss —— 设计系统全局变量（与头像橙色小闹钟同源：主色亮橙） */
 page {
-  --purple: #534AB7;
-  --purple-light: #EEEDFE;
-  --purple-mid: #7F77DD;
-  --purple-pale: #AFA9EC;
+  --purple: #FF7A1A;
+  --purple-light: #FFF7E0;
+  --purple-mid: #FF9A4D;
+  --purple-pale: #FFD1A3;
   --zh: #185FA5;
   --zh-bg: #E6F1FB;
   --math: #854F0B;

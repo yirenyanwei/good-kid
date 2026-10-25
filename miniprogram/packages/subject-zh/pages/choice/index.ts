@@ -127,7 +127,7 @@ Page({
       content: '本轮进度将作废',
       confirmText: '继续练习',
       cancelText: '退出',
-      confirmColor: '#534AB7',
+      confirmColor: '#FF7A1A',
       success: (res) => {
         if (!res.confirm) wx.navigateBack()
       },

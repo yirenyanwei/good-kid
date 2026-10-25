@@ -213,7 +213,7 @@ Page({
         content: '报词还没结束，退出后本轮作废',
         confirmText: '继续听写',
         cancelText: '退出',
-        confirmColor: '#534AB7',
+        confirmColor: '#FF7A1A',
         success: (res) => {
           if (!res.confirm) {
             this.cancelled = true
@@ -230,7 +230,7 @@ Page({
         content: '不勾错的话，这轮错题明天不会重现',
         confirmText: '回去勾错',
         cancelText: '直接退出',
-        confirmColor: '#534AB7',
+        confirmColor: '#FF7A1A',
         success: (res) => {
           if (!res.confirm) {
             this.cancelled = true

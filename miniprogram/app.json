@@ -25,14 +25,14 @@
   },
   "window": {
     "navigationBarTitleText": "好学天天练",
-    "navigationBarBackgroundColor": "#F5F5F7",
+    "navigationBarBackgroundColor": "#FFF7E0",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#F5F5F7",
+    "backgroundColor": "#FFF7E0",
     "backgroundTextStyle": "light"
   },
   "tabBar": {
     "color": "#9E9EA3",
-    "selectedColor": "#534AB7",
+    "selectedColor": "#FF7A1A",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
