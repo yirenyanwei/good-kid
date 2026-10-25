@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>好孩子 · UI 视觉设计稿 v1.1</title>
+<style>
+:root{
+  --purple:#534AB7; --purple-light:#EEEDFE; --purple-mid:#7F77DD; --purple-pale:#AFA9EC;
+  --zh:#185FA5; --zh-bg:#E6F1FB; --math:#854F0B; --math-bg:#FAEEDA;
+  --en:#3B6D11; --en-bg:#EAF3DE; --ok:#3B6D11; --ok-bg:#EAF3DE;
+  --bad:#A32D2D; --bad-bg:#FCEBEB; --star:#FAC775; --flame:#854F0B;
+  --ink:#1D1D1F; --sub:#6E6E73; --faint:#9E9EA3; --card:#FFFFFF; --bg:#F5F5F7;
+  --border:rgba(0,0,0,.08); --border2:rgba(0,0,0,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;background:#EBEBEF;color:var(--ink);padding:32px 20px}
+h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
+.sub{text-align:center;color:var(--sub);font-size:13px;margin-bottom:32px}
+.sec{max-width:1060px;margin:0 auto 48px}
+.sec-title{font-size:16px;font-weight:600;margin-bottom:4px}
+.sec-desc{font-size:12px;color:var(--sub);margin-bottom:16px;line-height:1.6}
+.row{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+.phone{width:320px;background:var(--bg);border-radius:28px;border:1px solid var(--border);overflow:hidden;flex:0 0 auto}
+.status{display:flex;justify-content:space-between;padding:10px 20px 6px;font-size:11px;color:var(--sub);font-weight:500}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 12px}
+.nav .title{font-size:16px;font-weight:600}
+.nav .tbtn{font-size:13px;color:var(--sub)}
+.pbar{height:4px;background:rgba(0,0,0,.06);border-radius:2px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--purple)}
+.content{padding:12px 14px 16px}
+.tabbar{display:flex;justify-content:space-around;padding:8px 8px 12px;background:rgba(255,255,255,.7);border-top:1px solid var(--border)}
+.tab{text-align:center;font-size:11px;color:var(--faint)}
+.tab .ind{width:20px;height:3px;border-radius:2px;margin:0 auto 3px;background:transparent}
+.tab.on{color:var(--purple);font-weight:600}
+.tab.on .ind{background:var(--purple)}
+.card{background:var(--card);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.chip{border-radius:8px;padding:3px 10px;font-size:11px;border:1px solid var(--border2);color:var(--sub);background:#fff}
+.chip.on{background:var(--purple);color:#fff;border-color:var(--purple);font-weight:600}
+.pill{border-radius:8px;padding:2px 9px;font-size:10px;font-weight:600}
+.btn-main{background:var(--purple);color:#fff;border-radius:12px;padding:11px;font-size:14px;font-weight:600;text-align:center}
+.btn-sub{border:1px solid var(--border2);color:var(--sub);border-radius:12px;padding:10px;font-size:13px;text-align:center}
+.avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600}
+.cap{font-size:11px;color:var(--faint);text-align:center;margin-top:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ava-34{width:34px;height:34px;font-size:13px}
+.ava-26{width:26px;height:26px;font-size:11px}
+.note{background:#FFF9E6;border:1px solid #F5DFA1;border-radius:8px;padding:8px 12px;font-size:11px;color:#6B5514;line-height:1.6;margin-top:12px}
+</style>
+</head>
+<body>
+
+<h1>《好孩子》UI 视觉设计稿</h1>
+<p class="sub">v1.1 · 2026-10-25 · 配套 docs/UI设计文档-v1.md（规格明细）· 主色 #534AB7</p>
+
+<!-- ================= 首页 ================= -->
+<section class="sec">
+<div class="sec-title">01 · 首页（Tab：练习）</div>
+<div class="sec-desc">主 CTA「继续昨天」大卡一键开练；三科卡进学科二级页；英语 1–2 年级置灰；底部周报摘要条。</div>
+<div class="row">
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●● wifi</span></div>
+<div class="nav"><span class="title">好孩子</span>
+<span><span class="chip">三年级 ⌄</span></span></div>
+<div class="content">
+  <div style="background:var(--purple);border-radius:16px;padding:16px;color:#fff;margin-bottom:10px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div>
+        <p style="font-size:16px;font-weight:600">继续昨天的练习</p>
+        <p style="font-size:11px;color:var(--purple-pale);margin-top:3px">语文 · 生字默写 · 10 题 · 含 3 个昨日错题</p>
+      </div>
+      <div style="background:var(--purple-light);color:var(--purple);border-radius:9px;padding:8px 18px;font-size:13px;font-weight:600">开始</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;font-size:10px;color:var(--purple-pale)">
+      <span>★ 5 天火焰</span><span style="width:1px;height:10px;background:var(--purple-mid)"></span><span>今日还差 1 科</span>
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--faint);margin:0 0 6px 2px">换一科练</p>
+  <div style="display:flex;gap:8px;margin-bottom:10px">
+    <div style="flex:1;background:#fff;border-radius:14px;padding:12px 8px;text-align:center">
+      <div class="avatar ava-26" style="background:var(--zh-bg);color:var(--zh);margin:0 auto 6px">语</div>
+      <p style="font-size:12px;font-weight:600">语文</p>
+      <p style="font-size:10px;color:var(--faint);margin-top:2px">默写 · 拼音</p>
+    </div>
+    <div style="flex:1;background:#fff;border-radius:14px;padding:12px 8px;text-align:center">
+      <div class="avatar ava-26" style="background:var(--math-bg);color:var(--math);margin:0 auto 6px">数</div>
+      <p style="font-size:12px;font-weight:600">数学</p>
+      <p style="font-size:10px;color:var(--faint);margin-top:2px">口算 · 挑战</p>
+    </div>
+    <div style="flex:1;background:#fff;border-radius:14px;padding:12px 8px;text-align:center">
+      <div class="avatar ava-26" style="background:var(--en-bg);color:var(--en);margin:0 auto 6px">英</div>
+      <p style="font-size:12px;font-weight:600">英语</p>
+      <p style="font-size:10px;color:var(--faint);margin-top:2px">单词默写</p>
+    </div>
+  </div>
+  <div class="card" style="background:#fff">
+    <p style="font-size:11px;color:var(--sub)">本周消灭错题 23 个 · 火焰 5 天 <span style="color:var(--purple)">周报 ›</span></p>
+  </div>
+</div>
+<div class="tabbar">
+  <div class="tab on"><div class="ind"></div>练习</div>
+  <div class="tab"><div class="ind"></div>错题本</div>
+  <div class="tab"><div class="ind"></div>我的</div>
+</div>
+</div>
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●● wifi</span></div>
+<div class="nav"><span class="title">好孩子</span><span class="chip">二年级 ⌄</span></div>
+<div class="content">
+  <div style="background:var(--purple);border-radius:16px;padding:16px;color:#fff;margin-bottom:10px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div>
+        <p style="font-size:16px;font-weight:600">开始第一次练习</p>
+        <p style="font-size:11px;color:var(--purple-pale);margin-top:3px">3 分钟 · 零配置 · 打开即练</p>
+      </div>
+      <div style="background:var(--purple-light);color:var(--purple);border-radius:9px;padding:8px 18px;font-size:13px;font-weight:600">开始</div>
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--faint);margin:0 0 6px 2px">换一科练</p>
+  <div style="display:flex;gap:8px;margin-bottom:10px">
+    <div style="flex:1;background:#fff;border-radius:14px;padding:12px 8px;text-align:center">
+      <div class="avatar ava-26" style="background:var(--zh-bg);color:var(--zh);margin:0 auto 6px">语</div>
+      <p style="font-size:12px;font-weight:600">语文</p>
+      <p style="font-size:10px;color:var(--faint);margin-top:2px">二年级上</p>
+    </div>
+    <div style="flex:1;background:#fff;border-radius:14px;padding:12px 8px;text-align:center">
+      <div class="avatar ava-26" style="background:var(--math-bg);color:var(--math);margin:0 auto 6px">数</div>
+      <p style="font-size:12px;font-weight:600">数学</p>
+      <p style="font-size:10px;color:var(--faint);margin-top:2px">二年级上</p>
+    </div>
+    <div style="flex:1;background:#fff;border-radius:14px;padding:12px 8px;text-align:center;border-style:dashed;opacity:.65">
+      <div class="avatar ava-26" style="background:var(--bg);color:var(--faint);margin:0 auto 6px">英</div>
+      <p style="font-size:12px;font-weight:600;color:var(--sub)">英语</p>
+      <p style="font-size:10px;color:var(--faint);margin-top:2px">三年级起开设</p>
+    </div>
+  </div>
+  <div class="card" style="background:#fff;opacity:.7">
+    <p style="font-size:11px;color:var(--faint)">完成第一次练习后生成周报</p>
+  </div>
+</div>
+<div class="tabbar">
+  <div class="tab on"><div class="ind"></div>练习</div>
+  <div class="tab"><div class="ind"></div>错题本</div>
+  <div class="tab"><div class="ind"></div>我的</div>
+</div>
+<p class="cap">首启 0 数据态 · 二年级英语置灰</p>
+</div>
+
+</div>
+</section>
+
+<!-- ================= 学科二级页 ================= -->
+<section class="sec">
+<div class="sec-title">02 · 学科二级页（语文示例）</div>
+<div class="sec-desc">样式列表 + 出题范围 chips + 错题摘要；首选样式强调描边；数学/英语同骨架换内容。</div>
+<div class="row">
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="tbtn">‹</span>
+<span style="display:flex;align-items:center;gap:8px"><span class="avatar ava-26" style="background:var(--zh-bg);color:var(--zh)">语</span><span class="title">语文</span></span>
+<span class="chip">三年级上 ⌄</span></div>
+<div class="content">
+  <p style="font-size:11px;color:var(--faint);margin:0 0 6px 2px">字词练习</p>
+  <div class="card" style="border:1.5px solid var(--purple-light);display:flex;justify-content:space-between;align-items:center">
+    <div><p style="font-size:14px;font-weight:600">生字默写</p><p style="font-size:11px;color:var(--faint);margin-top:2px">TTS 报词 · 家长勾错 · 错题加权</p></div>
+    <span class="pill" style="background:var(--purple);color:#fff;padding:6px 14px">开始</span>
+  </div>
+  <div class="card" style="border:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center">
+    <div><p style="font-size:14px;font-weight:600">看拼音选字</p><p style="font-size:11px;color:var(--faint);margin-top:2px">四选一 · 即时判题</p></div>
+    <span class="pill" style="border:1px solid var(--border2);color:var(--sub);padding:5px 14px">开始</span>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+      <span style="font-size:12px;color:var(--sub)">出题范围</span>
+      <span style="font-size:11px;color:var(--purple);font-weight:600">随机混抽（含错题）</span>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span class="chip on">随机混抽</span><span class="chip">第 1 单元</span><span class="chip">第 2 单元</span><span class="chip" style="color:var(--faint)">… 8 个单元</span>
+    </div>
+  </div>
+  <div class="card" style="background:var(--purple-light)">
+    <p style="font-size:11px;color:var(--sub);margin-bottom:6px">今日错题 · 3 个待消灭</p>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="flex:1;height:6px;border-radius:3px;background:#fff;overflow:hidden"><i style="display:block;width:62%;height:100%;background:var(--purple)"></i></div>
+      <span style="font-size:11px;color:var(--sub)">47 → 18</span>
+    </div>
+  </div>
+</div>
+<div class="tabbar"><div class="tab on"><div class="ind"></div>练习</div><div class="tab"><div class="ind"></div>错题本</div><div class="tab"><div class="ind"></div>我的</div></div>
+</div>
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="tbtn">‹</span>
+<span style="display:flex;align-items:center;gap:8px"><span class="avatar ava-26" style="background:var(--math-bg);color:var(--math)">数</span><span class="title">数学</span></span>
+<span class="chip">三年级 ⌄</span></div>
+<div class="content">
+  <p style="font-size:11px;color:var(--faint);margin:0 0 6px 2px">口算练习</p>
+  <div class="card" style="border:1.5px solid var(--purple-light);display:flex;justify-content:space-between;align-items:center">
+    <div><p style="font-size:14px;font-weight:600">随机口算</p><p style="font-size:11px;color:var(--faint);margin-top:2px">混合运算 · 难度自适应</p></div>
+    <span class="pill" style="background:var(--purple);color:#fff;padding:6px 14px">开始</span>
+  </div>
+  <div class="card" style="border:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center">
+    <div><p style="font-size:14px;font-weight:600">专项练习</p><p style="font-size:11px;color:var(--faint);margin-top:2px">纯加 / 纯减 / 纯乘 / 纯除</p></div>
+    <span class="pill" style="border:1px solid var(--border2);color:var(--sub);padding:5px 14px">开始</span>
+  </div>
+  <div class="card" style="border:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center">
+    <div><p style="font-size:14px;font-weight:600">60 秒限时挑战</p><p style="font-size:11px;color:var(--faint);margin-top:2px">只和自己历史比 · 进周报</p></div>
+    <span class="pill" style="border:1px solid var(--border2);color:var(--sub);padding:5px 14px">开始</span>
+  </div>
+  <div class="card" style="background:var(--purple-light)">
+    <p style="font-size:11px;color:var(--sub);margin-bottom:6px">今日错题 · 4 个待消灭</p>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="flex:1;height:6px;border-radius:3px;background:#fff;overflow:hidden"><i style="display:block;width:38%;height:100%;background:var(--purple)"></i></div>
+      <span style="font-size:11px;color:var(--sub)">31 → 19</span>
+    </div>
+  </div>
+</div>
+<div class="tabbar"><div class="tab on"><div class="ind"></div>练习</div><div class="tab"><div class="ind"></div>错题本</div><div class="tab"><div class="ind"></div>我的</div></div>
+<p class="cap">数学二级页 · 三个样式</p>
+</div>
+</div>
+</section>
+
+<!-- ================= 参数页 ================= -->
+<section class="sec">
+<div class="sec-title">03 · 参数页（三科复用）</div>
+<div class="sec-desc">全部默认即用，高级选项折叠；不改任何参数直接开始。</div>
+<div class="row">
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="tbtn">‹</span><span class="title" style="font-size:15px">生字默写 · 参数</span><span></span></div>
+<div class="content">
+  <div class="card" style="display:flex;justify-content:space-between">
+    <span style="font-size:13px;color:var(--sub)">范围</span>
+    <span style="font-size:13px;font-weight:500">三年级上 · 随机混抽</span>
+  </div>
+  <div class="card" style="display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:13px;color:var(--sub)">题量</span>
+    <span style="display:flex;align-items:center;gap:12px">
+      <span class="pill" style="border:1px solid var(--border2);color:var(--sub);padding:4px 12px;font-size:13px">−</span>
+      <span style="font-size:15px;font-weight:600">10</span>
+      <span class="pill" style="border:1px solid var(--border2);color:var(--sub);padding:4px 12px;font-size:13px">＋</span>
+    </span>
+  </div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--sub)">▸ 高级选项（默认收起）</p>
+  </div>
+  <p style="font-size:11px;color:var(--faint);text-align:center;margin:8px 0 12px">本次 10 题 · 约 3 分钟</p>
+</div>
+<div style="padding:0 14px 20px"><div class="btn-main">开始练习</div></div>
+</div>
+</div>
+</section>
+
+<!-- ================= 练习页 ================= -->
+<section class="sec">
+<div class="sec-title">04 · 练习页（三题型）</div>
+<div class="sec-desc">共享骨架：顶栏三件套 + 细进度条 + 题型渲染区。dictate 报词 / input 口算 / choice 选择。</div>
+<div class="row">
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="tbtn" style="color:var(--faint)">‹ 退出</span><span style="font-size:12px;color:var(--sub)">3 / 10</span><span class="tbtn" style="color:var(--purple)">重听</span></div>
+<div class="pbar"><i style="width:30%"></i></div>
+<div class="content" style="text-align:center;padding-top:26px">
+  <div style="width:88px;height:88px;border-radius:50%;background:var(--purple-light);margin:0 auto 18px;display:flex;align-items:center;justify-content:center">
+    <div style="width:60px;height:60px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center">
+      <div style="width:0;height:0;border-left:14px solid var(--purple-light);border-top:9px solid transparent;border-bottom:9px solid transparent"></div>
+    </div>
+  </div>
+  <p style="font-size:22px;font-weight:600;margin-bottom:5px">第 3 个词</p>
+  <p style="font-size:12px;color:var(--faint);margin-bottom:20px">正在播报 · 8 秒后下一个</p>
+  <div class="card" style="display:flex;justify-content:center;gap:24px;margin-bottom:22px">
+    <span style="font-size:12px;color:var(--sub)">上一词</span><span style="font-size:12px;color:var(--purple);font-weight:600">暂停</span><span style="font-size:12px;color:var(--sub)">重听</span>
+  </div>
+  <div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px">
+    <span style="width:10px;height:10px;border-radius:50%;background:var(--star);display:inline-block"></span>
+    <span style="width:10px;height:10px;border-radius:50%;background:var(--star);display:inline-block"></span>
+    <span style="width:10px;height:10px;border-radius:50%;background:var(--star);display:inline-block"></span>
+    <span style="width:10px;height:10px;border-radius:50%;background:var(--star);display:inline-block"></span>
+    <span style="width:10px;height:10px;border-radius:50%;background:rgba(0,0,0,.1);display:inline-block"></span>
+  </div>
+  <p style="font-size:10px;color:var(--faint)">连对 5 题亮一排星星</p>
+</div>
+<div class="tabbar" style="border-top:none;background:transparent"><p style="font-size:11px;color:var(--faint)">报词中禁止返回 · 退出需二次确认</p></div>
+<p class="cap">dictate · 语文/英语默写</p>
+</div>
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="tbtn" style="color:var(--faint)">‹ 退出</span><span style="font-size:12px;color:var(--sub)">7 / 10</span><span style="font-size:12px;color:var(--math);font-weight:600">★ 4 连对</span></div>
+<div class="pbar"><i style="width:70%;background:var(--math)"></i></div>
+<div class="content" style="text-align:center;padding-top:18px">
+  <p style="font-size:12px;color:var(--faint);margin-bottom:6px">口算</p>
+  <p style="font-size:30px;font-weight:600;letter-spacing:2px;margin-bottom:20px">358 + 247 =</p>
+  <div style="background:#fff;border:1px solid var(--border2);border-radius:12px;padding:10px;margin:0 40px 24px">
+    <p style="font-size:20px;font-weight:600">6</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">1</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">2</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">3</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">4</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">5</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">6</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">7</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">8</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">9</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0;color:var(--faint)">C</div>
+    <div class="card" style="padding:11px;font-size:16px;font-weight:600;margin:0">0</div>
+    <div style="background:var(--purple);color:#fff;border-radius:14px;padding:11px;font-size:16px;font-weight:600">✓</div>
+  </div>
+</div>
+<p class="cap">input · 数学口算（自绘键盘）</p>
+</div>
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="tbtn" style="color:var(--faint)">‹ 退出</span><span style="font-size:12px;color:var(--sub)">5 / 10</span><span class="tbtn" style="color:var(--sub)">朗读</span></div>
+<div class="pbar"><i style="width:50%;background:var(--zh)"></i></div>
+<div class="content" style="text-align:center;padding-top:24px">
+  <p style="font-size:24px;font-weight:600;letter-spacing:1px;margin-bottom:8px">chuī</p>
+  <p style="font-size:12px;color:var(--faint);margin-bottom:22px">听发音选字 · 四选一</p>
+  <div class="grid2" style="gap:10px">
+    <div class="card" style="border:1px solid var(--border2);padding:18px;font-size:20px;font-weight:600;margin:0">堆</div>
+    <div style="background:var(--ok-bg);border:1.5px solid var(--ok);color:var(--ok);border-radius:14px;padding:18px;font-size:20px;font-weight:600">吹</div>
+    <div class="card" style="border:1px solid var(--border2);padding:18px;font-size:20px;font-weight:600;margin:0">炊</div>
+    <div class="card" style="border:1px solid var(--border2);padding:18px;font-size:20px;font-weight:600;margin:0">砍</div>
+  </div>
+  <p style="font-size:11px;color:var(--ok);margin-top:18px">选对了 · 选项乱序</p>
+</div>
+<p class="cap">choice · 看拼音选字</p>
+</div>
+
+</div>
+</section>
+
+<!-- ================= 结果页 ================= -->
+<section class="sec">
+<div class="sec-title">05 · 结果页（对答案勾错）</div>
+<div class="sec-desc">大号成绩 + 星星火焰；dictate 类进对答案区：卡片勾错 30 秒结束；未勾错退出有挽留弹窗。</div>
+<div class="row">
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="content" style="padding-top:20px;text-align:center">
+  <p style="font-size:12px;color:var(--faint);margin-bottom:4px">语文默写 · 三年级上册</p>
+  <p style="font-size:34px;font-weight:600;margin-bottom:12px">10 对 8</p>
+  <div style="display:flex;justify-content:center;gap:5px;margin-bottom:10px">
+    <span style="width:14px;height:14px;background:var(--star);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)"></span>
+    <span style="width:14px;height:14px;background:var(--star);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)"></span>
+    <span style="width:14px;height:14px;background:var(--star);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)"></span>
+    <span style="width:14px;height:14px;background:var(--star);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)"></span>
+    <span style="width:14px;height:14px;background:var(--star);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)"></span>
+  </div>
+  <p style="font-size:11px;color:var(--ok);margin-bottom:16px">连续 5 天火焰 · 断签不清零</p>
+</div>
+<div style="background:rgba(255,255,255,.75);border-top:1px solid var(--border);padding:14px">
+  <p style="font-size:13px;font-weight:600;margin-bottom:10px">对答案 · 勾出写错的</p>
+  <div class="grid4" style="margin-bottom:10px">
+    <div class="card" style="padding:8px 4px;text-align:center;margin:0"><p style="font-size:16px;font-weight:600">绒</p><p style="font-size:10px;color:var(--faint)">róng</p></div>
+    <div class="card" style="padding:8px 4px;text-align:center;margin:0;border:1.5px solid var(--bad)"><p style="font-size:16px;font-weight:600;color:var(--bad)">裳</p><p style="font-size:10px;color:var(--bad)">勾错</p></div>
+    <div class="card" style="padding:8px 4px;text-align:center;margin:0"><p style="font-size:16px;font-weight:600">假</p><p style="font-size:10px;color:var(--faint)">jiǎ</p></div>
+    <div class="card" style="padding:8px 4px;text-align:center;margin:0;border:1.5px solid var(--bad)"><p style="font-size:16px;font-weight:600;color:var(--bad)">扇</p><p style="font-size:10px;color:var(--bad)">勾错</p></div>
+  </div>
+  <p style="font-size:10px;color:var(--faint);text-align:center;margin-bottom:12px">卡片逐张翻转 · 家长只勾错 · 30 秒结束</p>
+  <div class="btn-main" style="margin-bottom:8px">完成 · 错题入库</div>
+  <div class="btn-sub">生成分享卡片</div>
+</div>
+</div>
+
+<div class="phone" style="display:flex;flex-direction:column;justify-content:center;background:rgba(0,0,0,.35)">
+<div style="background:#fff;border-radius:16px;margin:40px;padding:24px 20px;text-align:center">
+  <p style="font-size:16px;font-weight:600;margin-bottom:8px">不勾错就离开？</p>
+  <p style="font-size:13px;color:var(--sub);line-height:1.6;margin-bottom:20px">不勾错的话，这轮错题<br>明天不会重现</p>
+  <div class="btn-main" style="margin-bottom:10px">回去勾错</div>
+  <p style="font-size:13px;color:var(--faint)">直接退出</p>
+</div>
+<p class="cap" style="color:rgba(255,255,255,.7)">勾错挽留弹窗（P1）</p>
+</div>
+</div>
+</section>
+
+<!-- ================= 错题本 & 周报 ================= -->
+<section class="sec">
+<div class="sec-title">06 · 错题本 · 07 · 周报</div>
+<div class="sec-desc">错题本：跨科筛选 + 清零进度 + 激励视频再练一轮。周报：四指标 + 七日柱状图 + 分享卡。</div>
+<div class="row">
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="title">错题本</span><span style="font-size:11px;color:var(--purple)">周报 ›</span></div>
+<div class="content" style="padding-top:4px">
+  <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+    <span class="pill" style="background:var(--purple);color:#fff;padding:4px 11px">全部 23</span>
+    <span class="pill" style="background:#fff;border:1px solid var(--border2);color:var(--sub);padding:4px 11px">语文 12</span>
+    <span class="pill" style="background:#fff;border:1px solid var(--border2);color:var(--sub);padding:4px 11px">数学 8</span>
+    <span class="pill" style="background:#fff;border:1px solid var(--border2);color:var(--sub);padding:4px 11px">英语 3</span>
+  </div>
+  <div class="card" style="background:var(--purple-light)">
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+      <span style="font-size:12px;color:var(--sub)">清零进度 · 本月</span>
+      <span style="font-size:12px;color:var(--purple);font-weight:600">47 → 23</span>
+    </div>
+    <div style="height:8px;border-radius:4px;background:#fff;overflow:hidden"><i style="display:block;width:51%;height:100%;background:var(--purple)"></i></div>
+  </div>
+  <div class="card" style="display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <p style="font-size:14px;font-weight:600">绒 <span style="font-size:11px;color:var(--faint);font-weight:400">róng · 错 2 次</span></p>
+      <p style="font-size:11px;color:var(--faint);margin-top:2px">三年级上册 · 3 天前</p>
+    </div>
+    <span class="pill" style="background:var(--purple-light);color:var(--purple)">连对 1/2</span>
+  </div>
+  <div class="card" style="display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <p style="font-size:14px;font-weight:600">358 + 247 <span style="font-size:11px;color:var(--faint);font-weight:400">= 605 · 错 3 次</span></p>
+      <p style="font-size:11px;color:var(--faint);margin-top:2px">三年级 · 昨天</p>
+    </div>
+    <span class="pill" style="background:var(--ok-bg);color:var(--ok)">待毕业</span>
+  </div>
+</div>
+<div style="padding:0 14px 18px">
+  <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin:0">
+    <span style="font-size:12px;color:var(--sub)">再练一轮 · 错题卷<br><span style="font-size:10px;color:var(--faint)">今天首次免费</span></span>
+    <span class="pill" style="background:var(--purple);color:#fff;padding:7px 13px;font-size:12px">▶ 播视频解锁</span>
+  </div>
+</div>
+<div class="tabbar"><div class="tab"><div class="ind"></div>练习</div><div class="tab on"><div class="ind"></div>错题本</div><div class="tab"><div class="ind"></div>我的</div></div>
+</div>
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="tbtn">‹</span><span class="title" style="font-size:15px">本周成绩</span><span style="font-size:10px;color:var(--faint)">10.12–10.18</span></div>
+<div class="content" style="padding-top:4px">
+  <div class="grid2">
+    <div class="card" style="background:rgba(0,0,0,.03);margin:0"><p style="font-size:11px;color:var(--sub);margin-bottom:4px">练习次数</p><p style="font-size:22px;font-weight:600">21 次</p></div>
+    <div class="card" style="background:rgba(0,0,0,.03);margin:0"><p style="font-size:11px;color:var(--sub);margin-bottom:4px">正确率</p><p style="font-size:22px;font-weight:600">89%</p></div>
+    <div class="card" style="background:rgba(0,0,0,.03);margin:0"><p style="font-size:11px;color:var(--sub);margin-bottom:4px">消灭错题</p><p style="font-size:22px;font-weight:600;color:var(--purple)">23 题</p></div>
+    <div class="card" style="background:rgba(0,0,0,.03);margin:0"><p style="font-size:11px;color:var(--sub);margin-bottom:4px">火焰天数</p><p style="font-size:22px;font-weight:600;color:var(--math)">5 天</p></div>
+  </div>
+  <div class="card" style="margin-top:10px">
+    <div style="display:flex;align-items:flex-end;gap:6px;height:56px">
+      <div style="flex:1;height:40%;background:var(--purple-pale);border-radius:4px 4px 0 0"></div>
+      <div style="flex:1;height:55%;background:var(--purple-pale);border-radius:4px 4px 0 0"></div>
+      <div style="flex:1;height:70%;background:var(--purple-mid);border-radius:4px 4px 0 0"></div>
+      <div style="flex:1;height:100%;background:var(--purple);border-radius:4px 4px 0 0"></div>
+      <div style="flex:1;height:85%;background:var(--purple-mid);border-radius:4px 4px 0 0"></div>
+      <div style="flex:1;height:90%;background:var(--purple);border-radius:4px 4px 0 0"></div>
+      <div style="flex:1;height:60%;background:var(--purple-pale);border-radius:4px 4px 0 0"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:5px">
+      <span style="font-size:10px;color:var(--faint)">一</span><span style="font-size:10px;color:var(--faint)">二</span><span style="font-size:10px;color:var(--faint)">三</span><span style="font-size:10px;color:var(--faint)">四</span><span style="font-size:10px;color:var(--faint)">五</span><span style="font-size:10px;color:var(--faint)">六</span><span style="font-size:10px;color:var(--faint)">日</span>
+    </div>
+  </div>
+  <div class="card" style="background:rgba(0,0,0,.03)">
+    <p style="font-size:11px;color:var(--sub)">错题 TOP：绒（错 3）· 裳（错 2）· pencil（错 2）…</p>
+  </div>
+</div>
+<div style="padding:0 14px 18px">
+  <div class="card" style="background:rgba(0,0,0,.02);margin-bottom:8px;text-align:center">
+    <p style="font-size:11px;color:var(--faint)">Banner 广告位（仅周报底部 · 主流程零广告）</p>
+  </div>
+  <div class="btn-main">分享本周成绩卡片</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<div class="note" style="max-width:1060px;margin:0 auto">
+规格明细（元素编号、字号、数据来源、状态、交互规则）见 <b>docs/UI设计文档-v1.md</b> 第四节；本文件为其配套视觉稿。色值：主色 #534AB7 / 语文蓝 #185FA5 / 数学橙 #854F0B / 英语绿 #3B6D11 / 对 #3B6D11 / 错 #A32D2D / 星 #FAC775。
+</div>
+
+</body>
+</html>
