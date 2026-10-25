@@ -98,9 +98,9 @@ Page({
       await speak(text, this.data.speed)
       await wait(GAP_FIRST_TO_SECOND)
       if (this.cancelled || this.data.paused) return
-      // 第 2 遍：慢速
-      this.setData({ passLabel: '第 2 遍（慢）' })
-      await speak(text, 'slow')
+      // 第 2 遍：同样正常语速（慢速实测更听不清，已弃用）
+      this.setData({ passLabel: '第 2 遍' })
+      await speak(text, this.data.speed)
     } catch (e) {
       console.warn('[dictate] 播报失败，跳过语音等待', e)
     }

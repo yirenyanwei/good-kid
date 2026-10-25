@@ -1,6 +1,8 @@
 // 云函数 tts —— 腾讯云语音合成（基础语音合成 TextToVoice）
-// 入参：{ text, speed }  speed: 'slow' | 'normal' | 'fast'（映射语速 0.6/0.8/1.0）
-// 出参：{ code, audio }  code=0 成功，audio 为 base64 mp3
+// 入参：{ text, speed }  speed: 'slow' | 'normal' | 'fast'
+// 腾讯云 Speed 范围 [-2, 6]，0 = 正常人声语速；负值更慢、正值更快
+// 教训：0.6/0.8 都属于「快」，报词听不清（旧插件语义不能照搬）
+const SPEED_MAP = { slow: -1, normal: 0, fast: 1 }
 // 密钥：云函数环境变量 TENCENT_SECRET_ID / TENCENT_SECRET_KEY（在云开发控制台配置，勿写死在代码里）
 // 免费额度：每月 800 万字符（基础语音合成长文本版），个人主体可直接开通
 // 签名：TC3-HMAC-SHA256，纯 Node crypto 实现，零外部依赖（部署快、冷启动小）
@@ -11,7 +13,6 @@ const ENDPOINT = 'tts.tencentcloudapi.com'
 const SERVICE = 'tts'
 const REGION = 'ap-guangzhou'
 
-const SPEED_MAP = { slow: 0.6, normal: 0.8, fast: 1.0 }
 // 基础语音合成支持的音色：101001（智语，基础女声）发音清晰适合报词
 // 注意：101 是老版编号已不被 2019-08-23 版 TextToVoice 接受
 const VOICE = 101001
@@ -122,8 +123,8 @@ exports.main = async (event) => {
       Text: textTrimmed,
       SessionId: `tts-${Date.now()}`,
       ModelType: 1,
-      Volume: 0,
-      Speed: SPEED_MAP[speed] || 0.8,
+      Volume: 5, // 范围 [0,10]，拉大音量保证手机外放清晰
+      Speed: SPEED_MAP[speed] || 0,
       VoiceType: VOICE,
       PrimaryLanguage: 1, // 中文
       SampleRate: 16000,
