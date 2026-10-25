@@ -83,7 +83,12 @@ Page({
       .filter((k) => (p as any)[k] !== undefined)
       .map((k) => `${k}=${encodeURIComponent(String((p as any)[k]))}`)
       .join('&')
-    wx.navigateTo({ url: `/packages/subject-zh/pages/dictate/index?${qs}` })
+    // 按样式分流：选字题进 choice（即时判题），听写类进 dictate
+    const dest =
+      this.data.style === 'pinyin-choice'
+        ? '/packages/subject-zh/pages/choice/index'
+        : '/packages/subject-zh/pages/dictate/index'
+    wx.navigateTo({ url: `${dest}?${qs}` })
   },
 
   goBack() {

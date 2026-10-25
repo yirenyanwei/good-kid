@@ -38,17 +38,46 @@ function weightedSample<T>(
   return picked
 }
 
-/** 拼音四选一：选项从同年级字池中随机取（真实学习混淆项） */
+/** 拼音四选一：干扰项优先「相近字」——同音 > 声母同 > 韵母同 > 同单元形近 > 随机 */
 function buildOptions(correct: HanziItem, sameQuiz: HanziItem[]): string[] {
-  const opts = new Set<string>()
-  // 优先：同池其他字的拼音（真实学习混淆项）
-  const others = HANZI_LIST.filter((x) => x.pinyin !== correct.pinyin)
-  const shuffled = shuffle(others)
-  for (const o of shuffled) {
-    if (opts.size >= 3) break
-    opts.add(o.hanzi)
+  const picks: string[] = []
+  const used = new Set<string>([correct.hanzi])
+
+  const push = (h: string) => {
+    if (!h || used.has(h) || picks.length >= 3) return
+    used.add(h)
+    picks.push(h)
   }
-  return shuffle([correct.hanzi, ...opts])
+
+  const p = correct.pinyin
+  const base = p.slice(0, -1) // 去声调的主体（如 chén -> chen）
+  const initial = base.match(/^[zhcsr]h|[bpmfdtnlgkhjqxzcsyw]/)?.[0] || ''
+  const final = base.slice(initial.length)
+
+  const others = HANZI_LIST.filter((x) => x.hanzi !== correct.hanzi)
+  const rank = (x: HanziItem): number => {
+    const xp = x.pinyin
+    const xBase = xp.slice(0, -1)
+    const xInit = xBase.match(/^[zhcsr]h|[bpmfdtnlgkhjqxzcsyw]/)?.[0] || ''
+    const xFinal = xBase.slice(xInit.length)
+    if (xp === p) return 0 // 同音同调（最佳干扰）
+    if (xBase === base && x.unit === correct.unit) return 1 // 同音异调 + 同单元
+    if (xBase === base) return 2 // 同音异调
+    if (xInit === initial && xFinal === final) return 3 // 声韵同调异
+    if (xFinal === final) return 4 // 韵母同
+    if (xInit === initial) return 5 // 声母同
+    if (x.unit === correct.unit) return 6 // 同单元（形近/课内常见混淆）
+    return 9 // 随机兜底
+  }
+  // 相近优先，同级内乱序
+  const ranked = others
+    .map((x) => ({ x, r: rank(x), k: Math.random() }))
+    .sort((a, b) => a.r - b.r || a.k - b.k)
+  for (const { x } of ranked) {
+    push(x.hanzi)
+    if (picks.length >= 3) break
+  }
+  return shuffle([correct.hanzi, ...picks])
 }
 
 function shuffle<T>(arr: T[]): T[] {
