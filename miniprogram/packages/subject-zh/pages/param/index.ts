@@ -1,11 +1,21 @@
 // packages/subject-zh/pages/param/index.ts —— 参数页（三样式复用：范围/题量/高级折叠）
 import { GenQuizParams, ZhStyle } from '../../../../utils/types'
 import { getUserConfig } from '../../../../utils/storage'
+import { HANZI_LIST, WORD_ZH_LIST } from '../../../../utils/zh-data'
 
 const STYLE_META: Record<ZhStyle, { title: string; max: number; unitLabel: string }> = {
   'hanzi-dictate': { title: '生字默写', max: 20, unitLabel: '字' },
   'word-dictate': { title: '词语听写', max: 15, unitLabel: '词' },
   'pinyin-choice': { title: '看拼音选字', max: 20, unitLabel: '题' },
+}
+
+/** 当前范围下实际可出的最大题数（池子大小） */
+function poolSize(style: ZhStyle, mode: 'random' | 'unit', unit: number): number {
+  const list = style === 'word-dictate' ? WORD_ZH_LIST : HANZI_LIST
+  if (mode === 'unit' && unit) {
+    return list.filter((x) => x.unit === unit).length
+  }
+  return list.length
 }
 
 Page({
@@ -18,6 +28,8 @@ Page({
     unit: 0,
     count: 10,
     max: 20,
+    // 池子不足提示
+    poolNote: '',
     advancedOpen: false,
     // 高级：报词语速
     speeds: [
@@ -34,14 +46,21 @@ Page({
     const meta = STYLE_META[style]
     const mode = (query.mode as 'random' | 'unit') || 'random'
     const unit = Number(query.unit || 0)
+    // 实际池子 = min(样式上限, 当前范围可用字/词数)
+    const realMax = Math.min(meta.max, poolSize(style, mode, unit))
     this.setData({
       style,
       title: meta.title,
       unitLabel: meta.unitLabel,
-      max: meta.max,
+      max: realMax,
+      count: Math.min(this.data.count, realMax),
       mode,
       unit,
       speed: cfg.speed,
+      poolNote:
+        realMax < meta.max
+          ? `当前范围内共 ${realMax} ${meta.unitLabel}，最多出 ${realMax} ${meta.unitLabel}`
+          : '',
       range:
         mode === 'unit'
           ? `统编版 · 三年级上 · 第 ${unit} 单元`

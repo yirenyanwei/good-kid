@@ -19,6 +19,8 @@
     </view>
   </view>
 
+  <text class="pool-note" wx:if="{{poolNote}}">{{poolNote}}</text>
+
   <view class="card" bindtap="toggleAdvanced">
     <text class="adv-toggle">▸ 高级选项（默认收起）</text>
     <view wx:if="{{advancedOpen}}" class="adv-body">

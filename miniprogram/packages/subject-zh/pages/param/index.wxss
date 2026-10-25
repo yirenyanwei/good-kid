@@ -104,6 +104,15 @@
   margin: 24rpx 0 32rpx;
 }
 
+/* 池子不足提示（如：某单元只有 8 个字，选不了 10） */
+.pool-note {
+  display: block;
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--purple);
+  margin: -12rpx 0 20rpx;
+}
+
 .btn-main {
   background: var(--purple);
   color: #fff;
