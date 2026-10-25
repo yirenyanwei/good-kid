@@ -52,7 +52,7 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
 <body>
 
 <h1>《好孩子》UI 视觉设计稿</h1>
-<p class="sub">v1.1 · 2026-10-25 · 配套 docs/UI设计文档-v1.md（规格明细）· 主色 #534AB7</p>
+<p class="sub">v1.2 · 2026-10-25 · 配套 docs/UI设计文档-v1.md（规格明细）· 主色 #534AB7 · 含词语听写</p>
 
 <!-- ================= 首页 ================= -->
 <section class="sec">
@@ -154,8 +154,8 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
 
 <!-- ================= 学科二级页 ================= -->
 <section class="sec">
-<div class="sec-title">02 · 学科二级页（语文示例）</div>
-<div class="sec-desc">样式列表 + 出题范围 chips + 错题摘要；首选样式强调描边；数学/英语同骨架换内容。</div>
+<div class="sec-title">02 · 学科二级页（语文 / 数学）</div>
+<div class="sec-desc">数学/英语顶栏「教材在前、年级在后」双 chip；语文统编版全国统一，只显示年级。教材弹半屏 3 列网格；切换教材时错题按教材隔离保留。</div>
 <div class="row">
 <div class="phone">
 <div class="status"><span>9:41</span><span>●●●</span></div>
@@ -163,10 +163,18 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
 <span style="display:flex;align-items:center;gap:8px"><span class="avatar ava-26" style="background:var(--zh-bg);color:var(--zh)">语</span><span class="title">语文</span></span>
 <span class="chip">三年级上 ⌄</span></div>
 <div class="content">
+  <div class="card" style="background:rgba(0,0,0,.03);display:flex;justify-content:space-between;padding:8px 14px;margin-bottom:10px">
+    <span style="font-size:11px;color:var(--sub)">教材</span>
+    <span style="font-size:11px;color:var(--sub)">统编版（全国统一）</span>
+  </div>
   <p style="font-size:11px;color:var(--faint);margin:0 0 6px 2px">字词练习</p>
   <div class="card" style="border:1.5px solid var(--purple-light);display:flex;justify-content:space-between;align-items:center">
-    <div><p style="font-size:14px;font-weight:600">生字默写</p><p style="font-size:11px;color:var(--faint);margin-top:2px">TTS 报词 · 家长勾错 · 错题加权</p></div>
+    <div><p style="font-size:14px;font-weight:600">生字默写</p><p style="font-size:11px;color:var(--faint);margin-top:2px">单字 · TTS 报词 · 家长勾错</p></div>
     <span class="pill" style="background:var(--purple);color:#fff;padding:6px 14px">开始</span>
+  </div>
+  <div class="card" style="border:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center">
+    <div><p style="font-size:14px;font-weight:600">词语听写 <span style="font-size:10px;color:var(--purple);background:var(--purple-light);border-radius:6px;padding:1px 6px">新</span></p><p style="font-size:11px;color:var(--faint);margin-top:2px">课本词语表整词 · 报两遍 · 纸上默写</p></div>
+    <span class="pill" style="border:1px solid var(--border2);color:var(--sub);padding:5px 14px">开始</span>
   </div>
   <div class="card" style="border:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center">
     <div><p style="font-size:14px;font-weight:600">看拼音选字</p><p style="font-size:11px;color:var(--faint);margin-top:2px">四选一 · 即时判题</p></div>
@@ -196,7 +204,7 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
 <div class="status"><span>9:41</span><span>●●●</span></div>
 <div class="nav"><span class="tbtn">‹</span>
 <span style="display:flex;align-items:center;gap:8px"><span class="avatar ava-26" style="background:var(--math-bg);color:var(--math)">数</span><span class="title">数学</span></span>
-<span class="chip">三年级 ⌄</span></div>
+<span style="display:flex;gap:6px"><span class="chip" style="color:var(--purple);font-weight:600;border-color:var(--purple-light)">人教版 ⌄</span><span class="chip">三年级 ⌄</span></span></div>
 <div class="content">
   <p style="font-size:11px;color:var(--faint);margin:0 0 6px 2px">口算练习</p>
   <div class="card" style="border:1.5px solid var(--purple-light);display:flex;justify-content:space-between;align-items:center">
@@ -220,7 +228,41 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
   </div>
 </div>
 <div class="tabbar"><div class="tab on"><div class="ind"></div>练习</div><div class="tab"><div class="ind"></div>错题本</div><div class="tab"><div class="ind"></div>我的</div></div>
-<p class="cap">数学二级页 · 三个样式</p>
+<p class="cap">数学二级页 · 教材在前年级在后</p>
+</div>
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div style="padding:14px 16px 6px;display:flex;justify-content:space-between;align-items:center">
+<p style="margin:0;font-size:15px;font-weight:600">选择教材</p>
+<span style="font-size:13px;color:var(--faint)">（×）</span>
+</div>
+<div style="padding:0 16px 4px"><p style="margin:0 0 10px;font-size:11px;color:var(--faint)">数学 · 常见版本（全国在用）</p></div>
+<div style="padding:0 16px 8px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+  <div style="background:var(--purple-light);color:var(--purple);border:1.5px solid var(--purple);border-radius:10px;padding:9px 4px;text-align:center;font-size:12px;font-weight:600">人教版<br><span style="font-size:9px;font-weight:400">覆盖率最高</span></div>
+  <div class="card" style="text-align:center;font-size:12px;padding:9px 4px;margin:0">北师大版</div>
+  <div class="card" style="text-align:center;font-size:12px;padding:9px 4px;margin:0">苏教版</div>
+  <div class="card" style="text-align:center;font-size:12px;padding:9px 4px;margin:0">沪教版</div>
+  <div class="card" style="text-align:center;font-size:12px;padding:9px 4px;margin:0">冀教版</div>
+  <div class="card" style="text-align:center;font-size:12px;padding:9px 4px;margin:0">青岛版</div>
+  <div class="card" style="text-align:center;font-size:12px;padding:9px 4px;margin:0">西师大版</div>
+  <div class="card" style="text-align:center;font-size:12px;padding:9px 4px;margin:0">北京版</div>
+  <div class="card" style="text-align:center;font-size:12px;padding:9px 4px;margin:0;color:var(--faint)">更多 ⌄</div>
+</div>
+<div style="padding:6px 16px 10px">
+  <div class="card" style="background:rgba(0,0,0,.03);margin:0">
+    <p style="font-size:11px;color:var(--sub);line-height:1.6">英语版式：人教 PEP / 外研三起 / 沪教牛津 / 译林…<br>按当前年级过滤起学年级（PEP 为三起）</p>
+  </div>
+</div>
+<div style="padding:0 16px 8px">
+  <div class="card" style="background:#FFF9E6;border:1px solid #F5DFA1;margin:0">
+    <p style="font-size:11px;color:#6B5514;line-height:1.6">切换教材时若原教材有错题：<br>「错题已保留，切回人教版可见」（按教材隔离）</p>
+  </div>
+</div>
+<div style="padding:0 16px 16px">
+  <div class="btn-main">确定 · 人教版</div>
+</div>
+<p class="cap">教材选择半屏弹层（数学/英语）</p>
 </div>
 </div>
 </section>
@@ -236,7 +278,7 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
 <div class="content">
   <div class="card" style="display:flex;justify-content:space-between">
     <span style="font-size:13px;color:var(--sub)">范围</span>
-    <span style="font-size:13px;font-weight:500">三年级上 · 随机混抽</span>
+    <span style="font-size:13px;font-weight:500">统编版 · 三年级上 · 随机混抽</span>
   </div>
   <div class="card" style="display:flex;justify-content:space-between;align-items:center">
     <span style="font-size:13px;color:var(--sub)">题量</span>
@@ -273,7 +315,8 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
     </div>
   </div>
   <p style="font-size:22px;font-weight:600;margin-bottom:5px">第 3 个词</p>
-  <p style="font-size:12px;color:var(--faint);margin-bottom:20px">正在播报 · 8 秒后下一个</p>
+  <p style="font-size:12px;color:var(--faint);margin-bottom:6px">第 1 遍（正常语速）</p>
+  <p style="font-size:12px;color:var(--faint);margin-bottom:20px">每词报 2 遍 · 8 秒后下一个</p>
   <div class="card" style="display:flex;justify-content:center;gap:24px;margin-bottom:22px">
     <span style="font-size:12px;color:var(--sub)">上一词</span><span style="font-size:12px;color:var(--purple);font-weight:600">暂停</span><span style="font-size:12px;color:var(--sub)">重听</span>
   </div>
@@ -288,6 +331,30 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
 </div>
 <div class="tabbar" style="border-top:none;background:transparent"><p style="font-size:11px;color:var(--faint)">报词中禁止返回 · 退出需二次确认</p></div>
 <p class="cap">dictate · 语文/英语默写</p>
+</div>
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="tbtn" style="color:var(--faint)">‹ 退出</span><span style="font-size:12px;color:var(--sub)">3 / 10</span><span class="tbtn" style="color:var(--purple)">重听</span></div>
+<div class="pbar"><i style="width:30%"></i></div>
+<div class="content" style="text-align:center;padding-top:26px">
+  <div style="width:88px;height:88px;border-radius:50%;background:var(--purple-light);margin:0 auto 18px;display:flex;align-items:center;justify-content:center">
+    <div style="width:60px;height:60px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center">
+      <div style="width:0;height:0;border-left:14px solid var(--purple-light);border-top:9px solid transparent;border-bottom:9px solid transparent"></div>
+    </div>
+  </div>
+  <p style="font-size:22px;font-weight:600;margin-bottom:5px">第 3 个词</p>
+  <p style="font-size:12px;color:var(--faint);margin-bottom:6px">四字词 · 屏幕不显示 · 写在本子上</p>
+  <p style="font-size:12px;color:var(--faint);margin-bottom:20px">第 1 遍（正常语速） · 每词报 2 遍 · 8 秒后下一个</p>
+  <div class="card" style="display:flex;justify-content:center;gap:24px;margin-bottom:22px">
+    <span style="font-size:12px;color:var(--sub)">上一词</span><span style="font-size:12px;color:var(--purple);font-weight:600">暂停</span><span style="font-size:12px;color:var(--sub)">重听</span>
+  </div>
+  <div style="background:var(--purple-light);border-radius:10px;padding:8px 12px;margin:0 10px">
+    <p style="font-size:10px;color:var(--sub);line-height:1.6">词语来源：课本词语表（统编版 · 三年级上）<br>整词听写 · 不挖空 · 按「词」勾错入错题本</p>
+  </div>
+</div>
+<div class="tabbar" style="border-top:none;background:transparent"><p style="font-size:11px;color:var(--faint)">报词中禁止返回 · 退出需二次确认</p></div>
+<p class="cap">dictate · 词语听写（整词报两遍）</p>
 </div>
 
 <div class="phone">
@@ -341,8 +408,8 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
 
 <!-- ================= 结果页 ================= -->
 <section class="sec">
-<div class="sec-title">05 · 结果页（对答案勾错）</div>
-<div class="sec-desc">大号成绩 + 星星火焰；dictate 类进对答案区：卡片勾错 30 秒结束；未勾错退出有挽留弹窗。</div>
+<div class="sec-title">05 · 结果页（一次性勾错）</div>
+<div class="sec-desc">TTS 报「听写结束」→ 30 秒补写倒计时 → 对答案：全部字一次性展示（顺序=报词顺序），家长对照本子勾错；全对一键入库；未勾错退出有挽留弹窗。</div>
 <div class="row">
 <div class="phone">
 <div class="status"><span>9:41</span><span>●●●</span></div>
@@ -359,17 +426,51 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
   <p style="font-size:11px;color:var(--ok);margin-bottom:16px">连续 5 天火焰 · 断签不清零</p>
 </div>
 <div style="background:rgba(255,255,255,.75);border-top:1px solid var(--border);padding:14px">
-  <p style="font-size:13px;font-weight:600;margin-bottom:10px">对答案 · 勾出写错的</p>
-  <div class="grid4" style="margin-bottom:10px">
+  <p style="font-size:13px;font-weight:600;margin-bottom:10px">刚才听写的 10 个字 · 勾出错的</p>
+  <div style="background:var(--purple-light);border-radius:12px;padding:10px;text-align:center;margin-bottom:10px">
+    <span style="font-size:13px;font-weight:600;color:var(--purple)">✓ 10 个全对，直接入库</span>
+  </div>
+  <div class="grid4" style="margin-bottom:8px">
     <div class="card" style="padding:8px 4px;text-align:center;margin:0"><p style="font-size:16px;font-weight:600">绒</p><p style="font-size:10px;color:var(--faint)">róng</p></div>
     <div class="card" style="padding:8px 4px;text-align:center;margin:0;border:1.5px solid var(--bad)"><p style="font-size:16px;font-weight:600;color:var(--bad)">裳</p><p style="font-size:10px;color:var(--bad)">勾错</p></div>
     <div class="card" style="padding:8px 4px;text-align:center;margin:0"><p style="font-size:16px;font-weight:600">假</p><p style="font-size:10px;color:var(--faint)">jiǎ</p></div>
     <div class="card" style="padding:8px 4px;text-align:center;margin:0;border:1.5px solid var(--bad)"><p style="font-size:16px;font-weight:600;color:var(--bad)">扇</p><p style="font-size:10px;color:var(--bad)">勾错</p></div>
   </div>
-  <p style="font-size:10px;color:var(--faint);text-align:center;margin-bottom:12px">卡片逐张翻转 · 家长只勾错 · 30 秒结束</p>
-  <div class="btn-main" style="margin-bottom:8px">完成 · 错题入库</div>
+  <div class="grid4" style="margin-bottom:10px">
+    <div class="card" style="padding:8px 4px;text-align:center;margin:0"><p style="font-size:16px;font-weight:600">耀</p><p style="font-size:10px;color:var(--faint)">yào</p></div>
+    <div class="card" style="padding:8px 4px;text-align:center;margin:0"><p style="font-size:16px;font-weight:600">聚</p><p style="font-size:10px;color:var(--faint)">jù</p></div>
+    <div class="card" style="padding:8px 4px;text-align:center;margin:0"><p style="font-size:16px;font-weight:600">偶</p><p style="font-size:10px;color:var(--faint)">ǒu</p></div>
+    <div class="card" style="padding:8px 4px;text-align:center;margin:0"><p style="font-size:16px;font-weight:600">尔</p><p style="font-size:10px;color:var(--faint)">ěr</p></div>
+  </div>
+  <p style="font-size:10px;color:var(--faint);text-align:center;margin-bottom:12px">一次性全部展示 · 顺序 = 报词顺序 · 全对点上方紫色按钮</p>
+  <div class="btn-main" style="margin-bottom:8px">完成 · 2 个错题入库</div>
   <div class="btn-sub">生成分享卡片</div>
 </div>
+</div>
+
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="content" style="padding-top:20px;text-align:center">
+  <p style="font-size:12px;color:var(--faint);margin-bottom:4px">词语听写 · 三年级上册 · 词语表</p>
+  <p style="font-size:34px;font-weight:600;margin-bottom:12px">10 对 8</p>
+  <p style="font-size:11px;color:var(--ok);margin-bottom:16px">按「词」勾错 · 错词明天重现</p>
+</div>
+<div style="background:rgba(255,255,255,.75);border-top:1px solid var(--border);padding:14px">
+  <p style="font-size:13px;font-weight:600;margin-bottom:10px">刚才听写的 10 个词语 · 勾出错的</p>
+  <div style="background:var(--purple-light);border-radius:12px;padding:10px;text-align:center;margin-bottom:10px">
+    <span style="font-size:13px;font-weight:600;color:var(--purple)">✓ 10 个词全对，直接入库</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px">
+    <div class="card" style="padding:9px 6px;text-align:center;margin:0"><p style="font-size:14px;font-weight:600;letter-spacing:1px">五彩斑斓</p><p style="font-size:9px;color:var(--faint)">wǔ cǎi bān lán</p></div>
+    <div class="card" style="padding:9px 6px;text-align:center;margin:0;border:1.5px solid var(--bad)"><p style="font-size:14px;font-weight:600;color:var(--bad);letter-spacing:1px">绚丽多彩</p><p style="font-size:9px;color:var(--bad)">勾错</p></div>
+    <div class="card" style="padding:9px 6px;text-align:center;margin:0"><p style="font-size:14px;font-weight:600;letter-spacing:1px">一本正经</p><p style="font-size:9px;color:var(--faint)">yī běn zhèng jīng</p></div>
+    <div class="card" style="padding:9px 6px;text-align:center;margin:0;border:1.5px solid var(--bad)"><p style="font-size:14px;font-weight:600;color:var(--bad);letter-spacing:1px">引人注目</p><p style="font-size:9px;color:var(--bad)">勾错</p></div>
+  </div>
+  <p style="font-size:10px;color:var(--faint);text-align:center;margin-bottom:12px">一次性全部展示 · 顺序 = 报词顺序 · 勾错按整词</p>
+  <div class="btn-main" style="margin-bottom:8px">完成 · 2 个错词入库</div>
+  <div class="btn-sub">生成分享卡片</div>
+</div>
+<p class="cap">词语听写结果页 · 整词卡片 + 拼音</p>
 </div>
 
 <div class="phone" style="display:flex;flex-direction:column;justify-content:center;background:rgba(0,0,0,.35)">
@@ -471,8 +572,51 @@ h1{font-size:22px;font-weight:600;text-align:center;margin-bottom:4px}
 </section>
 
 <div class="note" style="max-width:1060px;margin:0 auto">
-规格明细（元素编号、字号、数据来源、状态、交互规则）见 <b>docs/UI设计文档-v1.md</b> 第四节；本文件为其配套视觉稿。色值：主色 #534AB7 / 语文蓝 #185FA5 / 数学橙 #854F0B / 英语绿 #3B6D11 / 对 #3B6D11 / 错 #A32D2D / 星 #FAC775。
+规格明细（元素编号、字号、数据来源、状态、交互规则）见 <b>docs/UI设计文档-v1.md</b> 第四节；本文件为其配套视觉稿。色值：主色 #534AB7 / 语文蓝 #185FA5 / 数学橙 #854F0B / 英语绿 #3B6D11 / 对 #3B6D11 / 错 #A32D2D / 星 #FAC775。教材策略：语文统编版无选择器；数学/英语「教材在前、年级在后」双 chip；错题按教材隔离保留。
 </div>
+
+<!-- ================= 我的页 ================= -->
+<section class="sec">
+<div class="sec-title">08 · 我的 / 设置（Tab）</div>
+<div class="sec-desc">周报入口卡 + 学习设置（教材、年级、语速、加权）+ 关于。教材按科独立，语文无教材项。</div>
+<div class="row">
+<div class="phone">
+<div class="status"><span>9:41</span><span>●●●</span></div>
+<div class="nav"><span class="title">我的</span><span></span></div>
+<div class="content">
+  <div class="card" style="background:var(--purple-light);display:flex;justify-content:space-between;align-items:center">
+    <div><p style="font-size:12px;color:var(--sub);margin-bottom:2px">本周成绩</p><p style="font-size:13px;font-weight:600">21 次 · 89% · 消灭 23 题</p></div>
+    <span style="font-size:12px;color:var(--purple);font-weight:600">查看 ›</span>
+  </div>
+  <p style="font-size:11px;color:var(--faint);margin:4px 0 6px 2px">学习设置</p>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+      <span style="font-size:13px">学习教材（各科）</span><span style="font-size:12px;color:var(--sub)">数学:人教 英语:PEP ›</span>
+    </div>
+    <div style="height:1px;background:var(--border);margin:6px 0"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+      <span style="font-size:13px">学习年级（各科）</span><span style="font-size:12px;color:var(--sub)">均三年级 ›</span>
+    </div>
+    <div style="height:1px;background:var(--border);margin:6px 0"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+      <span style="font-size:13px">报词语速</span><span style="font-size:12px;color:var(--sub)">中 ›</span>
+    </div>
+    <div style="height:1px;background:var(--border);margin:6px 0"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0">
+      <span style="font-size:13px">错题加权</span><span style="font-size:12px;color:var(--ok);font-weight:600">开</span>
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--faint);margin:4px 0 6px 2px">关于</p>
+  <div class="card">
+    <p style="font-size:13px;margin-bottom:8px">用户协议 ›</p>
+    <p style="font-size:13px;margin-bottom:8px">隐私政策 ›</p>
+    <p style="font-size:12px;color:var(--faint)">版本 1.0.0</p>
+  </div>
+</div>
+<div class="tabbar"><div class="tab"><div class="ind"></div>练习</div><div class="tab"><div class="ind"></div>错题本</div><div class="tab on"><div class="ind"></div>我的</div></div>
+</div>
+</div>
+</section>
 
 </body>
 </html>
