@@ -1,8 +1,7 @@
-// zh-data.ts —— 语文词库（V0 内置版）
-// 数据来源：统编版三年级上册（2024 秋版）
-// 写字表 249 课文字 + 33 语文园地字（识字加油站会写）= 282 字
-// 每字 3-5 个组词：报词时随机选一个（X——XX的X），加深组词记忆
-// 与 content/dist 结构一致；云库 db_hanzi 同构
+// zh-data.ts —— 语文词库（本文件由 content/scripts/build-lexicon.py 生成，勿手改）
+// 数据源（单一真源）：content/lexicon/hanzi-3a.csv（Excel 编辑后另存 CSV UTF-8，跑脚本重新生成）
+// 统编版三年级上册 2024 秋版：课文写字表 249 字 + 语文园地 33 字
+// 每字 3-5 组词随机报（X——XX的X）；云库 db_hanzi 同构
 
 import { HanziItem, WordZhItem } from './types'
 

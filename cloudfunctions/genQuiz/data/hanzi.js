@@ -1,6 +1,5 @@
-// 云函数 genQuiz 内置词库（与 miniprogram/utils/zh-data.ts 同源）
-// 三年级上册 282 字 = 249 课文字 + 33 语文园地字；每字 3-5 组词随机报
-// 正式版：数据导入云数据库 db_hanzi 后，本文件仅作冷启动兜底
+// 云函数 genQuiz 词库（本文件由 content/scripts/build-lexicon.py 生成，勿手改）
+// 数据源：content/lexicon/hanzi-3a.csv；正式版导入 db_hanzi 后本文件仅作冷启动兜底
 module.exports = [
   // 第 1 单元
   { id: 'zh-3-上-u1-晨', grade: 3, volume: '上', unit: 1, hanzi: '晨', pinyin: 'chén', klass: 1, source: 'lesson', words: ['早晨', '晨读', '清晨', '晨光'] },
