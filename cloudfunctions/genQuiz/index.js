@@ -23,9 +23,11 @@ function shuffle(arr) {
   return a
 }
 
-// 内置词库（与 miniprogram/utils/zh-data.ts 同源；切云库后改查 db_hanzi/db_word_zh）
-const HANZI = require('./data/hanzi.js')
-const WORDS = require('./data/word-zh.js')
+// 内置词库（与 miniprogram/utils/config.json 同一份字节；由 content/scripts/build-config.py 生成）
+// config.tables['hanzi-3a'] / config.tables['word-zh']；切云库后改查 db_hanzi/db_word_zh
+const CONFIG = require('./data/config.json')
+const HANZI = CONFIG.tables['hanzi-3a']
+const WORDS = CONFIG.tables['word-zh']
 
 /** 拼音四选一干扰项：相近字优先（与端上 quiz-engine.ts buildOptions 一致）
  *  分级：同音同调 > 同音异调+同单元 > 同音异调 > 声韵同 > 韵母同 > 声母同 > 同单元 > 随机 */
@@ -95,7 +97,7 @@ exports.main = async (event) => {
     console.warn('[genQuiz] 错题本查询失败（首次使用）', e)
   }
 
-  // 词池
+  // 词池（表名已含年级册别：hanzi-3a = 三年级上，行内不再冗余 grade/volume）
   let pool
   if (style === 'word-dictate') {
     pool = WORDS
@@ -103,7 +105,7 @@ exports.main = async (event) => {
     pool = HANZI
   }
   const unitFilter = mode === 'unit' && unit ? (x) => x.unit === unit : () => true
-  const candidates = pool.filter((x) => x.grade === grade && x.volume === volume && unitFilter(x))
+  const candidates = pool.filter(unitFilter)
 
   // 权重抽样
   const weight = (item) => {
@@ -130,7 +132,7 @@ exports.main = async (event) => {
   let questions
   if (style === 'pinyin-choice') {
     // 四选一：干扰项从全库同年级字中取，相近字优先（buildOptions）
-    const all = HANZI.filter((x) => x.grade === grade && x.volume === volume)
+    const all = HANZI
     questions = picked.map((x, i) => {
       return {
         qid: `${quizId}-q${i}`,

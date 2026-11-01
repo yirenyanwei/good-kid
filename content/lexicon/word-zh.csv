@@ -1,0 +1,40 @@
+﻿id,unit,word,pinyin
+string,number,string,string
+行唯一id（永不改绑不复用）,单元号1-8,整词,整词拼音
+zw-3-上-u1-早晨,1,早晨,zǎo chén
+zw-3-上-u1-穿戴,1,穿戴,chuān dài
+zw-3-上-u1-鲜艳,1,鲜艳,xiān yàn
+zw-3-上-u1-服装,1,服装,fú zhuāng
+zw-3-上-u1-安静,1,安静,ān jìng
+zw-3-上-u2-金色,2,金色,jīn sè
+zw-3-上-u2-菊花,2,菊花,jú huā
+zw-3-上-u2-礼物,2,礼物,lǐ wù
+zw-3-上-u2-丰富多彩,2,丰富多彩,fēng fù duō cǎi
+zw-3-上-u2-层林尽染,2,层林尽染,céng lín jìn rǎn
+zw-3-上-u3-火柴,3,火柴,huǒ chái
+zw-3-上-u3-围裙,3,围裙,wéi qún
+zw-3-上-u3-可怜,3,可怜,kě lián
+zw-3-上-u3-又冷又饿,3,又冷又饿,yòu lěng yòu è
+zw-3-上-u3-烛光,3,烛光,zhú guāng
+zw-3-上-u4-变化,4,变化,biàn huà
+zw-3-上-u4-打扫,4,打扫,dǎ sǎo
+zw-3-上-u4-晒太阳,4,晒太阳,shài tài yáng
+zw-3-上-u4-呼呼地,4,呼呼地,hū hū de
+zw-3-上-u5-搭船,5,搭船,dā chuán
+zw-3-上-u5-父亲,5,父亲,fù qīn
+zw-3-上-u5-沙啦,5,沙啦,shā lā
+zw-3-上-u5-羽毛,5,羽毛,yǔ máo
+zw-3-上-u5-翠鸟,5,翠鸟,cuì niǎo
+zw-3-上-u6-宝贵,6,宝贵,bǎo guì
+zw-3-上-u6-挡住,6,挡住,dǎng zhù
+zw-3-上-u6-视线,6,视线,shì xiàn
+zw-3-上-u6-软绵绵,6,软绵绵,ruǎn mián mián
+zw-3-上-u7-演奏,7,演奏,yǎn zòu
+zw-3-上-u7-感受,7,感受,gǎn shòu
+zw-3-上-u7-激动,7,激动,jī dòng
+zw-3-上-u7-打击乐器,7,打击乐器,dǎ jī yuè qì
+zw-3-上-u8-集合,8,集合,jí hé
+zw-3-上-u8-一般,8,一般,yì bān
+zw-3-上-u8-架子,8,架子,jià zi
+zw-3-上-u8-乌龟,8,乌龟,wū guī
+zw-3-上-u8-猛烈,8,猛烈,měng liè
