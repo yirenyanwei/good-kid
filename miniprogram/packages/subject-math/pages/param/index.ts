@@ -42,7 +42,9 @@ Page({
 
   toggleOp(e: WechatMiniprogram.TouchEvent) {
     const key = e.currentTarget.dataset.op as MathOp
-    const checked = { ...this.data.checked }
+    // 不用对象展开 {...obj}：SWC 编译需 @swc/runtime helper（工程未装，运行时报 module not defined）
+    const checked: Record<MathOp, boolean> = { add: false, sub: false, mul: false, div: false }
+    ;(Object.keys(this.data.checked) as MathOp[]).forEach((k) => (checked[k] = this.data.checked[k]))
     const newCount = checked[key] ? this.data.checkedCount - 1 : this.data.checkedCount + 1
     if (newCount < 1) {
       // 至少保留 1 个运算符
