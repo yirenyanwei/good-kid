@@ -1,0 +1,41 @@
+<view class="page">
+  <view class="nav">
+    <text class="back" bindtap="goBack">‹</text>
+    <text class="title">{{title}} · 设置</text>
+    <text class="placeholder"></text>
+  </view>
+
+  <view class="card row-card" wx:if="{{style === 'math-calc'}}">
+    <text class="row-label">运算</text>
+    <view class="op-grid">
+      <view
+        wx:for="{{ops}}"
+        wx:key="key"
+        class="op-chip {{checked[item.key] ? 'on' : ''}}"
+        bindtap="toggleOp"
+        data-op="{{item.key}}"
+      >
+        <text class="op-sym">{{item.sym}}</text>
+        <text class="op-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card row-card" wx:if="{{style === 'math-mixed'}}">
+    <text class="row-label">规则</text>
+    <text class="row-value">加减混合乘除 · 先乘除后加减</text>
+  </view>
+
+  <view class="card row-card">
+    <text class="row-label">题量</text>
+    <view class="stepper">
+      <view class="step-btn" bindtap="decCount">−</view>
+      <text class="step-num">{{count}}</text>
+      <view class="step-btn" bindtap="incCount">＋</view>
+    </view>
+  </view>
+
+  <text class="estimate">本次 {{count}} {{unitLabel}} · 约 {{count * 15}} 秒</text>
+
+  <view class="btn-main" bindtap="start">开始练习</view>
+</view>

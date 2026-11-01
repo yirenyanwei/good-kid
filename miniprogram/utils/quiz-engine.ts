@@ -170,19 +170,20 @@ export async function genQuizLocal(p: GenQuizParams): Promise<Quiz> {
   const wrongMap = new Map(wrongs.map((w) => [w.itemRef, w]))
 
   let questions: Question[]
-  const style: ZhStyle = p.style || 'hanzi-dictate'
+  const style = p.style || 'hanzi-dictate'
   if (style === 'word-dictate') {
     questions = genWordDictate(p, wrongMap)
   } else if (style === 'pinyin-choice') {
     questions = genPinyinChoice(p, wrongMap)
   } else {
+    // 语文样式兜底（math 样式在 cloud-api 分流到 math-engine，不进这里）
     questions = genHanziDictate(p, wrongMap)
   }
   // 不足 count 按实际数出（错题 3 题起步也生成重练卷）
   return {
     quizId: `quiz-${Date.now()}-${quizSeq++}`,
     subject: p.subject,
-    style,
+    style: style as ZhStyle,
     questions,
   }
 }

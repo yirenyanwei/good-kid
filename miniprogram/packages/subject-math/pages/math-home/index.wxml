@@ -1,0 +1,40 @@
+<view class="page">
+  <view class="nav">
+    <text class="back" bindtap="goBack">‹</text>
+    <view class="nav-center">
+      <view class="subj-ico">数</view>
+      <text class="title">数学</text>
+    </view>
+    <view class="chip">三年级上 ⌄</view>
+  </view>
+
+  <view class="tb-row">
+    <text class="tb-label">教材</text>
+    <text class="tb-value">人教版 · 三年级上 口算标准</text>
+  </view>
+
+  <text class="label">口算练习</text>
+  <view
+    wx:for="{{styles}}"
+    wx:key="key"
+    class="style-card"
+    bindtap="onStyle"
+    data-style="{{item.key}}"
+    hover-class="card-hover"
+    hover-stay-time="80"
+  >
+    <view class="style-left">
+      <text class="style-name">{{item.name}}<text wx:if="{{item.isNew}}" class="new-tag">新</text></text>
+      <text class="style-desc">{{item.desc}}</text>
+    </view>
+    <view class="style-btn">开始</view>
+  </view>
+
+  <view class="card wrong-card" wx:if="{{wrongTotal > 0}}">
+    <text class="wrong-title">数学错题 · {{wrongToday}} 个待消灭</text>
+    <view class="wrong-progress">
+      <view class="bar"><view class="bar-fill" style="width: {{wrongToday / wrongTotal * 100}}%"></view></view>
+      <text class="wrong-total">共 {{wrongTotal}} 个</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,137 @@
+/* calc —— 口算作答页：算式居中大字 + 底部数字键盘 */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 28rpx 16rpx;
+}
+.exit {
+  font-size: 26rpx;
+  color: var(--faint);
+}
+.progress {
+  font-size: 24rpx;
+  color: var(--sub);
+}
+.streak {
+  font-size: 24rpx;
+  color: var(--purple);
+  font-weight: 600;
+}
+.nav-ghost {
+  width: 80rpx;
+}
+.pbar {
+  height: 8rpx;
+  background: rgba(0, 0, 0, 0.06);
+  margin: 0 28rpx;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+.pbar-fill {
+  height: 100%;
+  background: var(--math);
+  transition: width 0.3s;
+}
+
+/* 算式区 */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40rpx;
+}
+.expr-box {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+.expr {
+  font-size: 72rpx;
+  font-weight: 700;
+  letter-spacing: 4rpx;
+  font-family: "SF Pro", "PingFang SC", Menlo, monospace;
+}
+.eq {
+  font-size: 60rpx;
+  font-weight: 600;
+  color: var(--sub);
+}
+.answer-box {
+  min-width: 220rpx;
+  border: 4rpx solid var(--border2);
+  border-radius: 24rpx;
+  padding: 12rpx 32rpx;
+  text-align: center;
+  background: #fff;
+}
+.answer-box.ok {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+}
+.answer-box.bad {
+  border-color: var(--bad);
+  background: var(--bad-bg);
+}
+.answer-num {
+  font-size: 64rpx;
+  font-weight: 700;
+  font-family: Menlo, monospace;
+}
+.answer-num.empty {
+  color: var(--faint);
+}
+
+.feedback {
+  margin-top: 40rpx;
+  font-size: 28rpx;
+}
+.feedback.ok {
+  color: var(--ok);
+}
+.feedback.bad {
+  color: var(--bad);
+}
+
+/* 数字键盘 */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16rpx;
+  padding: 20rpx 24rpx calc(40rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  border-top: 1px solid var(--border);
+}
+.key {
+  border-radius: 20rpx;
+  padding: 28rpx 0;
+  font-size: 40rpx;
+  font-weight: 600;
+  text-align: center;
+  background: var(--bg);
+}
+.key:active {
+  background: var(--purple-light);
+}
+.k-fn {
+  background: #fff;
+  border: 2rpx solid var(--border2);
+  color: var(--sub);
+  font-size: 32rpx;
+}
+.k-ok {
+  background: var(--purple);
+  color: #fff;
+  font-size: 32rpx;
+  grid-column: span 1;
+}
+.k-ok:active {
+  opacity: 0.85;
+}

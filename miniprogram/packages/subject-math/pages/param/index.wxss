@@ -1,0 +1,118 @@
+/* math-param —— 版式同 zh-param，运算符四宫格选择 */
+.page {
+  padding: 0 28rpx 60rpx;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 8rpx 24rpx;
+}
+.back {
+  font-size: 44rpx;
+  color: var(--sub);
+  width: 60rpx;
+}
+.title {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+.placeholder {
+  width: 60rpx;
+}
+
+.card {
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 26rpx 28rpx;
+  margin-bottom: 20rpx;
+}
+.row-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.row-label {
+  font-size: 26rpx;
+  color: var(--sub);
+}
+.row-value {
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+/* 运算符四宫格：可多选，至少 1 个 */
+.op-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14rpx;
+}
+.op-chip {
+  border: 2rpx solid var(--border2);
+  border-radius: 20rpx;
+  padding: 16rpx 0 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+}
+.op-chip.on {
+  background: var(--purple);
+  border-color: var(--purple);
+}
+.op-sym {
+  font-size: 36rpx;
+  font-weight: 600;
+  line-height: 1;
+}
+.op-name {
+  font-size: 20rpx;
+  color: var(--sub);
+}
+.op-chip.on .op-sym,
+.op-chip.on .op-name {
+  color: #fff;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+.step-btn {
+  border: 2rpx solid var(--border2);
+  color: var(--sub);
+  border-radius: 12rpx;
+  padding: 8rpx 24rpx;
+  font-size: 26rpx;
+}
+.step-btn:active {
+  opacity: 0.6;
+}
+.step-num {
+  font-size: 30rpx;
+  font-weight: 600;
+  min-width: 60rpx;
+  text-align: center;
+}
+
+.estimate {
+  display: block;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--faint);
+  margin: 24rpx 0 32rpx;
+}
+
+.btn-main {
+  background: var(--purple);
+  color: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: center;
+}
+.btn-main:active {
+  opacity: 0.85;
+}

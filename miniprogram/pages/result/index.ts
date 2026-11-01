@@ -5,6 +5,8 @@ const STYLE_NAMES: Record<string, string> = {
   'hanzi-dictate': '生字默写',
   'word-dictate': '词语听写',
   'pinyin-choice': '看拼音选字',
+  'math-calc': '口算练习',
+  'math-mixed': '混合运算',
 }
 
 Page({
@@ -27,10 +29,10 @@ Page({
     // 星级：≥9 三星 / ≥7 两星 / ≥5 一星
     const rate = total > 0 ? correct / total : 0
     const stars = rate >= 0.9 ? 3 : rate >= 0.7 ? 2 : rate >= 0.5 ? 1 : 0
-    // 记日志（周报/续练数据源）
+    // 记日志（周报/续练数据源；subject 由 style 前缀推断）
     appendQuizLog({
       quizId: `local-${Date.now()}`,
-      subject: 'zh',
+      subject: style.startsWith('math') ? 'math' : 'zh',
       style: style as any,
       correct,
       total,

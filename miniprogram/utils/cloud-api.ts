@@ -4,6 +4,7 @@
 
 import { GenQuizParams, Quiz, SubmitAnswers, SubmitSummary, UserConfig } from './types'
 import { genQuizLocal } from './quiz-engine'
+import { genMathQuiz } from './math-engine'
 import { getUserConfig, saveUserConfig, applyWrongUpdates } from './storage'
 
 interface QuizAPI {
@@ -17,6 +18,7 @@ interface QuizAPI {
 
 const LocalImpl: QuizAPI = {
   async genQuiz(params) {
+    if (params.subject === 'math') return genMathQuiz(params)
     return genQuizLocal(params)
   },
 
@@ -32,7 +34,8 @@ const LocalImpl: QuizAPI = {
         correct: a.correct,
       }
     })
-    const res = applyWrongUpdates(quiz.subject, cfg.grades.zh, rich)
+    const grade = cfg.grades[quiz.subject === 'zh' ? 'zh' : quiz.subject === 'math' ? 'math' : 'en']
+    const res = applyWrongUpdates(quiz.subject, grade, rich)
     return {
       total: answers.length,
       correct: answers.filter((a) => a.correct).length,

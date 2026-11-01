@@ -16,7 +16,7 @@ Page({
     weekSummary: '',
     stats: { hanzi: 64, words: 39, units: 8 },
     zhReady: true,
-    mathReady: false,
+    mathReady: true,
     enReady: false,
   },
 
@@ -46,10 +46,13 @@ Page({
         'hanzi-dictate': '生字默写',
         'word-dictate': '词语听写',
         'pinyin-choice': '看拼音选字',
+        'math-calc': '口算练习',
+        'math-mixed': '混合运算',
       }
+      const subjName: Record<string, string> = { zh: '语文', math: '数学', en: '英语' }
       this.setData({
         hasHistory: true,
-        lastSummary: `语文 · ${styleName[last.style] || '练习'} · ${last.total} 题 · ${
+        lastSummary: `${subjName[last.subject] || '练习'} · ${styleName[last.style] || '练习'} · ${last.total} 题 · ${
           last.total - last.correct
         } 个错题`,
       })
@@ -99,7 +102,7 @@ Page({
     if (s === 'zh') {
       wx.navigateTo({ url: '/packages/subject-zh/pages/zh-home/index' })
     } else if (s === 'math') {
-      wx.showToast({ title: '数学分包 V1.1 开发中', icon: 'none' })
+      wx.navigateTo({ url: '/packages/subject-math/pages/math-home/index' })
     } else {
       wx.showToast({ title: '英语分包 V1.2 开发中', icon: 'none' })
     }

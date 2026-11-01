@@ -10,6 +10,12 @@ export type QuizType = 'dictate' | 'input' | 'choice'
 /** 语文练习样式（学科二级页入口） */
 export type ZhStyle = 'hanzi-dictate' | 'word-dictate' | 'pinyin-choice'
 
+/** 数学练习样式：口算单步 / 加减乘除混合运算 */
+export type MathStyle = 'math-calc' | 'math-mixed'
+
+/** 口算运算符（可多选） */
+export type MathOp = 'add' | 'sub' | 'mul' | 'div'
+
 /** 汉字词条（db_hanzi / 本地 fallback 同构） */
 export interface HanziItem {
   id: string
@@ -66,19 +72,21 @@ export interface Question {
 /** 出题入参 */
 export interface GenQuizParams {
   subject: Subject
-  style?: ZhStyle
+  style?: ZhStyle | MathStyle
   grade: number
   volume: '上' | '下'
   mode: 'random' | 'unit'
   unit?: number
   count: number
+  /** 数学：口算勾选的运算符（math-calc 用） */
+  ops?: MathOp[]
 }
 
 /** 出题结果 */
 export interface Quiz {
   quizId: string
   subject: Subject
-  style?: ZhStyle
+  style?: ZhStyle | MathStyle
   questions: Question[]
 }
 
@@ -122,7 +130,7 @@ export interface WrongItem {
 export interface QuizLog {
   quizId: string
   subject: Subject
-  style?: ZhStyle
+  style?: ZhStyle | MathStyle
   correct: number
   total: number
   duration: number
