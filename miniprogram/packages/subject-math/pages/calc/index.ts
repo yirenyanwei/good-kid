@@ -1,5 +1,6 @@
 // packages/subject-math/pages/calc/index.ts —— 口算作答页（数字键盘 · 即时判题）
 import { api } from '../../../../utils/cloud-api'
+import { genMathQuiz } from '../../../../utils/math-engine'
 import { GenQuizParams, MathOp, Quiz } from '../../../../utils/types'
 
 type Phase = 'loading' | 'answering' | 'feedback'
@@ -43,25 +44,26 @@ Page({
   },
 
   async start(p: GenQuizParams) {
+    let quiz: Quiz | null = null
     try {
-      const quiz = await api.genQuiz(p)
-      if (quiz.questions.length === 0) {
-        wx.showToast({ title: '出题失败，请重试', icon: 'none' })
-        setTimeout(() => wx.navigateBack(), 800)
-        return
-      }
-      this.setData({
-        quiz,
-        total: quiz.questions.length,
-        results: quiz.questions.map(() => false),
-        phase: 'answering',
-      })
-      this.showQuestion(0)
+      quiz = await api.genQuiz(p)
     } catch (e) {
-      console.error('[calc] genQuiz 失败', e)
-      wx.showToast({ title: '出题失败', icon: 'none' })
-      setTimeout(() => wx.navigateBack(), 800)
+      // 云端不可用：降级本地出题（练习不中断；错题本本地暂存）
+      console.warn('[calc] 云端出题失败，降级本地', e)
+      quiz = genMathQuiz(p)
     }
+    if (!quiz || quiz.questions.length === 0) {
+      wx.showToast({ title: '出题失败，请重试', icon: 'none' })
+      setTimeout(() => wx.navigateBack(), 800)
+      return
+    }
+    this.setData({
+      quiz,
+      total: quiz.questions.length,
+      results: quiz.questions.map(() => false),
+      phase: 'answering',
+    })
+    this.showQuestion(0)
   },
 
   showQuestion(i: number) {

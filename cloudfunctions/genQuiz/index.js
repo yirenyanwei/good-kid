@@ -23,11 +23,30 @@ function shuffle(arr) {
   return a
 }
 
-// 内置词库（与 miniprogram/utils/config.json 同一份字节；由 content/scripts/build-config.py 生成）
+// 内置词库（与 miniprogram/utils/config.ts 同一份数据；由 data/scripts/build-config.py 生成）
 // config.tables['hanzi-3a'] / config.tables['word-zh']；切云库后改查 db_hanzi/db_word_zh
 const CONFIG = require('./data/config.json')
 const HANZI = CONFIG.tables['hanzi-3a']
 const WORDS = CONFIG.tables['word-zh']
+const { buildMathQuiz } = require('./math.js')
+
+/** 数学出题：查 math 错题后委托 math.js 组卷（错题加权，与语文同算法） */
+async function genMath(event) {
+  const { style = 'math-calc', count = 10, ops = ['add'] } = event
+  const { OPENID } = cloud.getWXContext()
+  const wrongMap = new Map()
+  try {
+    const wrongRes = await db
+      .collection('db_wrong_book')
+      .where({ openid: OPENID, subject: 'math', mastered: false })
+      .limit(1000)
+      .get()
+    wrongRes.data.forEach((w) => wrongMap.set(w.itemRef, w))
+  } catch (e) {
+    console.warn('[genQuiz] math 错题本查询失败（首次使用）', e)
+  }
+  return buildMathQuiz(style, Math.min(count, 50), ops, wrongMap)
+}
 
 /** 拼音四选一干扰项：相近字优先（与端上 quiz-engine.ts buildOptions 一致）
  *  分级：同音同调 > 同音异调+同单元 > 同音异调 > 声韵同 > 韵母同 > 声母同 > 同单元 > 随机 */
@@ -78,9 +97,12 @@ function pickSpeakText(x) {
 }
 
 exports.main = async (event) => {
-  const { subject = 'zh', style = 'hanzi-dictate', grade = 3, volume = '上', mode = 'random', unit, count = 10 } = event
+  const { subject = 'zh', style = 'hanzi-dictate', grade = 3, volume = '上', mode = 'random', unit, count = 10, ops } = event
+  if (subject === 'math') {
+    return genMath(event)
+  }
   if (subject !== 'zh') {
-    return { error: 'math/en 云函数 V1.1/V1.2 提供' }
+    return { error: 'en 云函数 V1.2 提供' }
   }
 
   // 该用户错题（加权与毕业过滤）
