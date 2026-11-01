@@ -132,7 +132,19 @@ Page({
       qid: q.qid,
       correct: this.data.results[i],
     }))
-    const summary = await api.submitResult(quiz, answers)
+    let summary
+    try {
+      summary = await api.submitResult(quiz, answers)
+    } catch (e) {
+      // 提交链路彻底失败：仍要出结果页（本轮成绩不丢，仅错题本未更新）
+      console.error('[calc] submitResult 失败，直接结算', e)
+      summary = {
+        total: answers.length,
+        correct: answers.filter((a) => a.correct).length,
+        newWrong: [],
+        graduated: [],
+      }
+    }
     const qs = [
       `correct=${summary.correct}`,
       `total=${summary.total}`,

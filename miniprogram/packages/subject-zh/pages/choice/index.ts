@@ -110,7 +110,18 @@ Page({
       qid: q.qid,
       correct: this.data.results[i],
     }))
-    const summary = await api.submitResult(quiz, answers)
+    let summary
+    try {
+      summary = await api.submitResult(quiz, answers)
+    } catch (e) {
+      console.error('[choice] submitResult 失败，直接结算', e)
+      summary = {
+        total: answers.length,
+        correct: answers.filter((a) => a.correct).length,
+        newWrong: [],
+        graduated: [],
+      }
+    }
     const qs = [
       `correct=${summary.correct}`,
       `total=${summary.total}`,

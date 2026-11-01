@@ -62,27 +62,49 @@ async function callFn<T>(name: string, data: object): Promise<T> {
 
 const CloudImpl: QuizAPI = {
   async genQuiz(params) {
-    return callFn<Quiz>('genQuiz', params)
+    try {
+      return await callFn<Quiz>('genQuiz', params)
+    } catch (e) {
+      // 云端不可用（未部署/网络异常）→ 降回本地出题，练习不中断
+      console.warn('[cloud-api] 云端出题失败，降级本地', e)
+      return params.subject === 'math' ? genMathQuiz(params) : genQuizLocal(params)
+    }
   },
   async submitResult(quiz, answers) {
-    return callFn<SubmitSummary>('submitResult', {
-      quizId: quiz.quizId,
-      subject: quiz.subject,
-      style: quiz.style,
-      questions: quiz.questions.map((q) => ({
-        qid: q.qid,
-        itemRef: q.extra.itemRef,
-        content: q.extra.word || q.answer,
-        detail: q.extra.pinyin || '',
-      })),
-      answers,
-    })
+    try {
+      return await callFn<SubmitSummary>('submitResult', {
+        quizId: quiz.quizId,
+        subject: quiz.subject,
+        style: quiz.style,
+        questions: quiz.questions.map((q) => ({
+          qid: q.qid,
+          itemRef: q.extra.itemRef,
+          content: q.extra.word || q.answer,
+          detail: q.extra.pinyin || '',
+        })),
+        answers,
+      })
+    } catch (e) {
+      // 云端提交失败 → 本地错题本兜底（错题绝不丢）
+      console.warn('[cloud-api] 云端提交失败，降级本地错题本', e)
+      return LocalImpl.submitResult(quiz, answers)
+    }
   },
   async getUserConfig() {
-    return callFn<UserConfig>('userConfig', { action: 'get' })
+    try {
+      return await callFn<UserConfig>('userConfig', { action: 'get' })
+    } catch (e) {
+      console.warn('[cloud-api] 云端配置读取失败，降级本地', e)
+      return getUserConfig()
+    }
   },
   async saveUserConfig(c) {
-    return callFn<void>('userConfig', { action: 'save', config: c })
+    try {
+      return await callFn<void>('userConfig', { action: 'save', config: c })
+    } catch (e) {
+      console.warn('[cloud-api] 云端配置保存失败，降级本地', e)
+      saveUserConfig(c)
+    }
   },
 }
 
