@@ -2,9 +2,9 @@
 """
 build-config.py —— 配置单一真源构建（通用引擎 + 按表校验）
 
-用法：python3 content/scripts/build-config.py
+用法：python3 data/scripts/build-config.py
 
-输入：content/lexicon/*.csv，四段式结构：
+输入：data/csvs/*.csv，四段式结构：
   行1  列名（必须含 id 列，id 为表内主键）
   行2  类型 DSL：string / number / array(string|number) / array(array(string|number))
       一维按 | 分隔，二维外层 | 内层 ,（最多二维）
@@ -14,8 +14,8 @@ build-config.py —— 配置单一真源构建（通用引擎 + 按表校验）
 输出：
   1. miniprogram/utils/config.json            前端加载（zh-data.ts 薄层 import）
   2. cloudfunctions/genQuiz/data/config.json  云函数 require（与前端同一份字节）
-  3. content/dist/db_hanzi.json               云数据库导入文件（按需手动导入）
-  4. content/scripts/id-snapshot.json         id 防改绑快照（请提交进 git）
+  3. data/dist/db_hanzi.json                云数据库导入文件（按需手动导入）
+  4. data/scripts/id-snapshot.json          id 防改绑快照（请提交进 git）
 
 version 由全部表内容 hash 自动生成（v-日期-4位hex），内容一变版本必变。
 
@@ -37,12 +37,12 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-LEXICON = ROOT / "content/lexicon"
-DIST = ROOT / "content/dist"
+LEXICON = ROOT / "data/csvs"
+DIST = ROOT / "data/dist"
 FRONT_JSON = ROOT / "miniprogram/utils/config.json"
 CLOUD_JSON = ROOT / "cloudfunctions/genQuiz/data/config.json"
 DB_HANZI = DIST / "db_hanzi.json"
-SNAPSHOT = ROOT / "content/scripts/id-snapshot.json"
+SNAPSHOT = ROOT / "data/scripts/id-snapshot.json"
 
 G, V = 3, "上"
 TONE_CHARS = set("āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüńňǹ")

@@ -1,4 +1,15 @@
-# content/lexicon —— 配表编辑规范
+# data/csvs —— 配表编辑规范（数据单一真源）
+
+## 目录职责
+
+```
+data/
+  csvs/      ← 数据源 CSV（常改、最重要）Excel 编辑
+  scripts/   ← 构建引擎 build-config.py + id-snapshot.json
+  dist/      ← db_hanzi.json（云数据库导入文件，构建产物）
+```
+
+前端/云函数加载的 config.json 是构建产物，分别位于 `miniprogram/utils/` 和 `cloudfunctions/genQuiz/data/`，不在此目录。
 
 ## 文件结构（四段式）
 
@@ -19,26 +30,26 @@
 - id 语义化：`zh-3-上-u1-晨`（学科-年级-册-单元-字）/ `zw-3-上-u1-早晨`（词语）
 - **表内唯一，永不改绑、永不复用**：错题本 itemRef 用 id 锚定
 - 改错字 = 删旧行 + 加新行（新 id）；插行 = 换新 id，别动已有 id
-- 脚本维护 `content/scripts/id-snapshot.json` 快照，改绑会被构建拦截
+- 脚本维护 `data/scripts/id-snapshot.json` 快照，改绑会被构建拦截
   （若确认有意迁移 id，删除快照文件重跑一次即可重建）
 
 ## 构建流程
 
 ```
-Excel 编辑 CSV → python3 content/scripts/build-config.py → 同步重新部署云函数 genQuiz
+Excel 编辑 CSV → python3 data/scripts/build-config.py → 同步重新部署云函数 genQuiz
 ```
 
 产物（三端同一份数据）：
 - `miniprogram/utils/config.json`（前端 zh-data.ts 薄层加载）
 - `cloudfunctions/genQuiz/data/config.json`（云函数 require）
-- `content/dist/db_hanzi.json`（云数据库手动导入，_id 与 CSV id 一致）
+- `data/dist/db_hanzi.json`（云数据库手动导入，_id 与 CSV id 一致）
 
 version 由内容 hash 自动生成，改数据不用手动记版本号。
 
 ## 新表接入（将来数学/英语）
 
-1. 新建 `content/lexicon/<表名>.csv`（四段式，表名即 JSON key，如 `math-3a-add`）
-2. 在 `content/scripts/build-config.py` 的 `TABLE_RULES` 注册该表的校验函数
+1. 新建 `data/csvs/<表名>.csv`（四段式，表名即 JSON key，如 `math-3a-add`）
+2. 在 `data/scripts/build-config.py` 的 `TABLE_RULES` 注册该表的校验函数
 3. 业务规则（unit 范围、枚举值等）写在各自校验函数里，引擎不含业务
 4. 未注册的表会被构建拒绝（防止无名表混入）
 

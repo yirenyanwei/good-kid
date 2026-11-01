@@ -1,7 +1,7 @@
-// zh-data.ts —— 语文词库薄层（本文件由 content/scripts/build-config.py 生成，勿手改）
-// 数据源（单一真源）：content/lexicon/*.csv → content/dist 同一份 config.json
+// zh-data.ts —— 语文词库薄层（本文件由 data/scripts/build-config.py 生成，勿手改）
+// 数据源（单一真源）：data/csvs/*.csv → 构建产物 config.json
 // 前后端加载同一份字节（云函数：cloudfunctions/genQuiz/data/config.json）
-// 修改词库：Excel 编辑 CSV → 跑 python3 content/scripts/build-config.py → 重新部署云函数
+// 修改词库：Excel 编辑 CSV → 跑 python3 data/scripts/build-config.py → 重新部署云函数
 
 import { HanziItem, WordZhItem } from './types'
 import raw from './config.json'
