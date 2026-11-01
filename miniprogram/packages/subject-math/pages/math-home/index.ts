@@ -12,7 +12,7 @@ const STYLES = [
   {
     key: 'math-mixed',
     name: '混合运算',
-    desc: '加减与乘除混合 · 先乘除后加减',
+    desc: '加减乘除混合 · 含括号题',
     opLabel: '两位算式',
     isNew: true,
   },

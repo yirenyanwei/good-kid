@@ -23,7 +23,7 @@
 
   <view class="card row-card" wx:if="{{style === 'math-mixed'}}">
     <text class="row-label">规则</text>
-    <text class="row-value">加减混合乘除 · 先乘除后加减</text>
+    <text class="row-value">先乘除后加减 · 含括号题</text>
   </view>
 
   <view class="card row-card">
