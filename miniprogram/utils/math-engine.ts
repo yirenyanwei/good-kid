@@ -53,37 +53,78 @@ function genCalcQuestion(ops: MathOp[]): { text: string; answer: number } {
 }
 
 /**
- * 混合运算两位算式：形如 1+2×3 / 100÷5−6。
- * 结构 = a ± (b×c) 或 a ± (d÷e)，加减在前、乘除在后（先算乘除）。
+ * 混合运算两位算式，四种形态轮换（普通三形态 + 括号形态）：
+ *   ① a ± b×c   ② a ± d÷e   ③ d÷e ± f   ④ 带括号（genParenQuestion）
  * 保证：除法整除、最终结果非负整数。
  */
 function genMixedQuestion(): { text: string; answer: number } {
+  const kind = Math.floor(Math.random() * 4)
+  if (kind === 3) return genParenQuestion()
   for (let attempt = 0; attempt < 50; attempt++) {
-    // 二级部分（先算）：乘法 b×c，或除法 dividend÷e（整除）
-    let second: number // 二级部分的值
-    let secondText: string
-    if (Math.random() < 0.5) {
+    let text: string
+    let answer: number
+    if (kind === 0) {
+      // ① a ± b×c（先乘后加减）
       const b = ri(2, 9)
       const c = ri(2, 9)
-      second = b * c
-      secondText = `${b} × ${c}`
-    } else {
+      const second = b * c
+      const isAdd = Math.random() < 0.5
+      const a = isAdd ? ri(1, 30) : ri(second, second + 30)
+      text = `${a} ${isAdd ? '+' : '−'} ${b} × ${c}`
+      answer = isAdd ? a + second : a - second
+    } else if (kind === 1) {
+      // ② a ± d÷e（先除后加减）
       const e = ri(2, 9)
-      const quotient = ri(2, 9) // 商 = 二级部分的值
-      second = quotient
-      secondText = `${e * quotient} ÷ ${e}`
+      const q = ri(2, 9)
+      const isAdd = Math.random() < 0.5
+      const a = isAdd ? ri(1, 30) : ri(q, q + 30)
+      text = `${a} ${isAdd ? '+' : '−'} ${e * q} ÷ ${e}`
+      answer = isAdd ? a + q : a - q
+    } else {
+      // ③ d÷e ± f（除在前）
+      const e = ri(2, 9)
+      const q = ri(2, 9)
+      const isAdd = Math.random() < 0.5
+      const f = isAdd ? ri(1, 30) : Math.min(ri(1, 30), Math.max(q - 1, 1))
+      text = `${e * q} ÷ ${e} ${isAdd ? '+' : '−'} ${f}`
+      answer = isAdd ? q + f : q - f
     }
-    // 一级部分（后算）：a ± second，减法保证非负
-    const isAdd = Math.random() < 0.5
-    const a = isAdd ? ri(1, 30) : ri(second, second + 30)
-    const result = isAdd ? a + second : a - second
-    if (result < 0 || !Number.isInteger(result)) continue
-    return {
-      text: `${a} ${isAdd ? '+' : '−'} ${secondText}`,
-      answer: result,
-    }
+    if (answer < 0 || !Number.isInteger(answer)) continue
+    return { text, answer }
   }
   return { text: `3 + 2 × 4`, answer: 11 } // 兜底（理论到不了）
+}
+
+/** 括号题：(a−b)×c / (a−b)÷c / d÷(a−b)，括号内减法，保证整除与非负 */
+function genParenQuestion(): { text: string; answer: number } {
+  for (let attempt = 0; attempt < 50; attempt++) {
+    const form = Math.floor(Math.random() * 3)
+    if (form === 0) {
+      // (a−b)×c：括号结果 2-9，乘 c 表内
+      const inner = ri(2, 9) // 括号值
+      const b = ri(2, Math.max(inner - 1, 1))
+      const a = inner + b
+      const c = ri(2, 9)
+      return { text: `(${a} − ${b}) × ${c}`, answer: inner * c }
+    }
+    if (form === 1) {
+      // (a−b)÷c：括号值 = c 的 2-9 倍
+      const c = ri(2, 9)
+      const k = ri(2, 9)
+      const inner = c * k
+      const b = ri(2, Math.max(inner - 2, 2))
+      const a = inner + b
+      return { text: `(${a} − ${b}) ÷ ${c}`, answer: k }
+    }
+    // d÷(a−b)：被除数是括号值的 2-9 倍
+    const ab = ri(2, 9) // 括号值
+    const k = ri(2, 9)
+    const d = ab * k
+    const b = ri(2, Math.max(ab - 1, 1))
+    const a = ab + b
+    return { text: `${d} ÷ (${a} − ${b})`, answer: k }
+  }
+  return { text: `(10 − 4) × 3`, answer: 18 } // 兜底（理论到不了）
 }
 
 /** 错题权重：同算式文本的错题条目存在 → 该题重新入卷概率提高（×3 权重） */

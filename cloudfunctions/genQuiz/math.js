@@ -39,29 +39,71 @@ function genCalcQuestion(ops) {
   return { text: `${a} ${OP_SYM[op]} ${b}`, answer: result }
 }
 
-/** 混合运算两位算式：a ± (b×c) 或 a ± (d÷e)，先乘除后加减 */
+/** 混合运算两位算式，四种形态轮换（普通三形态 + 括号形态）：
+ *  ① a ± b×c   ② a ± d÷e   ③ d÷e ± f   ④ 带括号（genParenQuestion）
+ *  保证：除法整除、最终结果非负整数。 */
 function genMixedQuestion() {
+  const kind = Math.floor(Math.random() * 4)
+  if (kind === 3) return genParenQuestion()
   for (let attempt = 0; attempt < 50; attempt++) {
-    let second // 二级部分的值
-    let secondText
-    if (Math.random() < 0.5) {
+    let text
+    let answer
+    if (kind === 0) {
       const b = ri(2, 9)
       const c = ri(2, 9)
-      second = b * c
-      secondText = `${b} × ${c}`
+      const second = b * c
+      const isAdd = Math.random() < 0.5
+      const a = isAdd ? ri(1, 30) : ri(second, second + 30)
+      text = `${a} ${isAdd ? '+' : '−'} ${b} × ${c}`
+      answer = isAdd ? a + second : a - second
+    } else if (kind === 1) {
+      const e = ri(2, 9)
+      const q = ri(2, 9)
+      const isAdd = Math.random() < 0.5
+      const a = isAdd ? ri(1, 30) : ri(q, q + 30)
+      text = `${a} ${isAdd ? '+' : '−'} ${e * q} ÷ ${e}`
+      answer = isAdd ? a + q : a - q
     } else {
       const e = ri(2, 9)
-      const quotient = ri(2, 9) // 商 = 二级部分的值
-      second = quotient
-      secondText = `${e * quotient} ÷ ${e}`
+      const q = ri(2, 9)
+      const isAdd = Math.random() < 0.5
+      const f = isAdd ? ri(1, 30) : Math.min(ri(1, 30), Math.max(q - 1, 1))
+      text = `${e * q} ÷ ${e} ${isAdd ? '+' : '−'} ${f}`
+      answer = isAdd ? q + f : q - f
     }
-    const isAdd = Math.random() < 0.5
-    const a = isAdd ? ri(1, 30) : ri(second, second + 30)
-    const result = isAdd ? a + second : a - second
-    if (result < 0 || !Number.isInteger(result)) continue
-    return { text: `${a} ${isAdd ? '+' : '−'} ${secondText}`, answer: result }
+    if (answer < 0 || !Number.isInteger(answer)) continue
+    return { text, answer }
   }
-  return { text: '3 + 2 × 4', answer: 11 } // 兜底（理论到不了）
+  return { text: '3 + 2 × 4', answer: 11 }
+}
+
+/** 括号题：(a−b)×c / (a−b)÷c / d÷(a−b)，括号内减法，保证整除与非负 */
+function genParenQuestion() {
+  for (let attempt = 0; attempt < 50; attempt++) {
+    const form = Math.floor(Math.random() * 3)
+    if (form === 0) {
+      const inner = ri(2, 9)
+      const b = ri(2, Math.max(inner - 1, 1))
+      const a = inner + b
+      const c = ri(2, 9)
+      return { text: `(${a} − ${b}) × ${c}`, answer: inner * c }
+    }
+    if (form === 1) {
+      const c = ri(2, 9)
+      const k = ri(2, 9)
+      const inner = c * k
+      const b = ri(2, Math.max(inner - 2, 2))
+      const a = inner + b
+      return { text: `(${a} − ${b}) ÷ ${c}`, answer: k }
+    }
+    const ab = ri(2, 9)
+    const k = ri(2, 9)
+    const d = ab * k
+    const b = ri(2, Math.max(ab - 1, 1))
+    const a = ab + b
+    return { text: `${d} ÷ (${a} − ${b})`, answer: k }
+  }
+  return { text: '(10 − 4) × 3', answer: 18 }
 }
 
 /**
