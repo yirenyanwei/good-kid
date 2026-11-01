@@ -15,8 +15,10 @@ build-config.py —— 配置单一真源构建（通用引擎 + 按表校验）
   1. miniprogram/utils/config.ts              前端加载（zh-data.ts 薄层 import；小程序运行时
                                              不支持 require('*.json')，前端产物必须是 ts/js）
   2. cloudfunctions/genQuiz/data/config.json  云函数 require（与前端同一份字节）
-  3. data/dist/db_hanzi.json                云数据库导入文件（按需手动导入）
-  4. data/scripts/id-snapshot.json          id 防改绑快照（请提交进 git）
+  3. data/scripts/id-snapshot.json            id 防改绑快照（请提交进 git）
+
+（历史：曾产出 data/dist/db_hanzi.json 云数据库导入文件，genQuiz 现直读内置
+ config.json，该产物已废弃；将来切云数据库时再恢复即可）
 
 version 由全部表内容 hash 自动生成（v-日期-4位hex），内容一变版本必变。
 
@@ -39,10 +41,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 LEXICON = ROOT / "data/csvs"
-DIST = ROOT / "data/dist"
 FRONT_TS = ROOT / "miniprogram/utils/config.ts"
 CLOUD_JSON = ROOT / "cloudfunctions/genQuiz/data/config.json"
-DB_HANZI = DIST / "db_hanzi.json"
 SNAPSHOT = ROOT / "data/scripts/id-snapshot.json"
 
 G, V = 3, "上"
@@ -270,14 +270,6 @@ def main():
         encoding="utf-8")
     CLOUD_JSON.write_text(text, encoding="utf-8")
 
-    # 云数据库导入文件（hanzi 表，_id 与 CSV id 一致）
-    db_rows = [{
-        "_id": r["id"], "grade": G, "volume": V, "unit": r["unit"],
-        "hanzi": r["hanzi"], "pinyin": r.get("pinyin", ""),
-        "klass": 1, "source": r.get("source", "lesson"), "words": r.get("words", []),
-    } for _, r in tables.get("hanzi-3a", [])]
-    DB_HANZI.write_text(json.dumps(db_rows, ensure_ascii=False, indent=1), encoding="utf-8")
-
     save_snapshot(tables)
 
     print("✓ 构建成功 version=%s" % version)
@@ -285,7 +277,7 @@ def main():
         print("  · %s: %d 行" % (name, len(rows)))
     if old_total:
         print("  · 快照对比通过（旧锚点 %d 个，移除 %d 个）" % (old_total, removed))
-    print("  → miniprogram/utils/config.ts / cloudfunctions/genQuiz/data/config.json / db_hanzi.json 已同步")
+    print("  → miniprogram/utils/config.ts / cloudfunctions/genQuiz/data/config.json / id-snapshot.json 已同步")
 
 
 if __name__ == "__main__":

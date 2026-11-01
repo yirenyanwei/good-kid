@@ -6,10 +6,10 @@
 data/
   csvs/      ← 数据源 CSV（常改、最重要）Excel 编辑
   scripts/   ← 构建引擎 build-config.py + id-snapshot.json
-  dist/      ← db_hanzi.json（云数据库导入文件，构建产物）
 ```
 
-前端/云函数加载的 config.json 是构建产物，分别位于 `miniprogram/utils/` 和 `cloudfunctions/genQuiz/data/`，不在此目录。
+构建产物：前端 `miniprogram/utils/config.ts`、云函数 `cloudfunctions/genQuiz/data/config.json`，不在此目录。
+（云数据库导入文件 db_hanzi.json 已废弃——genQuiz 直读内置 config.json；切云库时再恢复）
 
 ## 文件结构（四段式）
 
@@ -42,8 +42,6 @@ Excel 编辑 CSV → python3 data/scripts/build-config.py → 同步重新部署
 产物（同一份数据的两种包装，均由构建脚本同时生成）：
 - `miniprogram/utils/config.ts`（前端；小程序运行时 require 不支持 *.json，产物必须为 js/ts）
 - `cloudfunctions/genQuiz/data/config.json`（云函数 require，Node 支持 JSON）
-- `data/dist/db_hanzi.json`（云数据库手动导入，_id 与 CSV id 一致）
-
 version 由内容 hash 自动生成，改数据不用手动记版本号。
 
 ## 新表接入（将来数学/英语）
