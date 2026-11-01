@@ -1,10 +1,10 @@
 // zh-data.ts —— 语文词库薄层（本文件由 data/scripts/build-config.py 生成，勿手改）
-// 数据源（单一真源）：data/csvs/*.csv → 构建产物 config.json
-// 前后端加载同一份字节（云函数：cloudfunctions/genQuiz/data/config.json）
+// 数据源（单一真源）：data/csvs/*.csv → 构建产物 config.ts（小程序运行时不支持 require
+// '*.json'，前端产物必须为 js/ts；云端用同数据的 cloudfunctions/genQuiz/data/config.json）
 // 修改词库：Excel 编辑 CSV → 跑 python3 data/scripts/build-config.py → 重新部署云函数
 
 import { HanziItem, WordZhItem } from './types'
-import raw from './config.json'
+import { CONFIG } from './config'
 
 interface ConfigRow {
   id: string
@@ -24,7 +24,7 @@ interface ConfigFile {
 const G = 3
 const V = '上' as const
 
-const config = raw as ConfigFile
+const config = CONFIG as unknown as ConfigFile
 const hanziRows = config.tables['hanzi-3a']
 const wordRows = config.tables['word-zh']
 

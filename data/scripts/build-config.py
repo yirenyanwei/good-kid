@@ -12,7 +12,8 @@ build-config.py —— 配置单一真源构建（通用引擎 + 按表校验）
   行4+ 数据（单元格空 = 该字段缺省；id 列空则报错）
 
 输出：
-  1. miniprogram/utils/config.json            前端加载（zh-data.ts 薄层 import）
+  1. miniprogram/utils/config.ts              前端加载（zh-data.ts 薄层 import；小程序运行时
+                                             不支持 require('*.json')，前端产物必须是 ts/js）
   2. cloudfunctions/genQuiz/data/config.json  云函数 require（与前端同一份字节）
   3. data/dist/db_hanzi.json                云数据库导入文件（按需手动导入）
   4. data/scripts/id-snapshot.json          id 防改绑快照（请提交进 git）
@@ -39,7 +40,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent.parent
 LEXICON = ROOT / "data/csvs"
 DIST = ROOT / "data/dist"
-FRONT_JSON = ROOT / "miniprogram/utils/config.json"
+FRONT_TS = ROOT / "miniprogram/utils/config.ts"
 CLOUD_JSON = ROOT / "cloudfunctions/genQuiz/data/config.json"
 DB_HANZI = DIST / "db_hanzi.json"
 SNAPSHOT = ROOT / "data/scripts/id-snapshot.json"
@@ -260,7 +261,13 @@ def main():
 
     config = {"version": version, "tables": plain}
     text = json.dumps(config, ensure_ascii=False, indent=2) + "\n"
-    FRONT_JSON.write_text(text, encoding="utf-8")
+    # 前端产物必须是 .ts：小程序运行时 require 不支持 *.json（WAService module not defined）
+    FRONT_TS.write_text(
+        "// config.ts —— 词库配置（本文件由 data/scripts/build-config.py 生成，勿手改）\n"
+        "// 数据源：data/csvs/*.csv；云端用同数据的 cloudfunctions/genQuiz/data/config.json\n"
+        f"export const CONFIG = {json.dumps(config, ensure_ascii=False)} as const\n"
+        f"export const CONFIG_VERSION = '{version}'\n",
+        encoding="utf-8")
     CLOUD_JSON.write_text(text, encoding="utf-8")
 
     # 云数据库导入文件（hanzi 表，_id 与 CSV id 一致）
@@ -278,7 +285,7 @@ def main():
         print("  · %s: %d 行" % (name, len(rows)))
     if old_total:
         print("  · 快照对比通过（旧锚点 %d 个，移除 %d 个）" % (old_total, removed))
-    print("  → miniprogram/utils/config.json / cloudfunctions/genQuiz/data/config.json / db_hanzi.json 已同步")
+    print("  → miniprogram/utils/config.ts / cloudfunctions/genQuiz/data/config.json / db_hanzi.json 已同步")
 
 
 if __name__ == "__main__":

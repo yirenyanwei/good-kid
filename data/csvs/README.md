@@ -39,9 +39,9 @@ data/
 Excel 编辑 CSV → python3 data/scripts/build-config.py → 同步重新部署云函数 genQuiz
 ```
 
-产物（三端同一份数据）：
-- `miniprogram/utils/config.json`（前端 zh-data.ts 薄层加载）
-- `cloudfunctions/genQuiz/data/config.json`（云函数 require）
+产物（同一份数据的两种包装，均由构建脚本同时生成）：
+- `miniprogram/utils/config.ts`（前端；小程序运行时 require 不支持 *.json，产物必须为 js/ts）
+- `cloudfunctions/genQuiz/data/config.json`（云函数 require，Node 支持 JSON）
 - `data/dist/db_hanzi.json`（云数据库手动导入，_id 与 CSV id 一致）
 
 version 由内容 hash 自动生成，改数据不用手动记版本号。
