@@ -43,18 +43,32 @@ let currentSettle: (() => void) | null = null
 
 // 顺序化：同一时刻只播一条，避免报词/结束语音重叠
 let playQueue: Promise<unknown> = Promise.resolve()
+/** cutSpeak 加一，排队中的旧请求回来后直接丢掉，不再出声 */
+let speakGen = 0
+
+/** 停掉当前声音，并作废还在合成、还没播的排队。新的 speak 会马上开始 */
+export function cutSpeak(): void {
+  speakGen++
+  stopAll()
+  playQueue = Promise.resolve()
+}
 
 /** 合成并播放一段文本；resolve 在播放完成后触发（含时长 ms） */
 export function speak(text: string, speed: Speed = 'normal'): Promise<number> {
+  const gen = speakGen
   const run = () => new Promise<number>((resolve, reject) => {
-    if (!text) {
-      reject(new Error('empty text'))
+    if (!text || gen !== speakGen) {
+      resolve(0)
       return
     }
     wx.cloud.callFunction({
       name: 'tts',
       data: { text, speed },
       success: (res) => {
+        if (gen !== speakGen) {
+          resolve(0)
+          return
+        }
         const r = res.result as TtsResult
         if (!r || r.code !== 0 || !r.audio) {
           // code 2=未配密钥 3/4=合成失败：静默降级 resolve 0，流程继续（页面已展示文字）
@@ -70,6 +84,10 @@ export function speak(text: string, speed: Speed = 'normal'): Promise<number> {
           filePath: path,
           data: buf,
           success: () => {
+            if (gen !== speakGen) {
+              resolve(0)
+              return
+            }
             stopAll()
             const inner = wx.createInnerAudioContext()
             currentAudio = inner

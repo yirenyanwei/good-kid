@@ -1,6 +1,6 @@
 // packages/subject-zh/pages/choice/index.ts —— 看拼音选字（四选一 · 即时判题）
 import { api } from '../../../../utils/cloud-api'
-import { speak } from '../../../../utils/tts'
+import { cutSpeak, speak } from '../../../../utils/tts'
 import { GenQuizParams, Quiz, Question } from '../../../../utils/types'
 
 type Phase = 'loading' | 'answering' | 'feedback'
@@ -70,8 +70,10 @@ Page({
       answer: q.answer,
       picked: '',
     })
-    // 朗读题目（听发音选字）
-    speak(q.prompt, 'normal').catch(() => {})
+    // 读这个字的音节。不能把拼音字母「pà」丢给语音，否则会读成英文字母 P。
+    // 切题时丢掉上一题还没播完的声音，避免选完先听到上一个字。
+    cutSpeak()
+    speak(q.answer, 'normal').catch(() => {})
   },
 
   pick(e: WechatMiniprogram.TouchEvent) {
@@ -88,8 +90,6 @@ Page({
       results,
       streak: this.streak,
     })
-    // 正确时读出该字（强化字音关联）
-    if (correct) speak(this.data.answer, 'normal').catch(() => {})
     setTimeout(() => this.next(), correct ? 600 : 1300)
   },
 
