@@ -15,13 +15,19 @@
   <!-- 阶段一：报词 -->
   <view wx:if="{{phase === 'dictating'}}" class="dictate-body">
     <view class="speaker" bindtap="togglePause">
-      <view class="speaker-outer">
-        <view class="speaker-inner">
-          <!-- 语义与播放器一致：报词中显示「暂停」按钮（两竖线）；已暂停显示「播放」按钮（三角） -->
-          <view wx:if="{{paused}}" class="triangle"></view>
-          <view wx:else class="pause-bars">
-            <view class="bar"></view>
-            <view class="bar"></view>
+      <view class="ring-wrap">
+        <!-- 环从 12 点顺时针缩短，着色部分 = 这个词还剩的时间 -->
+        <view class="ring" style="background: conic-gradient(var(--purple) {{ringPct}}%, rgba(0,0,0,0.08) 0);"></view>
+        <view class="ring-hole">
+          <view class="speaker-outer">
+            <view class="speaker-inner">
+              <!-- 语义与播放器一致：报词中显示「暂停」按钮（两竖线）；已暂停显示「播放」按钮（三角） -->
+              <view wx:if="{{paused}}" class="triangle"></view>
+              <view wx:else class="pause-bars">
+                <view class="bar"></view>
+                <view class="bar"></view>
+              </view>
+            </view>
           </view>
         </view>
       </view>
@@ -37,6 +43,7 @@
 
     <view class="controls">
       <text class="ctrl" bindtap="replayPrev">上一{{isEn ? '词' : (isWordMode ? '词' : '字')}}</text>
+      <text class="ctrl" bindtap="replayNext">下一{{isEn ? '词' : (isWordMode ? '词' : '字')}}</text>
       <text class="ctrl primary" bindtap="togglePause">{{paused ? '继续' : '暂停'}}</text>
       <text class="ctrl" bindtap="replayCurrent">重听</text>
     </view>

@@ -48,9 +48,32 @@
 .speaker {
   margin-bottom: 40rpx;
 }
+.ring-wrap {
+  position: relative;
+  width: 208rpx;
+  height: 208rpx;
+}
+.ring {
+  width: 208rpx;
+  height: 208rpx;
+  border-radius: 50%;
+  transform: rotate(-90deg);
+}
+.ring-hole {
+  position: absolute;
+  top: 14rpx;
+  right: 14rpx;
+  bottom: 14rpx;
+  left: 14rpx;
+  border-radius: 50%;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .speaker-outer {
-  width: 176rpx;
-  height: 176rpx;
+  width: 180rpx;
+  height: 180rpx;
   border-radius: 50%;
   background: var(--purple-light);
   display: flex;
@@ -130,9 +153,9 @@
 .controls {
   background: #fff;
   border-radius: 28rpx;
-  padding: 24rpx 56rpx;
+  padding: 24rpx 32rpx;
   display: flex;
-  gap: 56rpx;
+  gap: 28rpx;
 }
 .ctrl {
   font-size: 24rpx;

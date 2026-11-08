@@ -67,6 +67,8 @@ Page({
     displayPinyin: '',
     // 补写倒计时
     checkCountdown: CHECK_COUNTDOWN,
+    /** 当前词剩余时间占整词的百分比（100 = 刚开始，0 = 该词时间用完） */
+    ringPct: 100,
     // 对答案
     questions: [] as Question[],
     marked: [] as boolean[], // true = 勾错
@@ -76,6 +78,10 @@ Page({
   quiz: null as Quiz | null,
   timer: null as ReturnType<typeof setInterval> | null,
   countdownTimer: null as ReturnType<typeof setInterval> | null,
+  speakTick: null as ReturnType<typeof setInterval> | null,
+  /** 当前词：已知等待（2s+8s）的剩余与总时长；播报耗时结束后并进总时长，环按剩余/总长收缩 */
+  totalMs: GAP_FIRST_TO_SECOND + GAP_BETWEEN_WORDS,
+  remainMs: GAP_FIRST_TO_SECOND + GAP_BETWEEN_WORDS,
   cancelled: false,
   /** 报词代际：每次开始新报词链（恢复/上一词）+1，旧链检测到代际不符即自杀，防双链竞态 */
   readGen: 0,
@@ -130,6 +136,76 @@ Page({
     }
   },
 
+  /** 环：剩余时间 / 本词总时间。extraMs 是正在播、尚未记入 total 的耗时。过期链不许再画，避免切词后把新环覆盖掉 */
+  paintRing(extraMs: number, gen: number) {
+    if (gen !== this.readGen) return
+    const total = this.totalMs + extraMs
+    const pct = total > 0 ? Math.round((this.remainMs / total) * 100) : 0
+    const clamped = Math.max(0, Math.min(100, pct))
+    if (clamped !== this.data.ringPct) this.setData({ ringPct: clamped })
+  },
+
+  resetWordClock(gen: number) {
+    this.totalMs = GAP_FIRST_TO_SECOND + GAP_BETWEEN_WORDS
+    this.remainMs = this.totalMs
+    this.paintRing(0, gen)
+  },
+
+  /** 播一遍并让环随播报时间收缩。返回 false 表示这条报词链已作废 */
+  async trackSpeak(text: string, gen: number): Promise<boolean> {
+    const t0 = Date.now()
+    // 计时器记在局部：旧链结束时只能清自己的，不能把新词刚装上的计时器清掉
+    const tick = setInterval(() => {
+      if (this.cancelled || gen !== this.readGen || this.data.paused) return
+      this.paintRing(Date.now() - t0, gen)
+    }, 100)
+    this.speakTick = tick
+    try {
+      await speak(text, this.data.speed)
+    } catch (e) {
+      console.warn('[dictate] 播报失败，跳过语音等待', e)
+    } finally {
+      clearInterval(tick)
+      if (this.speakTick === tick) this.speakTick = null
+    }
+    if (gen !== this.readGen || this.cancelled) return false
+    const elapsed = Math.max(0, Date.now() - t0)
+    this.totalMs += elapsed
+    this.paintRing(0, gen)
+    if (!this.data.paused) return true
+    // 朗读被暂停打断：环停在当前进度，继续后只重读这一遍，不把整词倒计时清零
+    if (!(await this.hold(gen))) return false
+    return this.trackSpeak(text, gen)
+  },
+
+  /** 暂停时停在原地，直到继续。返回 false 表示这条报词链已作废 */
+  async hold(gen: number): Promise<boolean> {
+    while (this.data.paused && !this.cancelled && gen === this.readGen) {
+      await wait(80)
+    }
+    return !this.cancelled && gen === this.readGen
+  },
+
+  /** 消耗一段已知等待（词间 2s / 写字 8s），暂停时冻结剩余时间 */
+  async drain(ms: number, gen: number): Promise<boolean> {
+    let left = ms
+    while (left > 0 && !this.cancelled) {
+      if (gen !== this.readGen) return false
+      if (this.data.paused) {
+        await wait(100)
+        continue
+      }
+      const step = Math.min(100, left)
+      await wait(step)
+      if (gen !== this.readGen) return false
+      if (this.data.paused) continue
+      left -= step
+      this.remainMs = Math.max(0, this.remainMs - step)
+      this.paintRing(0, gen)
+    }
+    return !this.cancelled && gen === this.readGen
+  },
+
   /** 递归：播报第 idx 个词（报两遍）。gen = 本次链的代际号 */
   async readNext(idx: number, gen?: number) {
     const g = gen ?? ++this.readGen
@@ -140,33 +216,22 @@ Page({
     }
     const q = this.data.questions[idx]
     const text = q.extra.speakText || q.answer
+    this.resetWordClock(g)
     this.setData({
       index: idx,
       passLabel: '第 1 遍',
       display: buildDisplay(q, this.data.isWordMode),
       displayPinyin: this.data.isWordMode ? (q.extra.meaning || q.extra.pinyin || '') : '',
     })
-    try {
-      // 第 1 遍：正常语速
-      await speak(text, this.data.speed)
-      if (g !== this.readGen) return // 旧链自杀
-      await wait(GAP_FIRST_TO_SECOND)
-      if (g !== this.readGen) return
-      if (this.cancelled || this.data.paused) return
-      // 第 2 遍：同样正常语速（慢速实测更听不清，已弃用）
-      this.setData({ passLabel: '第 2 遍' })
-      await speak(text, this.data.speed)
-      if (g !== this.readGen) return
-    } catch (e) {
-      console.warn('[dictate] 播报失败，跳过语音等待', e)
-    }
-    // 8 秒词间倒计时（暂停冻结）
-    let waited = 0
-    while (waited < GAP_BETWEEN_WORDS && !this.cancelled) {
-      await wait(500)
-      if (g !== this.readGen) return // 旧链自杀
-      if (!this.data.paused) waited += 500
-    }
+    const ok1 = await this.trackSpeak(text, g)
+    if (!ok1) return
+    if (!(await this.drain(GAP_FIRST_TO_SECOND, g))) return
+    // 第 2 遍：同样正常语速（慢速实测更听不清，已弃用）
+    this.setData({ passLabel: '第 2 遍' })
+    const ok2 = await this.trackSpeak(text, g)
+    if (!ok2) return
+    // 8 秒写字时间，环在这段走完
+    if (!(await this.drain(GAP_BETWEEN_WORDS, g))) return
     this.readNext(idx + 1, g)
   },
 
@@ -201,13 +266,35 @@ Page({
     const next = !this.data.paused
     this.setData({ paused: next })
     if (next) {
-      // 暂停：立即停掉正在播的音频（onStop/看门狗会 resolve 队列，卡不住）；
-      // 进行中的 readNext 循环检测 paused 后自动停在当前词
+      // 暂停：停掉正在播的音频。倒计时环停在当前进度，不重新计算
       stopAll()
-    } else {
-      // 恢复：新代际链从当前词重新报起（旧链因代际不符自杀，不会双链并行）
-      this.readNext(this.data.index)
     }
+    // 继续：原来的报词链在 hold/drain 里等着，从剩余时间接着走
+  },
+
+  /** 切到另一个词。先解除暂停，再让旧链作废 */
+  jumpTo(idx: number) {
+    if (this.data.phase !== 'dictating') return
+    if (idx < 0) {
+      wx.showToast({ title: '已是第一个', icon: 'none' })
+      return
+    }
+    // 先作废旧链并拆掉它的计时器，再停音频。否则旧链收尾会清掉新词的进度环，
+    // 新词朗读期间环停在半路，播完才一次性跳一截
+    this.readGen++
+    if (this.speakTick) {
+      clearInterval(this.speakTick)
+      this.speakTick = null
+    }
+    this.setData({ paused: false, ringPct: 100 })
+    this.totalMs = GAP_FIRST_TO_SECOND + GAP_BETWEEN_WORDS
+    this.remainMs = this.totalMs
+    stopAll()
+    if (idx >= this.data.total) {
+      this.finishReading()
+      return
+    }
+    this.readNext(idx, this.readGen)
   },
 
   replayCurrent() {
@@ -217,11 +304,11 @@ Page({
   },
 
   replayPrev() {
-    if (this.data.index === 0) {
-      wx.showToast({ title: '已是第一个', icon: 'none' })
-      return
-    }
-    this.readNext(this.data.index - 1)
+    this.jumpTo(this.data.index - 1)
+  },
+
+  replayNext() {
+    this.jumpTo(this.data.index + 1)
   },
   // ---- 对答案：点卡勾错（可反复切换） ----
   toggleMark(e: WechatMiniprogram.TouchEvent) {
@@ -311,8 +398,10 @@ Page({
   clearTimers() {
     if (this.timer) clearInterval(this.timer)
     if (this.countdownTimer) clearInterval(this.countdownTimer)
+    if (this.speakTick) clearInterval(this.speakTick)
     this.timer = null
     this.countdownTimer = null
+    this.speakTick = null
   },
 
   onUnload() {
