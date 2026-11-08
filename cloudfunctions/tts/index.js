@@ -13,9 +13,13 @@ const ENDPOINT = 'tts.tencentcloudapi.com'
 const SERVICE = 'tts'
 const REGION = 'ap-guangzhou'
 
-// 基础语音合成音色：101002（智聆，通用女声·精品）——客服播报类标准清晰音色
-// 咬字比情感音色硬朗，报词场景声母清晰度优先（101001 智瑜是情感女声，f/b 等唇齿音偏柔易混）
-const VOICE = 101002
+// 精品音色。中文、英文不共用；不在表里的 id 退回智聆，避免误传大模型音色
+const ZH_VOICES = {
+  101002: 1, 101016: 1, 101015: 1, 101001: 1, 101055: 1, 101026: 1, 101027: 1,
+  101011: 1, 101004: 1, 101030: 1, 101054: 1, 101013: 1, 101021: 1,
+}
+const EN_VOICES = { 101050: 2, 101051: 2 }
+const DEFAULT_VOICE = 101002
 
 function sha256Hex(msg) {
   return crypto.createHash('sha256').update(msg).digest('hex')
@@ -106,6 +110,9 @@ async function callTencentTTS(secretId, secretKey, payload) {
 
 exports.main = async (event) => {
   const { text, speed = 'normal' } = event
+  const requested = Number(event.voice)
+  const voice = EN_VOICES[requested] || ZH_VOICES[requested] ? requested : DEFAULT_VOICE
+  const primaryLanguage = EN_VOICES[voice] ? 2 : 1
   if (!text || typeof text !== 'string') {
     return { code: 1, message: 'text required' }
   }
@@ -125,8 +132,8 @@ exports.main = async (event) => {
       ModelType: 1,
       Volume: 5, // 范围 [0,10]，拉大音量保证手机外放清晰
       Speed: SPEED_MAP[speed] || 0,
-      VoiceType: VOICE,
-      PrimaryLanguage: 1, // 中文
+      VoiceType: voice,
+      PrimaryLanguage: primaryLanguage,
       SampleRate: 16000,
       Codec: 'mp3',
     })

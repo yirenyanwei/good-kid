@@ -19,17 +19,9 @@
       <text class="row-val">{{grade}}年级 · {{volume}}册</text>
     </view>
     <view class="divider"></view>
-    <view class="row">
-      <text class="row-label">报词语速</text>
-      <view class="speeds">
-        <view
-          wx:for="{{speeds}}"
-          wx:key="key"
-          class="s-chip {{speed === item.key ? 'on' : ''}}"
-          bindtap="setSpeed"
-          data-s="{{item.key}}"
-        >{{item.name}}</view>
-      </view>
+    <view class="row" bindtap="goSpeech">
+      <text class="row-label">发音设置</text>
+      <text class="row-val">{{speechSummary}} ›</text>
     </view>
     <view class="divider"></view>
     <view class="row" bindtap="toggleWeighted">

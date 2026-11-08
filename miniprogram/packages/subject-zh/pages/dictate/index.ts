@@ -8,7 +8,7 @@
 //   6. 提交 → 结果页
 import { api } from '../../../../utils/cloud-api'
 import { speak, wait, stopAll, Speed } from '../../../../utils/tts'
-import { setDictateDraft, clearWrongDraft } from '../../../../utils/storage'
+import { setDictateDraft, clearWrongDraft, getUserConfig } from '../../../../utils/storage'
 import { readNavSafeArea, armLeaveGuard, disarmLeaveGuard } from '../../../../utils/nav'
 import { GenQuizParams, Quiz, Question, ZhStyle, EnStyle, Subject } from '../../../../utils/types'
 
@@ -88,6 +88,9 @@ Page({
   cancelled: false,
   /** 报词代际：每次开始新报词链（恢复/上一词）+1，旧链检测到代际不符即自杀，防双链竞态 */
   readGen: 0,
+  zhVoice: 101002,
+  enVoice: 101051,
+  zhSpeed: 'normal' as Speed,
 
   onLoad(query: Record<string, string | undefined>) {
     const nav = readNavSafeArea()
@@ -95,9 +98,13 @@ Page({
     armLeaveGuard('退出后本轮进度将作废')
     const subject: Subject = query.subject === 'en' ? 'en' : 'zh'
     const style = (query.style || (subject === 'en' ? 'word-en-dictate' : 'hanzi-dictate')) as ZhStyle | EnStyle
-    const speed = (query.speed as Speed) || 'normal'
     const mode = (query.mode as 'random' | 'unit') || 'random'
     const isEn = subject === 'en' || style === 'word-en-dictate'
+    const cfg = getUserConfig()
+    this.zhVoice = cfg.speechZh.voice
+    this.enVoice = cfg.speechEn.voice
+    this.zhSpeed = cfg.speechZh.speed
+    const speed = (query.speed as Speed) || (isEn ? cfg.speechEn.speed : cfg.speechZh.speed)
     const p: GenQuizParams = {
       subject: isEn ? 'en' : 'zh',
       style,
@@ -158,7 +165,7 @@ Page({
   },
 
   /** 播一遍并让环随播报时间收缩。返回 false 表示这条报词链已作废 */
-  async trackSpeak(text: string, gen: number): Promise<boolean> {
+  async trackSpeak(text: string, gen: number, voice: number, speed?: Speed): Promise<boolean> {
     const t0 = Date.now()
     // 计时器记在局部：旧链结束时只能清自己的，不能把新词刚装上的计时器清掉
     const tick = setInterval(() => {
@@ -166,8 +173,9 @@ Page({
       this.paintRing(Date.now() - t0, gen)
     }, 100)
     this.speakTick = tick
+    const spd = speed || this.data.speed
     try {
-      await speak(text, this.data.speed)
+      await speak(text, spd, voice)
     } catch (e) {
       console.warn('[dictate] 播报失败，跳过语音等待', e)
     } finally {
@@ -181,7 +189,19 @@ Page({
     if (!this.data.paused) return true
     // 朗读被暂停打断：环停在当前进度，继续后只重读这一遍，不把整词倒计时清零
     if (!(await this.hold(gen))) return false
-    return this.trackSpeak(text, gen)
+    return this.trackSpeak(text, gen, voice, spd)
+  },
+
+  /** 英语：单词用英语音色，逗号后的中文意思用中文音色。语文整句用中文音色 */
+  async speakLine(text: string, gen: number): Promise<boolean> {
+    if (!this.data.isEn) return this.trackSpeak(text, gen, this.zhVoice)
+    const cut = text.indexOf('，')
+    if (cut <= 0) return this.trackSpeak(text, gen, this.enVoice)
+    const word = text.slice(0, cut)
+    const gloss = text.slice(cut + 1)
+    if (!(await this.trackSpeak(word, gen, this.enVoice))) return false
+    if (!gloss) return true
+    return this.trackSpeak(gloss, gen, this.zhVoice, this.zhSpeed)
   },
 
   /** 暂停时停在原地，直到继续。返回 false 表示这条报词链已作废 */
@@ -229,12 +249,12 @@ Page({
       display: buildDisplay(q, this.data.isWordMode),
       displayPinyin: this.data.isWordMode ? (q.extra.meaning || q.extra.pinyin || '') : '',
     })
-    const ok1 = await this.trackSpeak(text, g)
+    const ok1 = await this.speakLine(text, g)
     if (!ok1) return
     if (!(await this.drain(GAP_FIRST_TO_SECOND, g))) return
     // 第 2 遍：同样正常语速（慢速实测更听不清，已弃用）
     this.setData({ passLabel: '第 2 遍' })
-    const ok2 = await this.trackSpeak(text, g)
+    const ok2 = await this.speakLine(text, g)
     if (!ok2) return
     // 8 秒写字时间，环在这段走完
     if (!(await this.drain(GAP_BETWEEN_WORDS, g))) return
@@ -245,7 +265,7 @@ Page({
   async finishReading() {
     this.setData({ phase: 'finished-reading', passLabel: '' })
     try {
-      await speak('听写结束，请检查', this.data.speed)
+      await speak('听写结束，请检查', this.zhSpeed, this.zhVoice)
     } catch {
       /* 静默 */
     }
@@ -306,7 +326,19 @@ Page({
   replayCurrent() {
     const q = this.data.questions[this.data.index]
     if (!q) return
-    speak(q.extra.speakText || q.answer, this.data.speed).catch(() => {})
+    const text = q.extra.speakText || q.answer
+    if (!this.data.isEn) {
+      speak(text, this.data.speed, this.zhVoice).catch(() => {})
+      return
+    }
+    const cut = text.indexOf('，')
+    if (cut <= 0) {
+      speak(text, this.data.speed, this.enVoice).catch(() => {})
+      return
+    }
+    speak(text.slice(0, cut), this.data.speed, this.enVoice)
+      .then(() => speak(text.slice(cut + 1), this.zhSpeed, this.zhVoice))
+      .catch(() => {})
   },
 
   replayPrev() {

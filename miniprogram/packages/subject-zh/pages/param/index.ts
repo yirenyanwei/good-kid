@@ -61,7 +61,7 @@ Page({
       count: Math.min(this.data.count, realMax),
       mode,
       unit,
-      speed: cfg.speed,
+      speed: cfg.speechZh.speed,
       poolNote:
         realMax < meta.max
           ? `当前范围内共 ${realMax} ${meta.unitLabel}，最多出 ${realMax} ${meta.unitLabel}`
@@ -87,6 +87,7 @@ Page({
   pickSpeed(e: WechatMiniprogram.TouchEvent) {
     const s = e.currentTarget.dataset.s as 'slow' | 'normal' | 'fast'
     const cfg = getUserConfig()
+    cfg.speechZh.speed = s
     cfg.speed = s
     wx.setStorageSync('gk_user_config', cfg)
     this.setData({ speed: s })

@@ -54,7 +54,7 @@ export function cutSpeak(): void {
 }
 
 /** 合成并播放一段文本；resolve 在播放完成后触发（含时长 ms） */
-export function speak(text: string, speed: Speed = 'normal'): Promise<number> {
+export function speak(text: string, speed: Speed = 'normal', voice = 101002): Promise<number> {
   const gen = speakGen
   const run = () => new Promise<number>((resolve, reject) => {
     if (!text || gen !== speakGen) {
@@ -63,7 +63,7 @@ export function speak(text: string, speed: Speed = 'normal'): Promise<number> {
     }
     wx.cloud.callFunction({
       name: 'tts',
-      data: { text, speed },
+      data: { text, speed, voice },
       success: (res) => {
         if (gen !== speakGen) {
           resolve(0)

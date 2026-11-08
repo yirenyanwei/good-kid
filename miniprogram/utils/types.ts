@@ -122,11 +122,21 @@ export interface SubmitSummary {
   graduated: string[]
 }
 
+/** 某一科的发音：语速和音色分开记，中英文音色不能混用 */
+export interface SpeechPref {
+  speed: 'slow' | 'normal' | 'fast'
+  /** 腾讯云精品音色 VoiceType */
+  voice: number
+}
+
 /** 用户配置 */
 export interface UserConfig {
   grades: { zh: number; math: number; en: number }
   volume: '上' | '下'
+  /** 旧字段，与 speechZh.speed 保持一致 */
   speed: 'slow' | 'normal' | 'fast'
+  speechZh: SpeechPref
+  speechEn: SpeechPref
   weightedQuiz: boolean
 }
 

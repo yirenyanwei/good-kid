@@ -12,15 +12,34 @@ const DEFAULT_CONFIG: UserConfig = {
   grades: { zh: 3, math: 3, en: 3 },
   volume: '上',
   speed: 'normal',
+  speechZh: { speed: 'normal', voice: 101002 },
+  speechEn: { speed: 'normal', voice: 101051 },
   weightedQuiz: true,
 }
 
+function asSpeed(v: unknown): 'slow' | 'normal' | 'fast' {
+  return v === 'slow' || v === 'fast' ? v : 'normal'
+}
+
+/** 旧配置只有一个 speed。补上中英文各自的语速和音色后再用 */
 export function getUserConfig(): UserConfig {
   const c = wx.getStorageSync<UserConfig>(K_CONFIG)
   if (!c || !c.grades) {
     saveUserConfig(DEFAULT_CONFIG)
     return DEFAULT_CONFIG
   }
+  const speed = asSpeed(c.speed)
+  let changed = false
+  if (!c.speechZh || !c.speechZh.voice) {
+    c.speechZh = { speed, voice: 101002 }
+    changed = true
+  }
+  if (!c.speechEn || !c.speechEn.voice) {
+    c.speechEn = { speed, voice: 101051 }
+    changed = true
+  }
+  c.speed = c.speechZh.speed
+  if (changed) saveUserConfig(c)
   return c
 }
 

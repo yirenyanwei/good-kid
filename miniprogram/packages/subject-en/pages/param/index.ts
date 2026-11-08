@@ -47,7 +47,7 @@ Page({
       count: Math.min(10, safeMax),
       mode,
       unit,
-      speed: cfg.speed,
+      speed: cfg.speechEn.speed,
       poolNote:
         realMax < cap && realMax > 0
           ? `当前范围内共 ${realMax} 个单词，最多出 ${realMax} 个`
@@ -73,7 +73,7 @@ Page({
   pickSpeed(e: WechatMiniprogram.TouchEvent) {
     const s = e.currentTarget.dataset.s as 'slow' | 'normal' | 'fast'
     const cfg = getUserConfig()
-    cfg.speed = s
+    cfg.speechEn.speed = s
     wx.setStorageSync('gk_user_config', cfg)
     this.setData({ speed: s })
   },

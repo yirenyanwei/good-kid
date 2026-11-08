@@ -1,5 +1,6 @@
 // pages/mine/index.ts —— 我的 / 设置
 import { getUserConfig, saveUserConfig, weeklyStats } from '../../utils/storage'
+import { ZH_VOICES, EN_VOICES, voiceName } from '../../utils/voices'
 
 Page({
   data: {
@@ -7,13 +8,8 @@ Page({
     // 设置
     grade: 3,
     volume: '上' as '上' | '下',
-    speed: 'normal' as 'slow' | 'normal' | 'fast',
     weighted: true,
-    speeds: [
-      { key: 'slow', name: '慢' },
-      { key: 'normal', name: '中' },
-      { key: 'fast', name: '快' },
-    ],
+    speechSummary: '智聆 / WeRose',
   },
 
   onShow() {
@@ -22,8 +18,8 @@ Page({
     this.setData({
       grade: cfg.grades.zh,
       volume: cfg.volume,
-      speed: cfg.speed,
       weighted: cfg.weightedQuiz,
+      speechSummary: `${voiceName(ZH_VOICES, cfg.speechZh.voice, '智聆')} / ${voiceName(EN_VOICES, cfg.speechEn.voice, 'WeRose')}`,
       weekSummary:
         ws.count > 0
           ? `${ws.count} 次 · ${ws.correctRate}% · 消灭 ${ws.killed} 题`
@@ -40,12 +36,8 @@ Page({
     })
   },
 
-  setSpeed(e: WechatMiniprogram.TouchEvent) {
-    const s = e.currentTarget.dataset.s as 'slow' | 'normal' | 'fast'
-    const cfg = getUserConfig()
-    cfg.speed = s
-    saveUserConfig(cfg)
-    this.setData({ speed: s })
+  goSpeech() {
+    wx.navigateTo({ url: '/pages/speech/index' })
   },
 
   toggleWeighted() {

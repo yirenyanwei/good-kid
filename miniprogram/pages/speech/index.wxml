@@ -1,0 +1,50 @@
+<view class="page">
+  <text class="label">中文</text>
+  <view class="card">
+    <text class="row-label">语速</text>
+    <view class="chips">
+      <view
+        wx:for="{{speeds}}"
+        wx:key="key"
+        class="chip {{zhSpeed === item.key ? 'on' : ''}}"
+        bindtap="setZhSpeed"
+        data-s="{{item.key}}"
+      >{{item.name}}</view>
+    </view>
+    <text class="row-label gap">音色</text>
+    <view class="chips">
+      <view
+        wx:for="{{zhVoices}}"
+        wx:key="id"
+        class="chip {{zhVoice === item.id ? 'on' : ''}}"
+        bindtap="setZhVoice"
+        data-id="{{item.id}}"
+      >{{item.name}} · {{item.desc}}</view>
+    </view>
+  </view>
+
+  <text class="label">英语</text>
+  <view class="card">
+    <text class="row-label">语速</text>
+    <view class="chips">
+      <view
+        wx:for="{{speeds}}"
+        wx:key="key"
+        class="chip {{enSpeed === item.key ? 'on' : ''}}"
+        bindtap="setEnSpeed"
+        data-s="{{item.key}}"
+      >{{item.name}}</view>
+    </view>
+    <text class="row-label gap">音色</text>
+    <view class="chips">
+      <view
+        wx:for="{{enVoices}}"
+        wx:key="id"
+        class="chip {{enVoice === item.id ? 'on' : ''}}"
+        bindtap="setEnVoice"
+        data-id="{{item.id}}"
+      >{{item.name}} · {{item.desc}}</view>
+    </view>
+    <text class="note">单词用英语音色读。后面的中文意思仍用上面的中文音色，英语音色不读汉字。</text>
+  </view>
+</view>

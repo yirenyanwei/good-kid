@@ -3,6 +3,7 @@
     "pages/home/index",
     "pages/wrong-book/index",
     "pages/mine/index",
+    "pages/speech/index",
     "pages/result/index"
   ],
   "subPackages": [

@@ -1,0 +1,48 @@
+.page {
+  padding: 24rpx 28rpx 60rpx;
+}
+.label {
+  font-size: 22rpx;
+  color: var(--faint);
+  display: block;
+  margin: 8rpx 0 12rpx 4rpx;
+}
+.card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx 28rpx 28rpx;
+  margin-bottom: 28rpx;
+}
+.row-label {
+  font-size: 26rpx;
+  display: block;
+  margin-bottom: 16rpx;
+}
+.row-label.gap {
+  margin-top: 28rpx;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+.chip {
+  border-radius: 14rpx;
+  padding: 10rpx 22rpx;
+  font-size: 24rpx;
+  border: 2rpx solid var(--border2);
+  color: var(--sub);
+}
+.chip.on {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+  font-weight: 600;
+}
+.note {
+  display: block;
+  margin-top: 20rpx;
+  font-size: 22rpx;
+  color: var(--faint);
+  line-height: 1.5;
+}

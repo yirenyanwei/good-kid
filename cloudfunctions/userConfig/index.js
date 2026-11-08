@@ -9,6 +9,8 @@ const DEFAULT_CONFIG = {
   grades: { zh: 3, math: 3, en: 3 },
   volume: '上',
   speed: 'normal',
+  speechZh: { speed: 'normal', voice: 101002 },
+  speechEn: { speed: 'normal', voice: 101051 },
   weightedQuiz: true,
 }
 
