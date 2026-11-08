@@ -9,7 +9,7 @@
 import { api } from '../../../../utils/cloud-api'
 import { speak, wait, stopAll, Speed } from '../../../../utils/tts'
 import { setDictateDraft, clearWrongDraft } from '../../../../utils/storage'
-import { GenQuizParams, Quiz, Question, ZhStyle } from '../../../../utils/types'
+import { GenQuizParams, Quiz, Question, ZhStyle, EnStyle, Subject } from '../../../../utils/types'
 
 const GAP_FIRST_TO_SECOND = 2000 // 第 1 遍后停 2 秒
 const GAP_BETWEEN_WORDS = 8000 // 词间 8 秒
@@ -51,8 +51,10 @@ function buildDisplay(q: Question, isWordMode: boolean): DisplaySeg[] {
 Page({
   data: {
     phase: 'loading' as Phase,
-    style: 'hanzi-dictate' as ZhStyle,
+    subject: 'zh' as Subject,
+    style: 'hanzi-dictate' as ZhStyle | EnStyle,
     isWordMode: false,
+    isEn: false,
     speed: 'normal' as Speed,
     // 报词状态
     index: 0,
@@ -79,19 +81,27 @@ Page({
   readGen: 0,
 
   onLoad(query: Record<string, string | undefined>) {
-    const style = (query.style || 'hanzi-dictate') as ZhStyle
+    const subject: Subject = query.subject === 'en' ? 'en' : 'zh'
+    const style = (query.style || (subject === 'en' ? 'word-en-dictate' : 'hanzi-dictate')) as ZhStyle | EnStyle
     const speed = (query.speed as Speed) || 'normal'
     const mode = (query.mode as 'random' | 'unit') || 'random'
+    const isEn = subject === 'en' || style === 'word-en-dictate'
     const p: GenQuizParams = {
-      subject: 'zh',
+      subject: isEn ? 'en' : 'zh',
       style,
       grade: Number(query.grade || 3),
       volume: '上',
       mode,
       unit: query.unit ? Number(query.unit) : undefined,
-      count: Math.min(Number(query.count || 10), 15),
+      count: Math.min(Number(query.count || 10), isEn ? 20 : 15),
     }
-    this.setData({ style, speed, isWordMode: style === 'word-dictate' })
+    this.setData({
+      subject: isEn ? 'en' : 'zh',
+      style,
+      speed,
+      isWordMode: style === 'word-dictate' || isEn,
+      isEn,
+    })
     this.startQuiz(p)
   },
 
@@ -104,7 +114,7 @@ Page({
         return
       }
       this.quiz = quiz
-      setDictateDraft(quiz.quizId, 'zh')
+      setDictateDraft(quiz.quizId, p.subject)
       this.setData({
         questions: quiz.questions,
         marked: quiz.questions.map(() => false),
@@ -134,7 +144,7 @@ Page({
       index: idx,
       passLabel: '第 1 遍',
       display: buildDisplay(q, this.data.isWordMode),
-      displayPinyin: this.data.isWordMode ? (q.extra.pinyin || '') : '',
+      displayPinyin: this.data.isWordMode ? (q.extra.meaning || q.extra.pinyin || '') : '',
     })
     try {
       // 第 1 遍：正常语速

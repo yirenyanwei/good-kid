@@ -1,6 +1,12 @@
 // pages/home/index.ts —— 首页（主 CTA 继续昨天 + 三科卡 + 周报摘要条）
-import { getUserConfig } from '../../utils/storage'
+import { getUserConfig, saveUserConfig } from '../../utils/storage'
 import { zhDataStats } from '../../utils/zh-data'
+
+/** 年级选择写进 data-g 后，微信会把数字收成字符串，"3" === 3 会把三年级判成未就绪 */
+function asGrade(v: unknown): number {
+  const n = Number(v)
+  return n >= 1 && n <= 6 ? n : 3
+}
 
 Page({
   data: {
@@ -17,7 +23,7 @@ Page({
     stats: { hanzi: 64, words: 39, units: 8 },
     zhReady: true,
     mathReady: true,
-    enReady: false,
+    enReady: true,
   },
 
   onLoad() {
@@ -25,11 +31,18 @@ Page({
     const sys = wx.getWindowInfo()
     this.setData({ statusBarHeight: sys.statusBarHeight || 20 })
     const cfg = getUserConfig()
+    const grade = asGrade(cfg.grades.zh)
+    cfg.grades.zh = grade
+    cfg.grades.math = asGrade(cfg.grades.math)
+    cfg.grades.en = asGrade(cfg.grades.en)
+    saveUserConfig(cfg)
     this.setData({
-      grade: cfg.grades.zh,
+      grade,
       volume: cfg.volume,
       stats: zhDataStats(),
-      hasHistory: cfg.grades.zh === 3, // V0 词库仅三年级
+      zhReady: grade === 3,
+      enReady: grade === 3,
+      hasHistory: grade === 3, // 词库仅三年级
     })
     this.refreshLast()
   },
@@ -48,6 +61,7 @@ Page({
         'pinyin-choice': '看拼音选字',
         'math-calc': '口算练习',
         'math-mixed': '混合运算',
+        'word-en-dictate': '单词默写',
       }
       const subjName: Record<string, string> = { zh: '语文', math: '数学', en: '英语' }
       this.setData({
@@ -78,13 +92,13 @@ Page({
   },
   noop() {},
   pickGrade(e: WechatMiniprogram.TouchEvent) {
-    const g = e.currentTarget.dataset.g as number
+    const g = asGrade(e.currentTarget.dataset.g)
     const cfg = getUserConfig()
     cfg.grades.zh = g
     cfg.grades.math = g
-    cfg.grades.en = Math.max(g, 3) // 英语三年级起
+    cfg.grades.en = g
     wx.setStorageSync('gk_user_config', cfg)
-    this.setData({ grade: g, showGradeSheet: false, zhReady: g === 3 })
+    this.setData({ grade: g, showGradeSheet: false, zhReady: g === 3, enReady: g === 3 })
   },
 
   // ---- 主 CTA：继续昨天 → 直接开一卷生字默写 ----
@@ -103,8 +117,10 @@ Page({
       wx.navigateTo({ url: '/packages/subject-zh/pages/zh-home/index' })
     } else if (s === 'math') {
       wx.navigateTo({ url: '/packages/subject-math/pages/math-home/index' })
+    } else if (!this.data.enReady) {
+      wx.showToast({ title: '该年级词库整理中', icon: 'none' })
     } else {
-      wx.showToast({ title: '英语分包 V1.2 开发中', icon: 'none' })
+      wx.navigateTo({ url: '/packages/subject-en/pages/en-home/index' })
     }
   },
 })

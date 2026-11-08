@@ -1,7 +1,7 @@
 // app.ts —— 全局入口：云开发初始化（可选）+ 全局样式变量由 app.wxss 承载
 App({
   globalData: {
-    // 云端出题已上线（genQuiz 支持 zh+math）；云不可用时各页面自行降级本地出题
+    // 云端出题已上线（genQuiz 支持语文 / 数学 / 英语）；云不可用时降级本地出题
     cloudEnabled: true,
     envId: '',
   },

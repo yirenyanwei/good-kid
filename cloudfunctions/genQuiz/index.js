@@ -28,7 +28,15 @@ function shuffle(arr) {
 const CONFIG = require('./data/config.json')
 const HANZI = CONFIG.tables['hanzi-3a']
 const WORDS = CONFIG.tables['word-zh']
+const WORD_EN = CONFIG.tables['word-en'] || []
 const { buildMathQuiz } = require('./math.js')
+
+/** 英语报词：先读单词，再读中文释义第一义（与端上 quiz-engine enSpeakText 一致；orange / nice 靠释义消歧） */
+function enSpeakText(word, meaning) {
+  const stripped = String(meaning || '').replace(/（[^）]*）/g, '').trim()
+  const first = (stripped.split('；')[0] || stripped || meaning || '').trim()
+  return first ? word + '，' + first : word
+}
 
 /** 数学出题：查 math 错题后委托 math.js 组卷（错题加权，与语文同算法） */
 async function genMath(event) {
@@ -101,8 +109,8 @@ exports.main = async (event) => {
   if (subject === 'math') {
     return genMath(event)
   }
-  if (subject !== 'zh') {
-    return { error: 'en 云函数 V1.2 提供' }
+  if (subject !== 'zh' && subject !== 'en') {
+    return { error: '未知学科' }
   }
 
   // 该用户错题（加权与毕业过滤）
@@ -119,9 +127,11 @@ exports.main = async (event) => {
     console.warn('[genQuiz] 错题本查询失败（首次使用）', e)
   }
 
-  // 词池（表名已含年级册别：hanzi-3a = 三年级上，行内不再冗余 grade/volume）
+  // 词池（表名已含年级册别：hanzi-3a / word-en = 三年级上，行内不再冗余 grade/volume）
   let pool
-  if (style === 'word-dictate') {
+  if (subject === 'en' || style === 'word-en-dictate') {
+    pool = WORD_EN
+  } else if (style === 'word-dictate') {
     pool = WORDS
   } else {
     pool = HANZI
@@ -152,7 +162,22 @@ exports.main = async (event) => {
   // 组题
   const quizId = `quiz-${Date.now()}-${Math.floor(Math.random() * 1e4)}`
   let questions
-  if (style === 'pinyin-choice') {
+  if (subject === 'en' || style === 'word-en-dictate') {
+    questions = picked.map((x, i) => ({
+      qid: `${quizId}-q${i}`,
+      subject: 'en',
+      type: 'dictate',
+      prompt: '',
+      answer: x.word,
+      extra: {
+        itemRef: x.id,
+        speakText: enSpeakText(x.word, x.meaning),
+        word: x.word,
+        meaning: x.meaning,
+        pinyin: x.meaning,
+      },
+    }))
+  } else if (style === 'pinyin-choice') {
     // 四选一：干扰项从全库同年级字中取，相近字优先（buildOptions）
     const all = HANZI
     questions = picked.map((x, i) => {

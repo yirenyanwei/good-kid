@@ -187,9 +187,35 @@ def validate_wordzh(name, rows):
         check(rid == f"zw-{G}-{V}-u{unit}-{word}", f"[{name}] 行{i}: id「{rid}」与 unit/word 对不上")
 
 
+# 单词：字母开头，允许内部撇号（don't / o'clock）和空格短语（red panda）
+WORD_EN_RE = re.compile(r"^[A-Za-z]+(?:'[A-Za-z]+)?(?: [A-Za-z]+(?:'[A-Za-z]+)?)*$")
+
+
+def validate_worden(name, rows):
+    """word-en：人教 PEP 三年级上册单词表（可枚举，跟语文一样配表）"""
+    seen_id, seen_key = set(), set()
+    for i, r in rows:
+        word = r.get("word", "")
+        meaning, phonetic = r.get("meaning", ""), r.get("phonetic", "")
+        unit = r.get("unit")
+        rid = r.get("id", "")
+        check(isinstance(unit, int) and 1 <= unit <= 6, f"[{name}] 行{i} {word}: unit 非法「{unit}」")
+        check(bool(WORD_EN_RE.match(word)), f"[{name}] 行{i}: word 非法「{word}」")
+        check(1 <= len(word) <= 20, f"[{name}] 行{i}: word 长度越界「{word}」")
+        check(bool(meaning.strip()), f"[{name}] 行{i} {word}: meaning 为空")
+        check(bool(phonetic.strip()), f"[{name}] 行{i} {word}: phonetic 为空")
+        check(rid not in seen_id, f"[{name}] 行{i}: id 重复「{rid}」")
+        seen_id.add(rid)
+        key = (unit, word)
+        check(key not in seen_key, f"[{name}]: 同单元单词重复 u{unit} {word}")
+        seen_key.add(key)
+        check(rid == f"en-{G}-{V}-u{unit}-{word}", f"[{name}] 行{i}: id「{rid}」与 unit/word 对不上")
+
+
 TABLE_RULES = {
     "hanzi-3a": validate_hanzi,
     "word-zh": validate_wordzh,
+    "word-en": validate_worden,
 }
 
 

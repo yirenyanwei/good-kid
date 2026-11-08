@@ -26,10 +26,10 @@
       <text class="subj-name">数学</text>
       <text class="subj-sub">口算 · 挑战</text>
     </view>
-    <view class="subj off" bindtap="onSubject" data-s="en">
+    <view class="subj {{enReady ? '' : 'off'}}" bindtap="onSubject" data-s="en">
       <view class="subj-ico en">英</view>
       <text class="subj-name">英语</text>
-      <text class="subj-sub">三年级起开设</text>
+      <text class="subj-sub">{{enReady ? '单词默写' : '三年级可用'}}</text>
     </view>
   </view>
 
@@ -54,6 +54,6 @@
         <text wx:if="{{item !== 3}}" class="grade-lock">词库整理中</text>
       </view>
     </view>
-    <text class="sheet-note">V1 词库：三年级上册（统编版）</text>
+    <text class="sheet-note">三年级上册：语文统编版 · 英语人教 PEP</text>
   </view>
 </view>

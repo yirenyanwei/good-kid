@@ -1,8 +1,9 @@
 // quiz-engine.ts —— 本地出题引擎（V0 LocalImpl 的核心，含加权抽样与干扰项生成）
 // 与云函数 genQuiz 出题逻辑一致；错题权重 ×3；连对 2 次毕业的条目不再入卷
 
-import { HanziItem, Question, GenQuizParams, Quiz, ZhStyle } from './types'
+import { HanziItem, Question, GenQuizParams, Quiz, ZhStyle, EnStyle } from './types'
 import { HANZI_LIST, WORD_ZH_LIST } from './zh-data'
+import { WORD_EN_LIST } from './en-data'
 import { getWrongItems } from './storage'
 
 /** 权重抽样：错题权重 ×3，mastered 条目不选 */
@@ -159,6 +160,34 @@ function genPinyinChoice(p: GenQuizParams, wrongMap: Map<string, any>): Question
   }))
 }
 
+/** 英语报词：先读单词，再读中文释义的第一义（同形词 orange / nice 靠释义消歧） */
+function enSpeakText(word: string, meaning: string): string {
+  const stripped = meaning.replace(/（[^）]*）/g, '').trim()
+  const first = (stripped.split('；')[0] || stripped || meaning).trim()
+  return first ? `${word}，${first}` : word
+}
+
+/** 单词默写卷（听英文+释义，纸上写单词） */
+function genWordEnDictate(p: GenQuizParams, wrongMap: Map<string, any>): Question[] {
+  const pool = WORD_EN_LIST.filter((x) => filterBy(p, x.unit))
+  const items = weightedSample(pool, p.count, (x) => x.id, wrongMap)
+  return items.map((x) => ({
+    qid: `q-${Date.now()}-${quizSeq++}`,
+    subject: 'en' as const,
+    type: 'dictate' as const,
+    prompt: '',
+    answer: x.word,
+    extra: {
+      itemRef: x.id,
+      speakText: enSpeakText(x.word, x.meaning),
+      word: x.word,
+      meaning: x.meaning,
+      pinyin: x.meaning,
+      fromWrong: wrongMap.has(x.id),
+    },
+  }))
+}
+
 function filterBy(p: GenQuizParams, unit: number): boolean {
   if (p.mode === 'unit' && p.unit) return unit === p.unit
   return true
@@ -170,8 +199,10 @@ export async function genQuizLocal(p: GenQuizParams): Promise<Quiz> {
   const wrongMap = new Map(wrongs.map((w) => [w.itemRef, w]))
 
   let questions: Question[]
-  const style = p.style || 'hanzi-dictate'
-  if (style === 'word-dictate') {
+  const style = p.style || (p.subject === 'en' ? 'word-en-dictate' : 'hanzi-dictate')
+  if (style === 'word-en-dictate') {
+    questions = genWordEnDictate(p, wrongMap)
+  } else if (style === 'word-dictate') {
     questions = genWordDictate(p, wrongMap)
   } else if (style === 'pinyin-choice') {
     questions = genPinyinChoice(p, wrongMap)
@@ -183,7 +214,7 @@ export async function genQuizLocal(p: GenQuizParams): Promise<Quiz> {
   return {
     quizId: `quiz-${Date.now()}-${quizSeq++}`,
     subject: p.subject,
-    style: style as ZhStyle,
+    style: style as ZhStyle | EnStyle,
     questions,
   }
 }

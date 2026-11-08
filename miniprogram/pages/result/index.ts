@@ -7,6 +7,7 @@ const STYLE_NAMES: Record<string, string> = {
   'pinyin-choice': '看拼音选字',
   'math-calc': '口算练习',
   'math-mixed': '混合运算',
+  'word-en-dictate': '单词默写',
 }
 
 Page({
@@ -32,7 +33,7 @@ Page({
     // 记日志（周报/续练数据源；subject 由 style 前缀推断）
     appendQuizLog({
       quizId: `local-${Date.now()}`,
-      subject: style.startsWith('math') ? 'math' : 'zh',
+      subject: style.startsWith('math') ? 'math' : style.startsWith('word-en') ? 'en' : 'zh',
       style: style as any,
       correct,
       total,

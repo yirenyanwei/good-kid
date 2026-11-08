@@ -13,6 +13,9 @@ export type ZhStyle = 'hanzi-dictate' | 'word-dictate' | 'pinyin-choice'
 /** 数学练习样式：口算单步 / 加减乘除混合运算 */
 export type MathStyle = 'math-calc' | 'math-mixed'
 
+/** 英语练习样式：单词默写（听英文+中文释义，纸上写单词） */
+export type EnStyle = 'word-en-dictate'
+
 /** 口算运算符（可多选） */
 export type MathOp = 'add' | 'sub' | 'mul' | 'div'
 
@@ -46,6 +49,18 @@ export interface WordZhItem {
   chars: { c: string; writable: boolean }[]
 }
 
+/** 英语单词（人教 PEP 三年级上，本地 fallback 与云端 config 同构） */
+export interface WordEnItem {
+  id: string
+  grade: number
+  volume: '上' | '下'
+  unit: number
+  word: string
+  /** 中文释义（默写页给家长看，TTS 报首项） */
+  meaning: string
+  phonetic: string
+}
+
 /** 统一题目 */
 export interface Question {
   qid: string
@@ -59,9 +74,11 @@ export interface Question {
     itemRef?: string
     /** TTS 播报文本（多音字消歧后） */
     speakText?: string
-    /** 词语听写：整词展示用 */
+    /** 词语听写：整词展示用；英语默写：英文单词 */
     word?: string
     pinyin?: string
+    /** 英语默写：中文释义（家长对答案用） */
+    meaning?: string
     /** choice：选项数组（已乱序） */
     options?: string[]
     /** 题目来源：错题重练标记 */
@@ -72,7 +89,7 @@ export interface Question {
 /** 出题入参 */
 export interface GenQuizParams {
   subject: Subject
-  style?: ZhStyle | MathStyle
+  style?: ZhStyle | MathStyle | EnStyle
   grade: number
   volume: '上' | '下'
   mode: 'random' | 'unit'
@@ -86,7 +103,7 @@ export interface GenQuizParams {
 export interface Quiz {
   quizId: string
   subject: Subject
-  style?: ZhStyle | MathStyle
+  style?: ZhStyle | MathStyle | EnStyle
   questions: Question[]
 }
 
@@ -130,7 +147,7 @@ export interface WrongItem {
 export interface QuizLog {
   quizId: string
   subject: Subject
-  style?: ZhStyle | MathStyle
+  style?: ZhStyle | MathStyle | EnStyle
   correct: number
   total: number
   duration: number

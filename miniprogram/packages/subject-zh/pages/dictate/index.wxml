@@ -26,17 +26,17 @@
         </view>
       </view>
     </view>
-    <text class="word-idx">第 {{index + 1}} 个{{isWordMode ? '词' : '字'}}</text>
+    <text class="word-idx">第 {{index + 1}} 个{{isEn ? '单词' : (isWordMode ? '词' : '字')}}</text>
     <!-- 报词同步可视：汉字=组词+目标字标红；词语=整词+拼音注音 -->
-    <view class="display-text" wx:if="{{display.length > 0}}">
+    <view class="display-text {{isEn ? 'en' : ''}}" wx:if="{{display.length > 0}}">
       <text wx:for="{{display}}" wx:key="index" class="{{item.hit ? 'hit' : ''}}">{{item.t}}</text>
     </view>
     <text class="display-sub" wx:if="{{isWordMode && display.length > 0}}">{{displayPinyin}}</text>
     <text class="pass-label">{{paused ? '已暂停' : passLabel}}</text>
-    <text class="pass-note">每{{isWordMode ? '词' : '字'}}报 2 遍 · {{paused ? '点击继续' : '写在本子上'}}</text>
+    <text class="pass-note">每{{isEn ? '词' : (isWordMode ? '词' : '字')}}报 2 遍 · {{paused ? '点击继续' : '写在本子上'}}</text>
 
     <view class="controls">
-      <text class="ctrl" bindtap="replayPrev">上一{{isWordMode ? '词' : '字'}}</text>
+      <text class="ctrl" bindtap="replayPrev">上一{{isEn ? '词' : (isWordMode ? '词' : '字')}}</text>
       <text class="ctrl primary" bindtap="togglePause">{{paused ? '继续' : '暂停'}}</text>
       <text class="ctrl" bindtap="replayCurrent">重听</text>
     </view>
@@ -51,7 +51,7 @@
   <!-- 阶段三：对答案（一次性全网格） -->
   <view wx:elif="{{phase === 'checking'}}" class="check-body">
     <view class="check-head">
-      <text class="check-title">刚才听写的 {{total}} 个{{isWordMode ? '词语' : '字'}} · 勾出错的</text>
+      <text class="check-title">刚才听写的 {{total}} 个{{isEn ? '单词' : (isWordMode ? '词语' : '字')}} · 勾出错的</text>
       <view class="check-countdown" wx:if="{{checkCountdown > 0}}">
         <text>补写 {{checkCountdown}}s</text>
         <text class="skip" bindtap="skipCountdown">跳过</text>
@@ -69,12 +69,12 @@
       <view
         wx:for="{{questions}}"
         wx:key="qid"
-        class="q-card {{marked[index] ? 'wrong' : ''}} {{isWordMode ? 'q-word' : ''}}"
+        class="q-card {{marked[index] ? 'wrong' : ''}} {{isWordMode ? 'q-word' : ''}} {{isEn ? 'q-en' : ''}}"
         bindtap="toggleMark"
         data-i="{{index}}"
       >
         <text class="q-main">{{item.answer}}</text>
-        <text class="q-sub">{{marked[index] ? '勾错' : item.extra.pinyin}}</text>
+        <text class="q-sub">{{marked[index] ? '勾错' : (item.extra.meaning || item.extra.pinyin)}}</text>
       </view>
     </view>
 

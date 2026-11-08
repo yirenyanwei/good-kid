@@ -107,6 +107,10 @@
   color: var(--purple);
   font-weight: 700;
 }
+.display-text.en text {
+  font-size: 52rpx;
+  letter-spacing: 1rpx;
+}
 /* 词语模式：拼音注音小字 */
 .display-sub {
   font-size: 26rpx;
@@ -220,6 +224,11 @@
 .q-word .q-main {
   font-size: 28rpx;
   letter-spacing: 2rpx;
+}
+.q-en .q-main {
+  letter-spacing: 0;
+  font-size: 32rpx;
+  word-break: break-word;
 }
 .q-sub {
   font-size: 20rpx;

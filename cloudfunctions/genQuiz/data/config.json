@@ -1,5 +1,5 @@
 {
-  "version": "v-20261101-62b0",
+  "version": "v-20261108-babb",
   "tables": {
     "hanzi-3a": [
       {
@@ -3635,6 +3635,869 @@
           "睹物思人",
           "有目共睹"
         ]
+      }
+    ],
+    "word-en": [
+      {
+        "id": "en-3-上-u1-name",
+        "unit": 1,
+        "word": "name",
+        "meaning": "名字",
+        "phonetic": "/neɪm/"
+      },
+      {
+        "id": "en-3-上-u1-nice",
+        "unit": 1,
+        "word": "nice",
+        "meaning": "友好的；令人愉快的",
+        "phonetic": "/naɪs/"
+      },
+      {
+        "id": "en-3-上-u1-ear",
+        "unit": 1,
+        "word": "ear",
+        "meaning": "耳朵",
+        "phonetic": "/ɪə(r)/"
+      },
+      {
+        "id": "en-3-上-u1-hand",
+        "unit": 1,
+        "word": "hand",
+        "meaning": "手",
+        "phonetic": "/hænd/"
+      },
+      {
+        "id": "en-3-上-u1-eye",
+        "unit": 1,
+        "word": "eye",
+        "meaning": "眼睛",
+        "phonetic": "/aɪ/"
+      },
+      {
+        "id": "en-3-上-u1-mouth",
+        "unit": 1,
+        "word": "mouth",
+        "meaning": "嘴",
+        "phonetic": "/maʊθ/"
+      },
+      {
+        "id": "en-3-上-u1-arm",
+        "unit": 1,
+        "word": "arm",
+        "meaning": "胳膊",
+        "phonetic": "/ɑːm/"
+      },
+      {
+        "id": "en-3-上-u1-can",
+        "unit": 1,
+        "word": "can",
+        "meaning": "可以；能够",
+        "phonetic": "/kæn/"
+      },
+      {
+        "id": "en-3-上-u1-share",
+        "unit": 1,
+        "word": "share",
+        "meaning": "分享",
+        "phonetic": "/ʃeə(r)/"
+      },
+      {
+        "id": "en-3-上-u1-smile",
+        "unit": 1,
+        "word": "smile",
+        "meaning": "微笑",
+        "phonetic": "/smaɪl/"
+      },
+      {
+        "id": "en-3-上-u1-listen",
+        "unit": 1,
+        "word": "listen",
+        "meaning": "听；倾听",
+        "phonetic": "/ˈlɪsn/"
+      },
+      {
+        "id": "en-3-上-u1-help",
+        "unit": 1,
+        "word": "help",
+        "meaning": "帮助",
+        "phonetic": "/help/"
+      },
+      {
+        "id": "en-3-上-u1-say",
+        "unit": 1,
+        "word": "say",
+        "meaning": "说；讲",
+        "phonetic": "/seɪ/"
+      },
+      {
+        "id": "en-3-上-u1-friend",
+        "unit": 1,
+        "word": "friend",
+        "meaning": "朋友",
+        "phonetic": "/frend/"
+      },
+      {
+        "id": "en-3-上-u1-good",
+        "unit": 1,
+        "word": "good",
+        "meaning": "好的",
+        "phonetic": "/ɡʊd/"
+      },
+      {
+        "id": "en-3-上-u1-and",
+        "unit": 1,
+        "word": "and",
+        "meaning": "和；与",
+        "phonetic": "/ænd/"
+      },
+      {
+        "id": "en-3-上-u1-toy",
+        "unit": 1,
+        "word": "toy",
+        "meaning": "玩具",
+        "phonetic": "/tɔɪ/"
+      },
+      {
+        "id": "en-3-上-u1-hello",
+        "unit": 1,
+        "word": "hello",
+        "meaning": "你好",
+        "phonetic": "/həˈləʊ/"
+      },
+      {
+        "id": "en-3-上-u1-hi",
+        "unit": 1,
+        "word": "hi",
+        "meaning": "嗨",
+        "phonetic": "/haɪ/"
+      },
+      {
+        "id": "en-3-上-u1-too",
+        "unit": 1,
+        "word": "too",
+        "meaning": "也",
+        "phonetic": "/tuː/"
+      },
+      {
+        "id": "en-3-上-u1-goodbye",
+        "unit": 1,
+        "word": "goodbye",
+        "meaning": "再见",
+        "phonetic": "/ˌɡʊdˈbaɪ/"
+      },
+      {
+        "id": "en-3-上-u2-mum",
+        "unit": 2,
+        "word": "mum",
+        "meaning": "妈妈",
+        "phonetic": "/mʌm/"
+      },
+      {
+        "id": "en-3-上-u2-dad",
+        "unit": 2,
+        "word": "dad",
+        "meaning": "爸爸",
+        "phonetic": "/dæd/"
+      },
+      {
+        "id": "en-3-上-u2-grandma",
+        "unit": 2,
+        "word": "grandma",
+        "meaning": "奶奶；姥姥",
+        "phonetic": "/ˈɡrænmɑː/"
+      },
+      {
+        "id": "en-3-上-u2-grandpa",
+        "unit": 2,
+        "word": "grandpa",
+        "meaning": "爷爷；姥爷",
+        "phonetic": "/ˈɡrænpɑː/"
+      },
+      {
+        "id": "en-3-上-u2-grandmother",
+        "unit": 2,
+        "word": "grandmother",
+        "meaning": "祖母；外祖母",
+        "phonetic": "/ˈɡrænmʌðə(r)/"
+      },
+      {
+        "id": "en-3-上-u2-grandfather",
+        "unit": 2,
+        "word": "grandfather",
+        "meaning": "祖父；外祖父",
+        "phonetic": "/ˈɡrænfɑːðə(r)/"
+      },
+      {
+        "id": "en-3-上-u2-mother",
+        "unit": 2,
+        "word": "mother",
+        "meaning": "母亲；妈妈",
+        "phonetic": "/ˈmʌðə(r)/"
+      },
+      {
+        "id": "en-3-上-u2-father",
+        "unit": 2,
+        "word": "father",
+        "meaning": "父亲；爸爸",
+        "phonetic": "/ˈfɑːðə(r)/"
+      },
+      {
+        "id": "en-3-上-u2-family",
+        "unit": 2,
+        "word": "family",
+        "meaning": "家；家庭",
+        "phonetic": "/ˈfæməli/"
+      },
+      {
+        "id": "en-3-上-u2-have",
+        "unit": 2,
+        "word": "have",
+        "meaning": "有",
+        "phonetic": "/hæv/"
+      },
+      {
+        "id": "en-3-上-u2-big",
+        "unit": 2,
+        "word": "big",
+        "meaning": "大的",
+        "phonetic": "/bɪɡ/"
+      },
+      {
+        "id": "en-3-上-u2-sister",
+        "unit": 2,
+        "word": "sister",
+        "meaning": "姐；妹",
+        "phonetic": "/ˈsɪstə(r)/"
+      },
+      {
+        "id": "en-3-上-u2-brother",
+        "unit": 2,
+        "word": "brother",
+        "meaning": "哥；弟",
+        "phonetic": "/ˈbrʌðə(r)/"
+      },
+      {
+        "id": "en-3-上-u2-cousin",
+        "unit": 2,
+        "word": "cousin",
+        "meaning": "堂（表）兄弟；堂（表）姐妹",
+        "phonetic": "/ˈkʌzn/"
+      },
+      {
+        "id": "en-3-上-u2-me",
+        "unit": 2,
+        "word": "me",
+        "meaning": "我",
+        "phonetic": "/miː/"
+      },
+      {
+        "id": "en-3-上-u2-small",
+        "unit": 2,
+        "word": "small",
+        "meaning": "小的",
+        "phonetic": "/smɔːl/"
+      },
+      {
+        "id": "en-3-上-u2-baby",
+        "unit": 2,
+        "word": "baby",
+        "meaning": "婴儿",
+        "phonetic": "/ˈbeɪbi/"
+      },
+      {
+        "id": "en-3-上-u2-aunt",
+        "unit": 2,
+        "word": "aunt",
+        "meaning": "伯母；婶母；舅母；姑母；姨母",
+        "phonetic": "/ɑːnt/"
+      },
+      {
+        "id": "en-3-上-u2-uncle",
+        "unit": 2,
+        "word": "uncle",
+        "meaning": "伯父；叔父；舅父；姑父；姨父",
+        "phonetic": "/ˈʌŋkl/"
+      },
+      {
+        "id": "en-3-上-u2-some",
+        "unit": 2,
+        "word": "some",
+        "meaning": "一些",
+        "phonetic": "/sʌm/"
+      },
+      {
+        "id": "en-3-上-u3-like",
+        "unit": 3,
+        "word": "like",
+        "meaning": "喜欢",
+        "phonetic": "/laɪk/"
+      },
+      {
+        "id": "en-3-上-u3-dog",
+        "unit": 3,
+        "word": "dog",
+        "meaning": "狗",
+        "phonetic": "/dɒɡ/"
+      },
+      {
+        "id": "en-3-上-u3-pet",
+        "unit": 3,
+        "word": "pet",
+        "meaning": "宠物",
+        "phonetic": "/pet/"
+      },
+      {
+        "id": "en-3-上-u3-cat",
+        "unit": 3,
+        "word": "cat",
+        "meaning": "猫",
+        "phonetic": "/kæt/"
+      },
+      {
+        "id": "en-3-上-u3-fish",
+        "unit": 3,
+        "word": "fish",
+        "meaning": "鱼",
+        "phonetic": "/fɪʃ/"
+      },
+      {
+        "id": "en-3-上-u3-bird",
+        "unit": 3,
+        "word": "bird",
+        "meaning": "鸟",
+        "phonetic": "/bɜːd/"
+      },
+      {
+        "id": "en-3-上-u3-rabbit",
+        "unit": 3,
+        "word": "rabbit",
+        "meaning": "兔子",
+        "phonetic": "/ˈræbɪt/"
+      },
+      {
+        "id": "en-3-上-u3-go",
+        "unit": 3,
+        "word": "go",
+        "meaning": "去；走",
+        "phonetic": "/ɡəʊ/"
+      },
+      {
+        "id": "en-3-上-u3-zoo",
+        "unit": 3,
+        "word": "zoo",
+        "meaning": "动物园",
+        "phonetic": "/zuː/"
+      },
+      {
+        "id": "en-3-上-u3-fox",
+        "unit": 3,
+        "word": "fox",
+        "meaning": "狐狸",
+        "phonetic": "/fɒks/"
+      },
+      {
+        "id": "en-3-上-u3-Miss",
+        "unit": 3,
+        "word": "Miss",
+        "meaning": "女士；老师",
+        "phonetic": "/mɪs/"
+      },
+      {
+        "id": "en-3-上-u3-panda",
+        "unit": 3,
+        "word": "panda",
+        "meaning": "大熊猫",
+        "phonetic": "/ˈpændə/"
+      },
+      {
+        "id": "en-3-上-u3-red panda",
+        "unit": 3,
+        "word": "red panda",
+        "meaning": "小熊猫",
+        "phonetic": "/red ˈpændə/"
+      },
+      {
+        "id": "en-3-上-u3-cute",
+        "unit": 3,
+        "word": "cute",
+        "meaning": "可爱的",
+        "phonetic": "/kjuːt/"
+      },
+      {
+        "id": "en-3-上-u3-monkey",
+        "unit": 3,
+        "word": "monkey",
+        "meaning": "猴子",
+        "phonetic": "/ˈmʌŋki/"
+      },
+      {
+        "id": "en-3-上-u3-tiger",
+        "unit": 3,
+        "word": "tiger",
+        "meaning": "老虎",
+        "phonetic": "/ˈtaɪɡə(r)/"
+      },
+      {
+        "id": "en-3-上-u3-elephant",
+        "unit": 3,
+        "word": "elephant",
+        "meaning": "大象",
+        "phonetic": "/ˈelɪfənt/"
+      },
+      {
+        "id": "en-3-上-u3-lion",
+        "unit": 3,
+        "word": "lion",
+        "meaning": "狮子",
+        "phonetic": "/ˈlaɪən/"
+      },
+      {
+        "id": "en-3-上-u3-giraffe",
+        "unit": 3,
+        "word": "giraffe",
+        "meaning": "长颈鹿",
+        "phonetic": "/dʒəˈrɑːf/"
+      },
+      {
+        "id": "en-3-上-u3-tall",
+        "unit": 3,
+        "word": "tall",
+        "meaning": "高的",
+        "phonetic": "/tɔːl/"
+      },
+      {
+        "id": "en-3-上-u3-fast",
+        "unit": 3,
+        "word": "fast",
+        "meaning": "快的",
+        "phonetic": "/fɑːst/"
+      },
+      {
+        "id": "en-3-上-u3-animal",
+        "unit": 3,
+        "word": "animal",
+        "meaning": "动物",
+        "phonetic": "/ˈænɪml/"
+      },
+      {
+        "id": "en-3-上-u4-apple",
+        "unit": 4,
+        "word": "apple",
+        "meaning": "苹果",
+        "phonetic": "/ˈæpl/"
+      },
+      {
+        "id": "en-3-上-u4-banana",
+        "unit": 4,
+        "word": "banana",
+        "meaning": "香蕉",
+        "phonetic": "/bəˈnɑːnə/"
+      },
+      {
+        "id": "en-3-上-u4-farm",
+        "unit": 4,
+        "word": "farm",
+        "meaning": "农场",
+        "phonetic": "/fɑːm/"
+      },
+      {
+        "id": "en-3-上-u4-air",
+        "unit": 4,
+        "word": "air",
+        "meaning": "空气",
+        "phonetic": "/eə(r)/"
+      },
+      {
+        "id": "en-3-上-u4-orange",
+        "unit": 4,
+        "word": "orange",
+        "meaning": "橙子；柑橘",
+        "phonetic": "/ˈɒrɪndʒ/"
+      },
+      {
+        "id": "en-3-上-u4-grape",
+        "unit": 4,
+        "word": "grape",
+        "meaning": "葡萄",
+        "phonetic": "/ɡreɪp/"
+      },
+      {
+        "id": "en-3-上-u4-school",
+        "unit": 4,
+        "word": "school",
+        "meaning": "学校",
+        "phonetic": "/skuːl/"
+      },
+      {
+        "id": "en-3-上-u4-garden",
+        "unit": 4,
+        "word": "garden",
+        "meaning": "花园",
+        "phonetic": "/ˈɡɑːdn/"
+      },
+      {
+        "id": "en-3-上-u4-need",
+        "unit": 4,
+        "word": "need",
+        "meaning": "需要",
+        "phonetic": "/niːd/"
+      },
+      {
+        "id": "en-3-上-u4-water",
+        "unit": 4,
+        "word": "water",
+        "meaning": "水；浇水",
+        "phonetic": "/ˈwɔːtə(r)/"
+      },
+      {
+        "id": "en-3-上-u4-flower",
+        "unit": 4,
+        "word": "flower",
+        "meaning": "花",
+        "phonetic": "/ˈflaʊə(r)/"
+      },
+      {
+        "id": "en-3-上-u4-grass",
+        "unit": 4,
+        "word": "grass",
+        "meaning": "草；草地",
+        "phonetic": "/ɡrɑːs/"
+      },
+      {
+        "id": "en-3-上-u4-plant",
+        "unit": 4,
+        "word": "plant",
+        "meaning": "植物；种植",
+        "phonetic": "/plɑːnt/"
+      },
+      {
+        "id": "en-3-上-u4-new",
+        "unit": 4,
+        "word": "new",
+        "meaning": "新的",
+        "phonetic": "/njuː/"
+      },
+      {
+        "id": "en-3-上-u4-tree",
+        "unit": 4,
+        "word": "tree",
+        "meaning": "树",
+        "phonetic": "/triː/"
+      },
+      {
+        "id": "en-3-上-u4-sun",
+        "unit": 4,
+        "word": "sun",
+        "meaning": "太阳",
+        "phonetic": "/sʌn/"
+      },
+      {
+        "id": "en-3-上-u4-give",
+        "unit": 4,
+        "word": "give",
+        "meaning": "给",
+        "phonetic": "/ɡɪv/"
+      },
+      {
+        "id": "en-3-上-u4-us",
+        "unit": 4,
+        "word": "us",
+        "meaning": "我们",
+        "phonetic": "/ʌs/"
+      },
+      {
+        "id": "en-3-上-u4-them",
+        "unit": 4,
+        "word": "them",
+        "meaning": "它们；他们；她们",
+        "phonetic": "/ðəm/"
+      },
+      {
+        "id": "en-3-上-u4-fruit",
+        "unit": 4,
+        "word": "fruit",
+        "meaning": "水果",
+        "phonetic": "/fruːt/"
+      },
+      {
+        "id": "en-3-上-u4-wood",
+        "unit": 4,
+        "word": "wood",
+        "meaning": "木头",
+        "phonetic": "/wʊd/"
+      },
+      {
+        "id": "en-3-上-u4-leaf",
+        "unit": 4,
+        "word": "leaf",
+        "meaning": "叶子",
+        "phonetic": "/liːf/"
+      },
+      {
+        "id": "en-3-上-u4-get",
+        "unit": 4,
+        "word": "get",
+        "meaning": "得到；获取",
+        "phonetic": "/ɡet/"
+      },
+      {
+        "id": "en-3-上-u4-do",
+        "unit": 4,
+        "word": "do",
+        "meaning": "做",
+        "phonetic": "/duː/"
+      },
+      {
+        "id": "en-3-上-u4-don't",
+        "unit": 4,
+        "word": "don't",
+        "meaning": "不",
+        "phonetic": "/dəʊnt/"
+      },
+      {
+        "id": "en-3-上-u5-colour",
+        "unit": 5,
+        "word": "colour",
+        "meaning": "颜色",
+        "phonetic": "/ˈkʌlə(r)/"
+      },
+      {
+        "id": "en-3-上-u5-red",
+        "unit": 5,
+        "word": "red",
+        "meaning": "红色；红色的",
+        "phonetic": "/red/"
+      },
+      {
+        "id": "en-3-上-u5-yellow",
+        "unit": 5,
+        "word": "yellow",
+        "meaning": "黄色；黄色的",
+        "phonetic": "/ˈjeləʊ/"
+      },
+      {
+        "id": "en-3-上-u5-blue",
+        "unit": 5,
+        "word": "blue",
+        "meaning": "蓝色；蓝色的",
+        "phonetic": "/bluː/"
+      },
+      {
+        "id": "en-3-上-u5-green",
+        "unit": 5,
+        "word": "green",
+        "meaning": "绿色；绿色的",
+        "phonetic": "/ɡriːn/"
+      },
+      {
+        "id": "en-3-上-u5-orange",
+        "unit": 5,
+        "word": "orange",
+        "meaning": "橙红色；橙红色的",
+        "phonetic": "/ˈɒrɪndʒ/"
+      },
+      {
+        "id": "en-3-上-u5-white",
+        "unit": 5,
+        "word": "white",
+        "meaning": "白色；白色的",
+        "phonetic": "/waɪt/"
+      },
+      {
+        "id": "en-3-上-u5-black",
+        "unit": 5,
+        "word": "black",
+        "meaning": "黑色；黑色的",
+        "phonetic": "/blæk/"
+      },
+      {
+        "id": "en-3-上-u5-brown",
+        "unit": 5,
+        "word": "brown",
+        "meaning": "棕色；棕色的",
+        "phonetic": "/braʊn/"
+      },
+      {
+        "id": "en-3-上-u5-pink",
+        "unit": 5,
+        "word": "pink",
+        "meaning": "粉色；粉色的",
+        "phonetic": "/pɪŋk/"
+      },
+      {
+        "id": "en-3-上-u5-purple",
+        "unit": 5,
+        "word": "purple",
+        "meaning": "紫色；紫色的",
+        "phonetic": "/ˈpɜːpl/"
+      },
+      {
+        "id": "en-3-上-u5-see",
+        "unit": 5,
+        "word": "see",
+        "meaning": "看见",
+        "phonetic": "/siː/"
+      },
+      {
+        "id": "en-3-上-u5-make",
+        "unit": 5,
+        "word": "make",
+        "meaning": "使出现；做",
+        "phonetic": "/meɪk/"
+      },
+      {
+        "id": "en-3-上-u5-draw",
+        "unit": 5,
+        "word": "draw",
+        "meaning": "画",
+        "phonetic": "/drɔː/"
+      },
+      {
+        "id": "en-3-上-u5-bear",
+        "unit": 5,
+        "word": "bear",
+        "meaning": "熊",
+        "phonetic": "/beə(r)/"
+      },
+      {
+        "id": "en-3-上-u5-duck",
+        "unit": 5,
+        "word": "duck",
+        "meaning": "鸭",
+        "phonetic": "/dʌk/"
+      },
+      {
+        "id": "en-3-上-u5-sea",
+        "unit": 5,
+        "word": "sea",
+        "meaning": "海；海洋",
+        "phonetic": "/siː/"
+      },
+      {
+        "id": "en-3-上-u5-some",
+        "unit": 5,
+        "word": "some",
+        "meaning": "一些",
+        "phonetic": "/sʌm/"
+      },
+      {
+        "id": "en-3-上-u5-nice",
+        "unit": 5,
+        "word": "nice",
+        "meaning": "好看的；美好的",
+        "phonetic": "/naɪs/"
+      },
+      {
+        "id": "en-3-上-u6-old",
+        "unit": 6,
+        "word": "old",
+        "meaning": "多少岁；年纪；旧的",
+        "phonetic": "/əʊld/"
+      },
+      {
+        "id": "en-3-上-u6-five",
+        "unit": 6,
+        "word": "five",
+        "meaning": "五",
+        "phonetic": "/faɪv/"
+      },
+      {
+        "id": "en-3-上-u6-year",
+        "unit": 6,
+        "word": "year",
+        "meaning": "年纪；年",
+        "phonetic": "/jɪə(r)/"
+      },
+      {
+        "id": "en-3-上-u6-one",
+        "unit": 6,
+        "word": "one",
+        "meaning": "一",
+        "phonetic": "/wʌn/"
+      },
+      {
+        "id": "en-3-上-u6-two",
+        "unit": 6,
+        "word": "two",
+        "meaning": "二",
+        "phonetic": "/tuː/"
+      },
+      {
+        "id": "en-3-上-u6-three",
+        "unit": 6,
+        "word": "three",
+        "meaning": "三",
+        "phonetic": "/θriː/"
+      },
+      {
+        "id": "en-3-上-u6-four",
+        "unit": 6,
+        "word": "four",
+        "meaning": "四",
+        "phonetic": "/fɔː(r)/"
+      },
+      {
+        "id": "en-3-上-u6-ten",
+        "unit": 6,
+        "word": "ten",
+        "meaning": "十",
+        "phonetic": "/ten/"
+      },
+      {
+        "id": "en-3-上-u6-six",
+        "unit": 6,
+        "word": "six",
+        "meaning": "六",
+        "phonetic": "/sɪks/"
+      },
+      {
+        "id": "en-3-上-u6-seven",
+        "unit": 6,
+        "word": "seven",
+        "meaning": "七",
+        "phonetic": "/ˈsevn/"
+      },
+      {
+        "id": "en-3-上-u6-eight",
+        "unit": 6,
+        "word": "eight",
+        "meaning": "八",
+        "phonetic": "/eɪt/"
+      },
+      {
+        "id": "en-3-上-u6-nine",
+        "unit": 6,
+        "word": "nine",
+        "meaning": "九",
+        "phonetic": "/naɪn/"
+      },
+      {
+        "id": "en-3-上-u6-o'clock",
+        "unit": 6,
+        "word": "o'clock",
+        "meaning": "点钟",
+        "phonetic": "/əˈklɒk/"
+      },
+      {
+        "id": "en-3-上-u6-cut",
+        "unit": 6,
+        "word": "cut",
+        "meaning": "切",
+        "phonetic": "/kʌt/"
+      },
+      {
+        "id": "en-3-上-u6-eat",
+        "unit": 6,
+        "word": "eat",
+        "meaning": "吃",
+        "phonetic": "/iːt/"
+      },
+      {
+        "id": "en-3-上-u6-cake",
+        "unit": 6,
+        "word": "cake",
+        "meaning": "蛋糕",
+        "phonetic": "/keɪk/"
       }
     ],
     "word-zh": [

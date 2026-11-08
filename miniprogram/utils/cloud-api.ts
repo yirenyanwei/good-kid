@@ -30,7 +30,7 @@ const LocalImpl: QuizAPI = {
       return {
         itemRef: q?.extra.itemRef || a.qid,
         content: q?.extra.word || q?.answer || '',
-        detail: q?.extra.pinyin || '',
+        detail: q?.extra.meaning || q?.extra.pinyin || '',
         correct: a.correct,
       }
     })
@@ -80,7 +80,7 @@ const CloudImpl: QuizAPI = {
           qid: q.qid,
           itemRef: q.extra.itemRef,
           content: q.extra.word || q.answer,
-          detail: q.extra.pinyin || '',
+          detail: q.extra.meaning || q.extra.pinyin || '',
         })),
         answers,
       })

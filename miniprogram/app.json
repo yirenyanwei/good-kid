@@ -24,12 +24,20 @@
         "pages/param/index",
         "pages/calc/index"
       ]
+    },
+    {
+      "root": "packages/subject-en",
+      "name": "subject-en",
+      "pages": [
+        "pages/en-home/index",
+        "pages/param/index"
+      ]
     }
   ],
   "preloadRule": {
     "pages/home/index": {
       "network": "all",
-      "packages": ["subject-zh"]
+      "packages": ["subject-zh", "subject-en"]
     }
   },
   "window": {
