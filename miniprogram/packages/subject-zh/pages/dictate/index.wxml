@@ -1,6 +1,7 @@
 <!-- 默写页：报词 → 听写结束 → 对答案三阶段 -->
 <view class="page">
-  <view class="nav">
+  <view class="status-bar" style="height: {{statusBarHeight}}px"></view>
+  <view class="nav" style="padding-right: {{navPadRight}}px">
     <text class="exit" bindtap="onExit">‹ 退出</text>
     <text class="progress">{{phase === 'checking' ? total : index + 1}} / {{total}}</text>
     <text class="replay" bindtap="replayCurrent">重听</text>

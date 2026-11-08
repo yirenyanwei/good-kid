@@ -1,4 +1,6 @@
 <view class="page">
+  <view class="status-bar" style="height: {{statusBarHeight}}px"></view>
+  <view class="top-gap"></view>
   <view class="head">
     <text class="sub">{{styleName}} · 三年级上册</text>
     <text class="score">{{correct}} 对 {{total - correct}}</text>

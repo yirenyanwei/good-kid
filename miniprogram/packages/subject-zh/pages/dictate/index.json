@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "听写",
+  "navigationStyle": "custom",
   "disableScroll": true
 }

@@ -9,6 +9,7 @@
 import { api } from '../../../../utils/cloud-api'
 import { speak, wait, stopAll, Speed } from '../../../../utils/tts'
 import { setDictateDraft, clearWrongDraft } from '../../../../utils/storage'
+import { readNavSafeArea, armLeaveGuard, disarmLeaveGuard } from '../../../../utils/nav'
 import { GenQuizParams, Quiz, Question, ZhStyle, EnStyle, Subject } from '../../../../utils/types'
 
 const GAP_FIRST_TO_SECOND = 2000 // 第 1 遍后停 2 秒
@@ -50,6 +51,8 @@ function buildDisplay(q: Question, isWordMode: boolean): DisplaySeg[] {
 
 Page({
   data: {
+    statusBarHeight: 20,
+    navPadRight: 96,
     phase: 'loading' as Phase,
     subject: 'zh' as Subject,
     style: 'hanzi-dictate' as ZhStyle | EnStyle,
@@ -87,6 +90,9 @@ Page({
   readGen: 0,
 
   onLoad(query: Record<string, string | undefined>) {
+    const nav = readNavSafeArea()
+    this.setData({ statusBarHeight: nav.statusBarHeight, navPadRight: nav.navPadRight })
+    armLeaveGuard('退出后本轮进度将作废')
     const subject: Subject = query.subject === 'en' ? 'en' : 'zh'
     const style = (query.style || (subject === 'en' ? 'word-en-dictate' : 'hanzi-dictate')) as ZhStyle | EnStyle
     const speed = (query.speed as Speed) || 'normal'
@@ -116,7 +122,7 @@ Page({
       const quiz = await api.genQuiz(p)
       if (quiz.questions.length === 0) {
         wx.showToast({ title: '暂无可练词条', icon: 'none' })
-        setTimeout(() => wx.navigateBack(), 800)
+        setTimeout(() => disarmLeaveGuard(() => wx.navigateBack()), 800)
         return
       }
       this.quiz = quiz
@@ -132,7 +138,7 @@ Page({
     } catch (e) {
       console.error('[dictate] genQuiz 失败', e)
       wx.showToast({ title: '出题失败，请重试', icon: 'none' })
-      setTimeout(() => wx.navigateBack(), 800)
+      setTimeout(() => disarmLeaveGuard(() => wx.navigateBack()), 800)
     }
   },
 
@@ -346,7 +352,7 @@ Page({
         `newWrong=${summary.newWrong.length}`,
         `graduated=${summary.graduated.length}`,
       ].join('&')
-      wx.redirectTo({ url: `/pages/result/index?${qs}` })
+      disarmLeaveGuard(() => wx.redirectTo({ url: `/pages/result/index?${qs}` }))
     } catch (e) {
       wx.hideLoading()
       console.error('[dictate] 提交失败', e)
@@ -368,7 +374,7 @@ Page({
             this.cancelled = true
             this.clearTimers()
             clearWrongDraft()
-            wx.navigateBack()
+            disarmLeaveGuard(() => wx.navigateBack())
           }
         },
       })
@@ -385,13 +391,13 @@ Page({
             this.cancelled = true
             this.clearTimers()
             clearWrongDraft()
-            wx.navigateBack()
+            disarmLeaveGuard(() => wx.navigateBack())
           }
         },
       })
     } else {
       this.clearTimers()
-      wx.navigateBack()
+      disarmLeaveGuard(() => wx.navigateBack())
     }
   },
 
@@ -405,6 +411,7 @@ Page({
   },
 
   onUnload() {
+    disarmLeaveGuard()
     this.cancelled = true
     this.readGen++ // 杀掉所有报词链
     this.clearTimers()

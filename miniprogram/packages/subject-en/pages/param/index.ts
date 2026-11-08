@@ -3,6 +3,7 @@
 import { GenQuizParams } from '../../../../utils/types'
 import { getUserConfig } from '../../../../utils/storage'
 import { WORD_EN_LIST } from '../../../../utils/en-data'
+import { readNavSafeArea } from '../../../../utils/nav'
 
 function poolSize(mode: 'random' | 'unit', unit: number): number {
   if (mode === 'unit' && unit) {
@@ -13,6 +14,8 @@ function poolSize(mode: 'random' | 'unit', unit: number): number {
 
 Page({
   data: {
+    statusBarHeight: 20,
+    navPadRight: 96,
     title: '单词默写',
     unitLabel: '词',
     range: '',
@@ -31,6 +34,8 @@ Page({
   },
 
   onLoad(query: Record<string, string | undefined>) {
+    const nav = readNavSafeArea()
+    this.setData({ statusBarHeight: nav.statusBarHeight, navPadRight: nav.navPadRight })
     const cfg = getUserConfig()
     const mode = (query.mode as 'random' | 'unit') || 'unit'
     const unit = Number(query.unit || 1)

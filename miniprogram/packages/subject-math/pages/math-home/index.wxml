@@ -1,5 +1,6 @@
 <view class="page">
-  <view class="nav">
+  <view class="status-bar" style="height: {{statusBarHeight}}px"></view>
+  <view class="nav" style="padding-right: {{navPadRight}}px">
     <text class="back" bindtap="goBack">‹</text>
     <view class="nav-center">
       <view class="subj-ico">数</view>

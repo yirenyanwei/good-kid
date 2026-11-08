@@ -2,6 +2,7 @@
 import { api } from '../../../../utils/cloud-api'
 import { genMathQuiz } from '../../../../utils/math-engine'
 import { GenQuizParams, MathOp, Quiz } from '../../../../utils/types'
+import { readNavSafeArea, armLeaveGuard, disarmLeaveGuard } from '../../../../utils/nav'
 
 type Phase = 'loading' | 'answering' | 'feedback'
 
@@ -9,6 +10,8 @@ const MAX_INPUT = 4 // 三位数封顶（加法最大 100+90=190）
 
 Page({
   data: {
+    statusBarHeight: 20,
+    navPadRight: 96,
     phase: 'loading' as Phase,
     index: 0,
     total: 0,
@@ -28,6 +31,9 @@ Page({
   streak: 0,
 
   onLoad(query: Record<string, string | undefined>) {
+    const nav = readNavSafeArea()
+    this.setData({ statusBarHeight: nav.statusBarHeight, navPadRight: nav.navPadRight })
+    armLeaveGuard('退出后本轮进度将作废')
     const style = (query.style as string) || 'math-calc'
     const count = Math.min(Number(query.count || 10), 50)
     const ops = (query.ops || '').split(',').filter(Boolean) as MathOp[]
@@ -54,7 +60,7 @@ Page({
     }
     if (!quiz || quiz.questions.length === 0) {
       wx.showToast({ title: '出题失败，请重试', icon: 'none' })
-      setTimeout(() => wx.navigateBack(), 800)
+      setTimeout(() => disarmLeaveGuard(() => wx.navigateBack()), 800)
       return
     }
     this.setData({
@@ -152,7 +158,11 @@ Page({
       `newWrong=${summary.newWrong.length}`,
       `graduated=${summary.graduated.length}`,
     ].join('&')
-    wx.redirectTo({ url: `/pages/result/index?${qs}` })
+    disarmLeaveGuard(() => wx.redirectTo({ url: `/pages/result/index?${qs}` }))
+  },
+
+  onUnload() {
+    disarmLeaveGuard()
   },
 
   onExit() {
@@ -163,7 +173,7 @@ Page({
       cancelText: '退出',
       confirmColor: '#FF7A1A',
       success: (res) => {
-        if (!res.confirm) wx.navigateBack()
+        if (!res.confirm) disarmLeaveGuard(() => wx.navigateBack())
       },
     })
   },

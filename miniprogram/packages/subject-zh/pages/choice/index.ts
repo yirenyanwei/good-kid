@@ -2,11 +2,14 @@
 import { api } from '../../../../utils/cloud-api'
 import { cutSpeak, speak } from '../../../../utils/tts'
 import { GenQuizParams, Quiz, Question } from '../../../../utils/types'
+import { readNavSafeArea, armLeaveGuard, disarmLeaveGuard } from '../../../../utils/nav'
 
 type Phase = 'loading' | 'answering' | 'feedback'
 
 Page({
   data: {
+    statusBarHeight: 20,
+    navPadRight: 96,
     phase: 'loading' as Phase,
     index: 0,
     total: 0,
@@ -26,6 +29,9 @@ Page({
   streak: 0,
 
   onLoad(query: Record<string, string | undefined>) {
+    const nav = readNavSafeArea()
+    this.setData({ statusBarHeight: nav.statusBarHeight, navPadRight: nav.navPadRight })
+    armLeaveGuard('退出后本轮进度将作废')
     const mode = (query.mode as 'random' | 'unit') || 'random'
     const p: GenQuizParams = {
       subject: 'zh',
@@ -44,7 +50,7 @@ Page({
       const quiz = await api.genQuiz(p)
       if (quiz.questions.length === 0) {
         wx.showToast({ title: '暂无可练词条', icon: 'none' })
-        setTimeout(() => wx.navigateBack(), 800)
+        setTimeout(() => disarmLeaveGuard(() => wx.navigateBack()), 800)
         return
       }
       this.setData({
@@ -57,7 +63,7 @@ Page({
     } catch (e) {
       console.error('[choice] genQuiz 失败', e)
       wx.showToast({ title: '出题失败', icon: 'none' })
-      setTimeout(() => wx.navigateBack(), 800)
+      setTimeout(() => disarmLeaveGuard(() => wx.navigateBack()), 800)
     }
   },
 
@@ -129,7 +135,11 @@ Page({
       `newWrong=${summary.newWrong.length}`,
       `graduated=${summary.graduated.length}`,
     ].join('&')
-    wx.redirectTo({ url: `/pages/result/index?${qs}` })
+    disarmLeaveGuard(() => wx.redirectTo({ url: `/pages/result/index?${qs}` }))
+  },
+
+  onUnload() {
+    disarmLeaveGuard()
   },
 
   onExit() {
@@ -140,7 +150,7 @@ Page({
       cancelText: '退出',
       confirmColor: '#FF7A1A',
       success: (res) => {
-        if (!res.confirm) wx.navigateBack()
+        if (!res.confirm) disarmLeaveGuard(() => wx.navigateBack())
       },
     })
   },

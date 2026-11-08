@@ -1,6 +1,7 @@
 // packages/subject-en/pages/en-home/index.ts —— 英语二级页（单词默写 + 按单元）
 import { getWrongItemsBySubject } from '../../../../utils/storage'
 import { enDataStats } from '../../../../utils/en-data'
+import { readNavSafeArea } from '../../../../utils/nav'
 
 const STYLES = [
   { key: 'word-en-dictate', name: '单词默写', desc: '听英文和中文 · 纸上写单词 · 家长勾错', isNew: true },
@@ -8,6 +9,8 @@ const STYLES = [
 
 Page({
   data: {
+    statusBarHeight: 20,
+    navPadRight: 96,
     styles: STYLES,
     mode: 'unit' as 'random' | 'unit',
     unit: 1,
@@ -18,6 +21,8 @@ Page({
   },
 
   onLoad() {
+    const nav = readNavSafeArea()
+    this.setData({ statusBarHeight: nav.statusBarHeight, navPadRight: nav.navPadRight })
     const stats = enDataStats()
     const units: number[] = []
     for (let u = 1; u <= stats.units; u++) units.push(u)

@@ -1,5 +1,6 @@
 // pages/result/index.ts —— 结果页（三科复用：大分数 + 星星 + 分享）
 import { appendQuizLog } from '../../utils/storage'
+import { readNavSafeArea } from '../../utils/nav'
 
 const STYLE_NAMES: Record<string, string> = {
   'hanzi-dictate': '生字默写',
@@ -12,6 +13,7 @@ const STYLE_NAMES: Record<string, string> = {
 
 Page({
   data: {
+    statusBarHeight: 20,
     correct: 0,
     total: 10,
     styleName: '',
@@ -22,6 +24,8 @@ Page({
   },
 
   onLoad(query: Record<string, string | undefined>) {
+    const nav = readNavSafeArea()
+    this.setData({ statusBarHeight: nav.statusBarHeight })
     const correct = Number(query.correct || 0)
     const total = Number(query.total || 10)
     const style = query.style || 'hanzi-dictate'

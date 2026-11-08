@@ -2,6 +2,7 @@
 // math-calc：加减乘除多选（至少勾 1 个）+ 题量
 // math-mixed：题量（运算符全混合，无需选择）
 import { MathOp } from '../../../../utils/types'
+import { readNavSafeArea } from '../../../../utils/nav'
 
 const OPS: { key: MathOp; sym: string; name: string }[] = [
   { key: 'add', sym: '+', name: '加法' },
@@ -17,6 +18,8 @@ const TITLE: Record<string, { title: string; unitLabel: string; max: number }> =
 
 Page({
   data: {
+    statusBarHeight: 20,
+    navPadRight: 96,
     style: 'math-calc',
     title: '',
     ops: OPS,
@@ -29,6 +32,8 @@ Page({
   },
 
   onLoad(query: Record<string, string | undefined>) {
+    const nav = readNavSafeArea()
+    this.setData({ statusBarHeight: nav.statusBarHeight, navPadRight: nav.navPadRight })
     const style = query.style || 'math-calc'
     const meta = TITLE[style] || TITLE['math-calc']
     this.setData({

@@ -30,6 +30,11 @@ page {
   font-size: 14px;
 }
 
+/* 自定义导航：状态栏占位，避免内容钻进刘海 */
+.status-bar {
+  width: 100%;
+}
+
 /* 通用卡片 */
 .gk-card {
   background: var(--card);

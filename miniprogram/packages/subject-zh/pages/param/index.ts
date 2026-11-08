@@ -2,6 +2,7 @@
 import { GenQuizParams, ZhStyle } from '../../../../utils/types'
 import { getUserConfig } from '../../../../utils/storage'
 import { HANZI_LIST, WORD_ZH_LIST } from '../../../../utils/zh-data'
+import { readNavSafeArea } from '../../../../utils/nav'
 
 const STYLE_META: Record<ZhStyle, { title: string; max: number; unitLabel: string }> = {
   'hanzi-dictate': { title: '生字默写', max: 20, unitLabel: '字' },
@@ -20,6 +21,8 @@ function poolSize(style: ZhStyle, mode: 'random' | 'unit', unit: number): number
 
 Page({
   data: {
+    statusBarHeight: 20,
+    navPadRight: 96,
     style: 'hanzi-dictate' as ZhStyle,
     title: '',
     unitLabel: '字',
@@ -41,6 +44,8 @@ Page({
   },
 
   onLoad(query: Record<string, string | undefined>) {
+    const nav = readNavSafeArea()
+    this.setData({ statusBarHeight: nav.statusBarHeight, navPadRight: nav.navPadRight })
     const style = (query.style || 'hanzi-dictate') as ZhStyle
     const cfg = getUserConfig()
     const meta = STYLE_META[style]

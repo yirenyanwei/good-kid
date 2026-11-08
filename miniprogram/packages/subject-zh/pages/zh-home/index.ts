@@ -2,6 +2,7 @@
 // 三种练习样式卡 + 出题范围 + 今日错题卡
 import { getWrongItemsBySubject } from '../../../../utils/storage'
 import { zhDataStats } from '../../../../utils/zh-data'
+import { readNavSafeArea } from '../../../../utils/nav'
 
 const STYLES = [
   { key: 'hanzi-dictate', name: '生字默写', desc: '单字 · TTS 报词 · 家长勾错', isNew: false },
@@ -11,6 +12,8 @@ const STYLES = [
 
 Page({
   data: {
+    statusBarHeight: 20,
+    navPadRight: 96,
     styles: STYLES,
     grade: 3,
     volume: '上' as '上' | '下',
@@ -25,7 +28,12 @@ Page({
   },
 
   onLoad() {
-    this.setData({ stats: zhDataStats() })
+    const nav = readNavSafeArea()
+    this.setData({
+      stats: zhDataStats(),
+      statusBarHeight: nav.statusBarHeight,
+      navPadRight: nav.navPadRight,
+    })
   },
 
   onShow() {

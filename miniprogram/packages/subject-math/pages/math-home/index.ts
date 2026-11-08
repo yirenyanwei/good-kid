@@ -1,5 +1,6 @@
 // packages/subject-math/pages/math-home/index.ts —— 数学二级页（口算/混合运算入口）
 import { getWrongItemsBySubject } from '../../../../utils/storage'
+import { readNavSafeArea } from '../../../../utils/nav'
 
 const STYLES = [
   {
@@ -20,9 +21,16 @@ const STYLES = [
 
 Page({
   data: {
+    statusBarHeight: 20,
+    navPadRight: 96,
     styles: STYLES,
     wrongToday: 0,
     wrongTotal: 0,
+  },
+
+  onLoad() {
+    const nav = readNavSafeArea()
+    this.setData({ statusBarHeight: nav.statusBarHeight, navPadRight: nav.navPadRight })
   },
 
   onShow() {

@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "看拼音选字",
+  "navigationStyle": "custom",
   "disableScroll": true
 }

@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "口算练习",
+  "navigationStyle": "custom",
   "disableScroll": true
 }

@@ -1,5 +1,8 @@
 .page {
-  padding: 80rpx 28rpx 60rpx;
+  padding: 0 28rpx 60rpx;
+}
+.top-gap {
+  height: 88rpx;
 }
 .head {
   text-align: center;
